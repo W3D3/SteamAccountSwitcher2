@@ -1,0 +1,34 @@
+﻿<Window x:Class="SteamAccountSwitcher2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SteamAccountSwitcher2"
+        mc:Ignorable="d"
+        Title="SteamAccountSwitcher v2" Height="350" Width="320" MinHeight="350" MinWidth="320">
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <ToolBarTray DockPanel.Dock="Top">
+                <ToolBar>
+                    <Button Command="New" Content="New" />
+                    <Button Command="Open" Content="Edit" />
+                    <Button Command="Save" Content="Export" ToolBar.OverflowMode="Always" />
+                </ToolBar>
+                <ToolBar>
+                    <Button Command="Cut" Content="Resort" />
+                    <Button Command="Copy" Content="Copy" />
+                    <Button Command="Paste" Content="Paste" />
+                </ToolBar>
+                <ToolBar>
+                    <Button Content="Settings" />
+                </ToolBar>
+            </ToolBarTray>
+
+            <StatusBar Name="statusbar" DockPanel.Dock="Bottom" >
+                <Label>Statusbar</Label>
+            </StatusBar>
+            <Grid></Grid>
+        </DockPanel>
+
+    </Grid>
+</Window>
