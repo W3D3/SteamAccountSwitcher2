@@ -4,30 +4,110 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SteamAccountSwitcher2"
+        xmlns:dd="urn:gong-wpf-dragdrop"
         mc:Ignorable="d"
-        Title="SteamAccountSwitcher v2" Height="350" Width="320" MinHeight="350" MinWidth="320">
+        Title="Steam Account Switcher v2" Height="500" Width="458" MinHeight="350" MinWidth="320" Closing="Window_Closing">
     <Grid>
-        <DockPanel LastChildFill="True">
-            <ToolBarTray DockPanel.Dock="Top">
-                <ToolBar>
-                    <Button Command="New" Content="New" />
-                    <Button Command="Open" Content="Edit" />
-                    <Button Command="Save" Content="Export" ToolBar.OverflowMode="Always" />
+        <DockPanel LastChildFill="True" >
+            <ToolBarTray DockPanel.Dock="Top" >
+                <ToolBar ToolBarTray.IsLocked="True">
+                    <Button Content="New" />
+                    <Button Content="Edit" />
+                    <Button Content="Export" ToolBar.OverflowMode="Always" />
                 </ToolBar>
-                <ToolBar>
-                    <Button Command="Cut" Content="Resort" />
-                    <Button Command="Copy" Content="Copy" />
+                <ToolBar ToolBarTray.IsLocked="True" >
+                    <Button Command="Copy" Content="Duplicate"/>
                     <Button Command="Paste" Content="Paste" />
                 </ToolBar>
-                <ToolBar>
-                    <Button Content="Settings" />
+                <ToolBar ToolBarTray.IsLocked="True">
+                    <Button Name="settingsButton" Content="Settings" Click="settingsButton_Click" />
                 </ToolBar>
             </ToolBarTray>
 
             <StatusBar Name="statusbar" DockPanel.Dock="Bottom" >
-                <Label>Statusbar</Label>
+                <Label Name="statusBarLabel">Statusbar</Label>
             </StatusBar>
-            <Grid></Grid>
+
+            <Grid>
+                <!--             
+                <Grid Background="White" VerticalAlignment="Top" Height="70">
+                <Grid VerticalAlignment="Top" Height="70" >
+                    <Grid.Background>
+                        <ImageBrush ImageSource="images/sas_acc_bg.png" AlignmentX="Left" Stretch="UniformToFill">
+                            <ImageBrush.RelativeTransform>
+                                <TransformGroup>
+                                    <ScaleTransform CenterY="0.5" CenterX="0.35"/>
+                                    <SkewTransform CenterY="0.5" CenterX="0.35"/>
+                                    <RotateTransform CenterY="0.5" CenterX="0.35"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </ImageBrush.RelativeTransform>
+                        </ImageBrush>
+                    </Grid.Background>
+
+                        <StackPanel HorizontalAlignment="Stretch" Margin="90,0,0,0">
+
+                            <StackPanel Orientation="Vertical" Margin="5">
+                                <TextBlock Text="Name" FontWeight="Bold" FontSize="12pt"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Username: " />
+                                    <TextBlock Text="username" >
+                                        <TextBlock.Background>
+                                            <ImageBrush Stretch="None"/>
+                                        </TextBlock.Background>
+                                    </TextBlock>
+                                </StackPanel>
+
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+-->
+                <ListView x:Name="listBoxAccounts" Margin="-7,-0,-7,0"
+                          dd:DragDrop.IsDragSource="True"
+                          dd:DragDrop.IsDropTarget="True"
+                          dd:DragDrop.UseDefaultDragAdorner="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Background="White" VerticalAlignment="Top" Height="50" Margin="0">
+                                <Grid VerticalAlignment="Top" Height="50"  Margin="0">
+                                    <Grid.Background>
+                                        <ImageBrush ImageSource="images/sas_acc_bg.jpg" AlignmentX="Left" Stretch="None">
+                                            <ImageBrush.RelativeTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform CenterY="0.5" CenterX="0.35"/>
+                                                    <SkewTransform CenterY="0.5" CenterX="0.35"/>
+                                                    <RotateTransform CenterY="0.5" CenterX="0.35"/>
+                                                    <TranslateTransform/>
+                                                </TransformGroup>
+                                            </ImageBrush.RelativeTransform>
+                                        </ImageBrush>
+                                    </Grid.Background>
+
+                                    <StackPanel HorizontalAlignment="Stretch" Margin="90,0,0,0">
+
+                                        <StackPanel Orientation="Vertical" Margin="5">
+                                            <TextBlock Text="{Binding Name}" FontSize="12pt" Canvas.Top="2" Canvas.Left="10" FontFamily="Source Sans Pro Semibold" Foreground="White"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Username: " />
+                                                <TextBlock Text="{Binding Username}" >
+                                                    <TextBlock.Background>
+                                                        <ImageBrush Stretch="None"/>
+                                                    </TextBlock.Background>
+                                                </TextBlock>
+                                            </StackPanel>
+
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+
+                    </ListView.ItemTemplate>
+                </ListView>
+
+
+            </Grid>
         </DockPanel>
 
     </Grid>
