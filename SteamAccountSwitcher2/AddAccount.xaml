@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SteamAccountSwitcher2"
         mc:Ignorable="d"
-        Title="Add Account" Height="215" Width="326" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Icon="images/plus.png">
+        Title="Add Account" Height="215" Width="326" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Icon="images/plus.png" Closing="Window_Closing">
     <Grid>
         <Label Content="Type" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.538"/>
         <ComboBox x:Name="comboBoxType" HorizontalAlignment="Left" Margin="92,10,0,0" VerticalAlignment="Top" Width="214" Height="23"/>
@@ -19,7 +19,7 @@
         <Label Content="Password" HorizontalAlignment="Left" Margin="10,105,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.538"/>
         <PasswordBox x:Name="textBoxPassword" HorizontalAlignment="Left" Margin="92,105,0,0" VerticalAlignment="Top" Width="214" Height="23"/>
 
-        <Button x:Name="buttonSave" Content="Save" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" Width="296" Height="26" />
+        <Button x:Name="buttonSave" Content="Save" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" Width="296" Height="26" Click="buttonSave_Click" />
 
     </Grid>
 </Window>

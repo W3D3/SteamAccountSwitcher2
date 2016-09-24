@@ -10,25 +10,49 @@
         <TabControl Margin="5,5,5,32">
             <TabItem Header="General">
                 <Grid>
-                <GroupBox Margin="5,5,5,0" FontSize="11" FontWeight="Bold"
+                    <GroupBox Margin="5,5,5,0" FontSize="11" FontWeight="Bold"
                     Height="82" VerticalAlignment="Top">
-                    <GroupBox.Header>Steam Installation Directory</GroupBox.Header>
-                    <Grid Margin="5">
-                        <TextBlock FontSize="12" FontWeight="Regular" TextWrapping="WrapWithOverflow"><Run Text="You can change the used Steam installation at any time."/></TextBlock>
-                        <TextBox x:Name="textSteamInstallDir" Height="23" TextWrapping="Wrap" Text="..." VerticalAlignment="Bottom" Margin="0,0,70,0" IsEnabled="False"/>
-                        <Button x:Name="buttonBrowseSteamInstallDir" Content="Browse" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="70" Height="23"/>
-                    </Grid>
-                </GroupBox>
-                <GroupBox Margin="5,92,5,0" FontSize="11" FontWeight="Bold"
-                    Height="102" VerticalAlignment="Top">
-                    <GroupBox.Header>AutoStart</GroupBox.Header>
-                    <Grid Margin="5">
-                        <TextBlock FontSize="12" FontWeight="Regular" TextWrapping="WrapWithOverflow"><Run Text="Set AutoStart "/></TextBlock>
+                        <GroupBox.Header>Steam Installation Directory</GroupBox.Header>
+                        <Grid Margin="5">
+                            <TextBlock FontSize="12" FontWeight="Regular" TextWrapping="WrapWithOverflow"><Run Text="You can change the used Steam installation at any time."/></TextBlock>
+                            <TextBox x:Name="textSteamInstallDir" Height="23" TextWrapping="Wrap" Text="..." VerticalAlignment="Bottom" Margin="0,0,70,0" IsEnabled="False"/>
+                            <Button x:Name="buttonBrowseSteamInstallDir" Content="Browse" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="70" Height="23"/>
                         </Grid>
-                </GroupBox>
+                    </GroupBox>
+                    <GroupBox Margin="5,92,5,0" FontSize="11" FontWeight="Bold"
+                    Height="102" VerticalAlignment="Top">
+                        <GroupBox.Header>AutoStart</GroupBox.Header>
+                        <Grid Margin="5">
+                            <TextBlock FontSize="12" FontWeight="Regular" TextWrapping="WrapWithOverflow"><Run Text="Set AutoStart "/></TextBlock>
+                        </Grid>
+                    </GroupBox>
                 </Grid>
             </TabItem>
-            <TabItem Header="Security" />
+            <TabItem Header="Security">
+                <Grid>
+                    <GroupBox Margin="5,5,5,0" FontSize="11" FontWeight="Bold"
+                    Height="147" VerticalAlignment="Top">
+                        <GroupBox.Header>Encryption Method</GroupBox.Header>
+                        <Grid Margin="5">
+                            <StackPanel>
+                                <RadioButton x:Name="radioButton" Content="Basic" Margin="5,5,5,0"/>
+                                <Label FontSize="10" Margin="0" FontWeight="Normal">Encrypts Accounts with 256-bit AES key</Label>
+                                <RadioButton x:Name="radioButton2" Content="Master Password" Margin="5,5,5,0" ToolTip="Forgetting your master password will lead to the loss of all account access through SteamAccountSwitcher!"/>
+                                <Label FontSize="10" Margin="0" FontWeight="Normal">Encrypts Accounts with your own password</Label>
+                            </StackPanel>
+
+                            <Button Content="Save and reload" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="105" Height="23"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Margin="5,157,5,0" FontSize="11" FontWeight="Bold"
+                    Height="37" VerticalAlignment="Top">
+                        <GroupBox.Header>AutoStart</GroupBox.Header>
+                        <Grid Margin="5">
+                            <TextBlock FontSize="12" FontWeight="Regular" TextWrapping="WrapWithOverflow"><Run Text="Set AutoStart "/></TextBlock>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
             <TabItem Header="Details" />
 
 

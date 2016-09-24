@@ -31,17 +31,20 @@ namespace SteamAccountSwitcher2
 
         public List<SteamAccount> LoadBasicAccounts()
         {
+            
             if(encryptionType == Encryption.Basic)
             {
-                byte[] encrypted = File.ReadAllBytes(this.directory + "accounts.ini");
-                //string encrypted = System.IO.File.ReadAllText(this.directory + "accounts.ini");
-                //string output = JsonConvert.SerializeObject(product);
-                //AesHelper.Encrypt()
-               // MessageBox.Show(GetString(encrypted));
-                string decrypted = GetString(AesHelper.Decrypt(encrypted, basicPassword));
-               // MessageBox.Show(decrypted);
-                List<SteamAccount> accountList = JsonConvert.DeserializeObject<List<SteamAccount>>(decrypted);
-                return accountList;
+                try
+                {
+                    byte[] encrypted = File.ReadAllBytes(this.directory + "accounts.ini");
+                    string decrypted = GetString(AesHelper.Decrypt(encrypted, basicPassword));
+                    List<SteamAccount> accountList = JsonConvert.DeserializeObject<List<SteamAccount>>(decrypted);
+                    return accountList;
+                }
+                catch
+                {
+                    throw new ApplicationException("mistaaake");
+                }
             }
             else
             {

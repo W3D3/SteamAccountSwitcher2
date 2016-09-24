@@ -28,6 +28,7 @@ namespace SteamAccountSwitcher2
         ObservableCollection<SteamAccount> accountList = new ObservableCollection<SteamAccount>();
         Steam steam;
         AccountLoader loader;
+        bool autosaveAccounts = true;
         public MainWindow()
         {
             AutoUpdater.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US"); //Workaround for horrible AutoUpdater translations :D
@@ -59,26 +60,37 @@ namespace SteamAccountSwitcher2
                 steam = new Steam(Properties.Settings.Default.steamInstallDir);
             }
 
+            steam.Watch();
+
             statusBarLabel.Content = "Steam running in '" + Properties.Settings.Default.steamInstallDir + "'";
             statusBarLabel.Content = SteamStatus.steamStatusMessage();
             statusbar.Background = SteamStatus.getStatusColor();
 
             loader = new AccountLoader(Encryption.Basic);
             
-            accountList = new ObservableCollection<SteamAccount>(loader.LoadBasicAccounts());
-            try
+            //accountList = new ObservableCollection<SteamAccount>(loader.LoadBasicAccounts());
+            if (loader.AccountFileExists())
             {
                 //Try to get accounts
-                accountList = new ObservableCollection<SteamAccount>(loader.LoadBasicAccounts());
-            }
-            catch
-            {
-                if(loader.AccountFileExists())
+                try
                 { 
-                    MessageBox.Show("Account file is currupted or wrong encryption method is set. Check Settings and try again.");
+                    accountList = new ObservableCollection<SteamAccount>(loader.LoadBasicAccounts());
+                }
+                catch
+                {
+                    MessageBox.Show("Account file is currupted or wrong encryption method is set. Check Settings and try again. AutoSave has been disabled so that nothing can be overwritten! Make sure to restart the applications after switching Encryption method!", "Error parsing file", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     accountList = new ObservableCollection<SteamAccount>();
+                    autosaveAccounts = false;
                 }
             }
+            else
+            {
+                accountList = new ObservableCollection<SteamAccount>();
+            }
+
+            SteamAccount sa = new SteamAccount("W3D3", "testpw");
+            sa.Name = "LOL";
+            accountList.Add(sa);
 
             listBoxAccounts.ItemsSource = accountList;
             listBoxAccounts.Items.Refresh();
@@ -100,7 +112,10 @@ namespace SteamAccountSwitcher2
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             //User has exited the application, save all data
-            loader.SaveBasicAccounts(accountList.ToList<SteamAccount>());
+            if (autosaveAccounts)
+            {
+                loader.SaveBasicAccounts(accountList.ToList<SteamAccount>());
+            }
             Properties.Settings.Default.Save();
         }
 
@@ -132,7 +147,7 @@ namespace SteamAccountSwitcher2
         private void listBoxAccounts_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             SteamAccount selectedAcc = (SteamAccount)listBoxAccounts.SelectedItem;
-            steam.StartSteamAccount(selectedAcc);
+            steam.StartSteamAccountSave(selectedAcc);
         }
     }
 }
