@@ -15,14 +15,13 @@ using System.Windows.Shapes;
 namespace SteamAccountSwitcher2
 {
     /// <summary>
-    /// Interaction logic for SettingsWindow.xaml
+    /// Interaction logic for AddAccount.xaml
     /// </summary>
-    public partial class SettingsWindow : Window
+    public partial class AddAccount : Window
     {
-        public SettingsWindow()
+        public AddAccount()
         {
             InitializeComponent();
-            textSteamInstallDir.Text = Properties.Settings.Default.steamInstallDir;
         }
     }
 }

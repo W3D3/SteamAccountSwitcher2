@@ -38,7 +38,7 @@ namespace SteamAccountSwitcher2
             proc[0].Kill();
         }
 
-        public bool StartSteamAccount(SteamAccount a)
+        public bool StartSteamAccount(SteamAccount acc)
         {
             bool finished = false;
 
@@ -54,7 +54,7 @@ namespace SteamAccountSwitcher2
                     Process p = new Process();
                     if (File.Exists(installDir))
                     {
-                        p.StartInfo = new ProcessStartInfo(installDir, a.getStartParameters());
+                        p.StartInfo = new ProcessStartInfo(installDir, acc.getStartParameters());
                         p.Start();
                         finished = true;
                         return true;

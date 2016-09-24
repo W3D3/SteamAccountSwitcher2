@@ -25,7 +25,7 @@ namespace SteamAccountSwitcher2.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string steamInstallDir {
             get {
                 return ((string)(this["steamInstallDir"]));
@@ -92,6 +92,18 @@ namespace SteamAccountSwitcher2.Properties {
             }
             set {
                 this["Maximized"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool firstStart {
+            get {
+                return ((bool)(this["firstStart"]));
+            }
+            set {
+                this["firstStart"] = value;
             }
         }
     }

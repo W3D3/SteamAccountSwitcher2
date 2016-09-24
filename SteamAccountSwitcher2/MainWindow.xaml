@@ -11,8 +11,18 @@
         <DockPanel LastChildFill="True" >
             <ToolBarTray DockPanel.Dock="Top" >
                 <ToolBar ToolBarTray.IsLocked="True">
-                    <Button Content="New" />
-                    <Button Content="Edit" />
+                    <Button x:Name="buttonAdd" Click="buttonAdd_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="images/plus.png" />
+                            <TextBlock Margin="3,0,0,0">New</TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="buttonEdit" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="images/pencil.png" />
+                            <TextBlock Margin="3,0,0,0">Edit</TextBlock>
+                        </StackPanel>
+                    </Button>
                     <Button Content="Export" ToolBar.OverflowMode="Always" />
                 </ToolBar>
                 <ToolBar ToolBarTray.IsLocked="True" >
@@ -66,7 +76,7 @@
                 <ListView x:Name="listBoxAccounts" Margin="-7,-0,-7,0"
                           dd:DragDrop.IsDragSource="True"
                           dd:DragDrop.IsDropTarget="True"
-                          dd:DragDrop.UseDefaultDragAdorner="True">
+                          dd:DragDrop.UseDefaultDragAdorner="True" SelectionChanged="listBoxAccounts_SelectionChanged" MouseDoubleClick="listBoxAccounts_MouseDoubleClick">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid Background="White" VerticalAlignment="Top" Height="50" Margin="0">
@@ -104,7 +114,22 @@
                         </DataTemplate>
 
                     </ListView.ItemTemplate>
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Edit" Click="listContextMenu_Click">
+                                <MenuItem.Icon>
+                                    <Image Width="16" Height="16" Source="images/pencil-button.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Remove" Click="listContextMenu_Click">
+                                <MenuItem.Icon>
+                                    <Image Width="16" Height="16" Source="images/cross-button.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </ListView.ContextMenu>
                 </ListView>
+                
 
 
             </Grid>

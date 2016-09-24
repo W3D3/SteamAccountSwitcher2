@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="steamInstallDir" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:/</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Top" Type="System.String" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -19,6 +19,9 @@
     </Setting>
     <Setting Name="Maximized" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="firstStart" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

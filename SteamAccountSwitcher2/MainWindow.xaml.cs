@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AutoUpdaterDotNET;
+using System.Globalization;
 
 namespace SteamAccountSwitcher2
 {
@@ -24,38 +26,73 @@ namespace SteamAccountSwitcher2
     public partial class MainWindow : Window
     {
         ObservableCollection<SteamAccount> accountList = new ObservableCollection<SteamAccount>();
+        Steam steam;
+        AccountLoader loader;
         public MainWindow()
         {
+            AutoUpdater.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US"); //Workaround for horrible AutoUpdater translations :D
+            AutoUpdater.Start("http://wedenig.org/SteamAccountSwitcher/version.xml");
+
             InitializeComponent();
-            statusBarLabel.Content = AppDomain.CurrentDomain.BaseDirectory;
+            statusBarLabel.Content = AppDomain.CurrentDomain.BaseDirectory; //Debug location
 
-            //sample data
-            SteamAccount sa = new SteamAccount("W3D3", "test");
-            sa.Name = "new acc";
-            accountList.Add(sa);
+            //No steam directory in Settings, let's find 'em!
+            if (Properties.Settings.Default.steamInstallDir == String.Empty)
+            {
+                //Run this on first start
+                string installDir = UserInteraction.selectSteamDirectory(@"C:\Program Files (x86)\Steam");
+                if (installDir == null)
+                {
+                    MessageBox.Show("You cannot use SteamAccountSwitcher without selecting your Steam.exe. Program will close now.", "Steam missing", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Close();
+                }
+                else
+                {
+                    Properties.Settings.Default.steamInstallDir = installDir;
+                    steam = new Steam(installDir);
+                }
+        
+            }
+            else
+            {
+                //Start steam from existing installation path
+                steam = new Steam(Properties.Settings.Default.steamInstallDir);
+            }
 
-            SteamAccount sa1 = new SteamAccount("Tst", "test");
-            sa1.Name = "nsadc";
-            accountList.Add(sa1);
+            statusBarLabel.Content = "Steam running in '" + Properties.Settings.Default.steamInstallDir + "'";
+            statusBarLabel.Content = SteamStatus.steamStatusMessage();
+            statusbar.Background = SteamStatus.getStatusColor();
+
+            loader = new AccountLoader(Encryption.Basic);
+            
+            accountList = new ObservableCollection<SteamAccount>(loader.LoadBasicAccounts());
+            try
+            {
+                //Try to get accounts
+                accountList = new ObservableCollection<SteamAccount>(loader.LoadBasicAccounts());
+            }
+            catch
+            {
+                if(loader.AccountFileExists())
+                { 
+                    MessageBox.Show("Account file is currupted or wrong encryption method is set. Check Settings and try again.");
+                    accountList = new ObservableCollection<SteamAccount>();
+                }
+            }
 
             listBoxAccounts.ItemsSource = accountList;
             listBoxAccounts.Items.Refresh();
 
             Style itemContainerStyle = new Style(typeof(ListBoxItem));
             //take full width
-            itemContainerStyle.Setters.Add(new Setter(ListBoxItem.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
-
-            //drag and drop logic
-            /*itemContainerStyle.Setters.Add(new Setter(ListBoxItem.AllowDropProperty, true));
-            itemContainerStyle.Setters.Add(new EventSetter(ListBoxItem.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(s_PreviewMouseLeftButtonDown)));
-            itemContainerStyle.Setters.Add(new EventSetter(ListBoxItem.DropEvent, new DragEventHandler(listbox1_Drop)));*/
+            itemContainerStyle.Setters.Add(new Setter(HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
             listBoxAccounts.ItemContainerStyle = itemContainerStyle;
         }
 
         private void settingsButton_Click(object sender, RoutedEventArgs e)
         {
             SettingsWindow window = new SettingsWindow();
-            Properties.Settings.Default.steamInstallDir = "abc";
+            
             window.ShowDialog();
             statusBarLabel.Content = Properties.Settings.Default.steamInstallDir;
         }
@@ -63,7 +100,39 @@ namespace SteamAccountSwitcher2
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             //User has exited the application, save all data
+            loader.SaveBasicAccounts(accountList.ToList<SteamAccount>());
             Properties.Settings.Default.Save();
+        }
+
+        private void buttonAdd_Click(object sender, RoutedEventArgs e)
+        {
+            AddAccount newAccWindow = new AddAccount();
+            newAccWindow.Owner = this;
+            newAccWindow.ShowDialog();
+        }
+
+        private void listBoxAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //MessageBox.Show(sender.ToString());
+            if (sender != null)
+            {
+                buttonEdit.IsEnabled = true;
+            }
+            listBoxAccounts.Items.Refresh();
+
+        }
+
+        private void listContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(listBoxAccounts.SelectedItem.ToString());
+            accountList.Remove((SteamAccount)listBoxAccounts.SelectedItem);
+            listBoxAccounts.Items.Refresh();
+        }
+
+        private void listBoxAccounts_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            SteamAccount selectedAcc = (SteamAccount)listBoxAccounts.SelectedItem;
+            steam.StartSteamAccount(selectedAcc);
         }
     }
 }
