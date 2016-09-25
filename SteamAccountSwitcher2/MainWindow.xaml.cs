@@ -15,6 +15,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AutoUpdaterDotNET;
 using System.Globalization;
+using System.IO;
+using System.Diagnostics;
 
 namespace SteamAccountSwitcher2
 {

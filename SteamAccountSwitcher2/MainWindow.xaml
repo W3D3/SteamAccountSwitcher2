@@ -26,7 +26,6 @@
                     <Button Content="Export" ToolBar.OverflowMode="Always" />
                 </ToolBar>
                 <ToolBar ToolBarTray.IsLocked="True" >
-                    <Button Command="Copy" Content="Duplicate"/>
                     <Button Command="Paste" Content="Paste" />
                 </ToolBar>
                 <ToolBar ToolBarTray.IsLocked="True">

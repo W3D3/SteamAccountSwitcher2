@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using WindowsInput;
@@ -26,6 +27,10 @@ namespace SteamAccountSwitcher2
         const int SW_RESTORE = 9;
 
         string installDir;
+
+        FileSystemWatcher watch;
+
+        private Timer timer;
 
         public Steam(string installDir)
         {
@@ -91,9 +96,10 @@ namespace SteamAccountSwitcher2
         {
             Process p;
             bool finished = false;
+            string loginString = "-login " + acc.Username + " SAS-SAFEMODE";
 
             p = new Process();
-            p.StartInfo = new ProcessStartInfo(installDir, "-fs_log");
+            p.StartInfo = new ProcessStartInfo(installDir, "-fs_log " + loginString);
 
             if (IsSteamRunning())
             {
@@ -108,32 +114,46 @@ namespace SteamAccountSwitcher2
                     finished = true;
 
                     System.Threading.Thread.Sleep(5000);
-                    try { 
-                    IntPtr handle = p.MainWindowHandle;
-                    if (IsIconic(handle))
+                    bool steamNotUpdating = false;
+                    while(steamNotUpdating == false)
                     {
-                        ShowWindow(handle, SW_RESTORE);
+                        steamNotUpdating = CheckLogFile();
                     }
-                    SetForegroundWindow(handle);
-                    //Clipboard.SetText(acc.Username);
-                    InputSimulator s = new InputSimulator();
-                    //s.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
 
-                    s.Keyboard.TextEntry(acc.Username);
-                    System.Threading.Thread.Sleep(100);
-                    s.Keyboard.KeyDown(VirtualKeyCode.TAB);
-                    s.Keyboard.KeyUp(VirtualKeyCode.TAB);
-                    System.Threading.Thread.Sleep(100);
-                    s.Keyboard.TextEntry(acc.Password);
-                    }
-                    catch
+                    if (steamNotUpdating)
                     {
-                        MessageBox.Show("Error logging in. Steam not in foreground.");
-                    }
-                    //MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+                        try
+                        {
+                            Debug.WriteLine("Starting input manager!");
+                            System.Threading.Thread.Sleep(500);
+                            
+                            IntPtr handle = p.MainWindowHandle;
+                            if (IsIconic(handle))
+                            {
+                                ShowWindow(handle, SW_RESTORE);
+                            }
+                            SetForegroundWindow(handle);
+                            //Clipboard.SetText(acc.Username);
+                            InputSimulator s = new InputSimulator();
+                            //s.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
 
-                    return true;
-                    
+                            //s.Keyboard.TextEntry(acc.Username);
+                            //System.Threading.Thread.Sleep(100);
+                            //s.Keyboard.KeyDown(VirtualKeyCode.TAB);
+                            //s.Keyboard.KeyUp(VirtualKeyCode.TAB);
+                            //System.Threading.Thread.Sleep(100);
+                            s.Keyboard.TextEntry(acc.Password);
+                            System.Threading.Thread.Sleep(100);
+                            s.Keyboard.KeyDown(VirtualKeyCode.RETURN);
+
+                            return true;
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Error logging in. Steam not in foreground.");
+                        }
+                        //MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+                    }                    
                 }
             }
             return false;
@@ -143,12 +163,12 @@ namespace SteamAccountSwitcher2
         {
             string logDir = installDir.Replace("Steam.exe","logs\\");
 
-            var watch = new FileSystemWatcher();
+            watch = new FileSystemWatcher();
             watch.Path = logDir;
             watch.Filter = "bootstrap_log.txt";
-            watch.NotifyFilter = NotifyFilters.Size; //more options
-            watch.Changed += new FileSystemEventHandler(OnChanged);
-            watch.EnableRaisingEvents = true;
+            watch.NotifyFilter = NotifyFilters.Size | NotifyFilters.LastAccess | NotifyFilters.Size; //more options
+            //watch.Changed += new FileSystemEventHandler(OnChanged);
+            //watch.EnableRaisingEvents = true;
         }
 
         /// Functions:
@@ -163,30 +183,40 @@ namespace SteamAccountSwitcher2
                     MessageBox.Show(reader.ReadLine());
                 }
             }
-
+            /*
             string logDir = installDir.Replace("Steam.exe", "logs\\");
             if (e.FullPath == logDir + "bootstrap_log.txt")
             {
                 // do stuff
                 List<string> text = File.ReadLines(e.FullPath).Reverse().Take(1).ToList();
                 MessageBox.Show(text[0].ToString());
-            }
+            }*/
         }
 
-        private bool FileIsReady(string path)
+        private bool CheckLogFile()
         {
-            //One exception per file rather than several like in the polling pattern
-            try
+            string logDir = installDir.Replace("Steam.exe", "logs\\");
+            string filename = logDir + "bootstrap_log.txt";
+
+            using (FileStream fs = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
-                //If we can't open the file, it's still copying
-                using (var file = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    return true;
-                }
-            }
-            catch (IOException)
-            {
-                return false;
+                // Seek 1024 bytes from the end of the file
+                fs.Seek(-512, SeekOrigin.End);
+                // read 1024 bytes
+                byte[] bytes = new byte[512];
+                fs.Read(bytes, 0, 512);
+                // Convert bytes to string
+                string s = Encoding.Default.GetString(bytes);
+                // or string s = Encoding.UTF8.GetString(bytes);
+                // and output to console
+                //Debug.WriteLine(s);
+                string[] splitter = new string[1];
+                splitter[0] = "Startup - updater";
+                string[] parts = s.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+
+                bool steamDone = parts[parts.Length - 1].Contains("Background update loop checking for update.");
+                Debug.WriteLineIf(steamDone, "steam is Done.");
+                return steamDone;
             }
         }
 
@@ -206,25 +236,6 @@ namespace SteamAccountSwitcher2
         public override string ToString()
         {
             return base.ToString();
-        }
-
-        private static class SendKeys
-        {
-            /// <summary>
-            ///   Sends the specified key.
-            /// </summary>
-            /// <param name="key">The key.</param>
-            public static void Send(Key key)
-            {
-                if (Keyboard.PrimaryDevice != null)
-                {
-                    if (Keyboard.PrimaryDevice.ActiveSource != null)
-                    {
-                        var e1 = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Down) { RoutedEvent = Keyboard.KeyDownEvent };
-                        InputManager.Current.ProcessInput(e1);
-                    }
-                }
-            }
         }
     }
 }
