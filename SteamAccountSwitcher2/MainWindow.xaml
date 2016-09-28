@@ -26,16 +26,33 @@
                     <Button Content="Export" ToolBar.OverflowMode="Always" />
                 </ToolBar>
                 <ToolBar ToolBarTray.IsLocked="True" >
-                    <Button Command="Paste" Content="Paste" />
+                    <Button >
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="images/lock.png" />
+                            <TextBlock Margin="3,0,0,0">Authenticator</TextBlock>
+                        </StackPanel>
+                    </Button>
                 </ToolBar>
                 <ToolBar ToolBarTray.IsLocked="True">
                     <Button Name="settingsButton" Content="Settings" Click="settingsButton_Click" />
                 </ToolBar>
             </ToolBarTray>
 
-            <StatusBar Name="statusbar" DockPanel.Dock="Bottom" >
-                <Label Name="statusBarLabel">Statusbar</Label>
+            <StatusBar Name="infoBar" DockPanel.Dock="Bottom" >
+                <StackPanel Orientation="Horizontal">
+                    
+                    <Label Name="infoBarLabel">InfoBar</Label>
+                    
+                </StackPanel>
+                
             </StatusBar>
+            <StatusBar Name="statusbar" DockPanel.Dock="Bottom" >
+                <StackPanel Orientation="Horizontal">
+                    <!--<Button HorizontalAlignment="Right" Margin="0,0,1,0">Refresh</Button>-->
+                    <Label Name="statusBarLabel">Statusbar</Label>
+                </StackPanel>
+            </StatusBar>
+            
 
             <Grid>
                 <!--             
@@ -72,7 +89,7 @@
                     </Grid>
                 </Grid>
 -->
-                <ListView x:Name="listBoxAccounts" Margin="-7,-0,-7,0"
+                <ListView x:Name="listBoxAccounts" Padding="-6,0,-6,0"
                           dd:DragDrop.IsDragSource="True"
                           dd:DragDrop.IsDropTarget="True"
                           dd:DragDrop.UseDefaultDragAdorner="True" SelectionChanged="listBoxAccounts_SelectionChanged" MouseDoubleClick="listBoxAccounts_MouseDoubleClick">
@@ -81,16 +98,7 @@
                             <Grid Background="White" VerticalAlignment="Top" Height="50" Margin="0">
                                 <Grid VerticalAlignment="Top" Height="50"  Margin="0">
                                     <Grid.Background>
-                                        <ImageBrush ImageSource="images/sas_acc_bg.jpg" AlignmentX="Left" Stretch="None">
-                                            <ImageBrush.RelativeTransform>
-                                                <TransformGroup>
-                                                    <ScaleTransform CenterY="0.5" CenterX="0.35"/>
-                                                    <SkewTransform CenterY="0.5" CenterX="0.35"/>
-                                                    <RotateTransform CenterY="0.5" CenterX="0.35"/>
-                                                    <TranslateTransform/>
-                                                </TransformGroup>
-                                            </ImageBrush.RelativeTransform>
-                                        </ImageBrush>
+                                        <ImageBrush AlignmentX="Left" AlignmentY="Center" ImageSource="images/sas_acc_bg_50.jpg" Stretch="UniformToFill" TileMode="None"/>
                                     </Grid.Background>
 
                                     <StackPanel HorizontalAlignment="Stretch" Margin="90,0,0,0">
@@ -115,12 +123,18 @@
                     </ListView.ItemTemplate>
                     <ListView.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Edit" Click="listContextMenu_Click">
+                            <MenuItem Header="Login with this account">
                                 <MenuItem.Icon>
                                     <Image Width="16" Height="16" Source="images/pencil-button.png" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Header="Remove" Click="listContextMenu_Click">
+                            <Separator />
+                            <MenuItem Header="Edit" Click="listContextMenuEdit_Click">
+                                <MenuItem.Icon>
+                                    <Image Width="16" Height="16" Source="images/pencil-button.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Remove" Click="listContextMenuRemove_Click">
                                 <MenuItem.Icon>
                                     <Image Width="16" Height="16" Source="images/cross-button.png" />
                                 </MenuItem.Icon>

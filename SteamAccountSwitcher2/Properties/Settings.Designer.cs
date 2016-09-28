@@ -97,13 +97,25 @@ namespace SteamAccountSwitcher2.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool firstStart {
+        [global::System.Configuration.DefaultSettingValueAttribute("Basic")]
+        public string encryption {
             get {
-                return ((bool)(this["firstStart"]));
+                return ((string)(this["encryption"]));
             }
             set {
-                this["firstStart"] = value;
+                this["encryption"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool safemode {
+            get {
+                return ((bool)(this["safemode"]));
+            }
+            set {
+                this["safemode"] = value;
             }
         }
     }

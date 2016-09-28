@@ -19,10 +19,43 @@ namespace SteamAccountSwitcher2
     /// </summary>
     public partial class SettingsWindow : Window
     {
+
         public SettingsWindow()
         {
             InitializeComponent();
+
             textSteamInstallDir.Text = Properties.Settings.Default.steamInstallDir;
+
+            //Initialize Settings
+            try
+            {
+                Encryption enc = (Encryption)Enum.Parse(typeof(Encryption), Properties.Settings.Default.encryption);
+                if (enc == Encryption.Basic)
+                {
+                    radioButtonBasicEnc.IsChecked = true;
+                }
+                if (enc == Encryption.Password)
+                {
+                    radioButtonPasswordEnc.IsChecked = true;
+                }
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show("Encryption type not supported! Make sure you are using the latest SteamAccountSwitcher!","Unspported Encryption", MessageBoxButton.OK, MessageBoxImage.Error);
+                radioButtonBasicEnc.IsChecked = false;
+                radioButtonBasicEnc.IsEnabled = false;
+                radioButtonPasswordEnc.IsChecked = false;
+                radioButtonPasswordEnc.IsEnabled = false;
+            }
+
+            bool safemode = Properties.Settings.Default.safemode;
+            safeModeToggle.IsChecked = safemode;
+
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Properties.Settings.Default.safemode = safeModeToggle.IsChecked.Value;
         }
     }
 }

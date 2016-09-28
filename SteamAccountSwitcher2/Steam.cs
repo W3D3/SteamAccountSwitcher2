@@ -23,14 +23,9 @@ namespace SteamAccountSwitcher2
         [System.Runtime.InteropServices.DllImport("User32.dll")]
         private static extern bool IsIconic(IntPtr handle);
 
-
         const int SW_RESTORE = 9;
 
         string installDir;
-
-        FileSystemWatcher watch;
-
-        private Timer timer;
 
         public Steam(string installDir)
         {
@@ -71,7 +66,7 @@ namespace SteamAccountSwitcher2
 
             if (IsSteamRunning())
             {
-                KillSteam();
+                CleanKillSteam();
             }
 
             while (finished == false)
@@ -92,7 +87,7 @@ namespace SteamAccountSwitcher2
             return false;
         }
 
-        public bool StartSteamAccountSave(SteamAccount acc)
+        public bool StartSteamAccountSafe(SteamAccount acc)
         {
             Process p;
             bool finished = false;
@@ -117,7 +112,7 @@ namespace SteamAccountSwitcher2
                     bool steamNotUpdating = false;
                     while(steamNotUpdating == false)
                     {
-                        steamNotUpdating = CheckLogFile();
+                        steamNotUpdating = IsSteamReady();
                     }
 
                     if (steamNotUpdating)
@@ -159,41 +154,7 @@ namespace SteamAccountSwitcher2
             return false;
         }
 
-        public void Watch()
-        {
-            string logDir = installDir.Replace("Steam.exe","logs\\");
-
-            watch = new FileSystemWatcher();
-            watch.Path = logDir;
-            watch.Filter = "bootstrap_log.txt";
-            watch.NotifyFilter = NotifyFilters.Size | NotifyFilters.LastAccess | NotifyFilters.Size; //more options
-            //watch.Changed += new FileSystemEventHandler(OnChanged);
-            //watch.EnableRaisingEvents = true;
-        }
-
-        /// Functions:
-        private void OnChanged(object source, FileSystemEventArgs e)
-        {
-            //if (!FileIsReady(e.FullPath)) return; //first notification the file is arriving
-
-            using (var stream = File.Open(e.FullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            {
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    MessageBox.Show(reader.ReadLine());
-                }
-            }
-            /*
-            string logDir = installDir.Replace("Steam.exe", "logs\\");
-            if (e.FullPath == logDir + "bootstrap_log.txt")
-            {
-                // do stuff
-                List<string> text = File.ReadLines(e.FullPath).Reverse().Take(1).ToList();
-                MessageBox.Show(text[0].ToString());
-            }*/
-        }
-
-        private bool CheckLogFile()
+        private bool IsSteamReady()
         {
             string logDir = installDir.Replace("Steam.exe", "logs\\");
             string filename = logDir + "bootstrap_log.txt";

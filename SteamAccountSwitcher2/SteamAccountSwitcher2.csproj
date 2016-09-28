@@ -132,6 +132,9 @@
     </ApplicationDefinition>
     <Compile Include="AccountLoader.cs" />
     <Compile Include="AccountType.cs" />
+    <Compile Include="AccountWindow.xaml.cs">
+      <DependentUpon>AccountWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddAccount.xaml.cs">
       <DependentUpon>AddAccount.xaml</DependentUpon>
     </Compile>
@@ -139,6 +142,10 @@
     <Compile Include="NuGet.Modules\AesHelper.cs" />
     <Compile Include="SteamStatus.cs" />
     <Compile Include="UserInteraction.cs" />
+    <Page Include="AccountWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AddAccount.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -241,6 +248,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\gear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\sas_acc_bg_50.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\lock.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

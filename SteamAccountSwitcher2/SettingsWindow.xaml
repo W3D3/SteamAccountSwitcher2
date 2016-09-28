@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SteamAccountSwitcher2"
         mc:Ignorable="d"
-        Title="SettingsWindow" Height="300" Width="400" Icon="images/gear.png" MinWidth="400" MinHeight="300">
+        Title="SettingsWindow" Height="314" Width="400" Icon="images/gear.png" MinWidth="400" MinHeight="300" Closing="Window_Closing">
     <Grid>
-        <TabControl Margin="5,5,5,32">
+        <TabControl Margin="5,5,5,5">
             <TabItem Header="General">
                 <Grid>
                     <GroupBox Margin="5,5,5,0" FontSize="11" FontWeight="Bold"
@@ -29,26 +29,33 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Security">
-                <Grid>
+                <Grid Margin="0,0,0,-23">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="17*"/>
+                        <ColumnDefinition Width="171*"/>
+                    </Grid.ColumnDefinitions>
                     <GroupBox Margin="5,5,5,0" FontSize="11" FontWeight="Bold"
-                    Height="147" VerticalAlignment="Top">
+                    Height="119" VerticalAlignment="Top" Grid.ColumnSpan="2">
                         <GroupBox.Header>Encryption Method</GroupBox.Header>
                         <Grid Margin="5">
                             <StackPanel>
-                                <RadioButton x:Name="radioButton" Content="Basic" Margin="5,5,5,0"/>
+                                <RadioButton x:Name="radioButtonBasicEnc" Content="Basic" Margin="5,5,5,0"/>
                                 <Label FontSize="10" Margin="0" FontWeight="Normal">Encrypts Accounts with 256-bit AES key</Label>
-                                <RadioButton x:Name="radioButton2" Content="Master Password" Margin="5,5,5,0" ToolTip="Forgetting your master password will lead to the loss of all account access through SteamAccountSwitcher!"/>
+                                <RadioButton x:Name="radioButtonPasswordEnc" Content="Master Password" Margin="5,5,5,0" ToolTip="Forgetting your master password will lead to the loss of all account access through SteamAccountSwitcher!"/>
                                 <Label FontSize="10" Margin="0" FontWeight="Normal">Encrypts Accounts with your own password</Label>
                             </StackPanel>
 
                             <Button Content="Save and reload" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="105" Height="23"/>
                         </Grid>
                     </GroupBox>
-                    <GroupBox Margin="5,157,5,0" FontSize="11" FontWeight="Bold"
-                    Height="37" VerticalAlignment="Top">
-                        <GroupBox.Header>AutoStart</GroupBox.Header>
+                    <GroupBox Margin="5,129,5,0" FontSize="11" FontWeight="Bold"
+                    Height="94" VerticalAlignment="Top" Grid.ColumnSpan="2">
+                        <GroupBox.Header>Login Method</GroupBox.Header>
                         <Grid Margin="5">
-                            <TextBlock FontSize="12" FontWeight="Regular" TextWrapping="WrapWithOverflow"><Run Text="Set AutoStart "/></TextBlock>
+                            <StackPanel>
+                                <CheckBox x:Name="safeModeToggle" Content="Use SafeMode" FontWeight="Medium" />
+                                <TextBlock FontSize="10" FontWeight="Normal" TextWrapping="Wrap" Margin="5">SafeMode uses different login method that doesn't expose your password in the task manager. It is slower and you cannot move your mouse during login!</TextBlock>
+                            </StackPanel>
                         </Grid>
                     </GroupBox>
                 </Grid>
