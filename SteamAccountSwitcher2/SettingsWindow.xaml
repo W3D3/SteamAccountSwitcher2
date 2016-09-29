@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SteamAccountSwitcher2"
         mc:Ignorable="d"
-        Title="SettingsWindow" Height="314" Width="400" Icon="images/gear.png" MinWidth="400" MinHeight="300" Closing="Window_Closing">
+        Title="SettingsWindow" Height="314" Width="400" Icon="images/gear.png" MinWidth="400" MinHeight="300" Closing="Window_Closing" WindowStartupLocation="CenterOwner">
     <Grid>
         <TabControl Margin="5,5,5,5">
             <TabItem Header="General">

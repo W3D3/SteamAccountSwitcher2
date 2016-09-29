@@ -38,9 +38,9 @@ namespace SteamAccountSwitcher2.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public string Top {
+        public double Top {
             get {
-                return ((string)(this["Top"]));
+                return ((double)(this["Top"]));
             }
             set {
                 this["Top"] = value;
@@ -50,9 +50,9 @@ namespace SteamAccountSwitcher2.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public string Left {
+        public double Left {
             get {
-                return ((string)(this["Left"]));
+                return ((double)(this["Left"]));
             }
             set {
                 this["Left"] = value;
@@ -62,9 +62,9 @@ namespace SteamAccountSwitcher2.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("400")]
-        public string Height {
+        public double Height {
             get {
-                return ((string)(this["Height"]));
+                return ((double)(this["Height"]));
             }
             set {
                 this["Height"] = value;
@@ -74,9 +74,9 @@ namespace SteamAccountSwitcher2.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("300")]
-        public string Width {
+        public double Width {
             get {
-                return ((string)(this["Width"]));
+                return ((double)(this["Width"]));
             }
             set {
                 this["Width"] = value;
@@ -86,9 +86,9 @@ namespace SteamAccountSwitcher2.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public string Maximized {
+        public bool Maximized {
             get {
-                return ((string)(this["Maximized"]));
+                return ((bool)(this["Maximized"]));
             }
             set {
                 this["Maximized"] = value;

@@ -5,19 +5,19 @@
     <Setting Name="steamInstallDir" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Top" Type="System.String" Scope="User">
+    <Setting Name="Top" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="Left" Type="System.String" Scope="User">
+    <Setting Name="Left" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="Height" Type="System.String" Scope="User">
+    <Setting Name="Height" Type="System.Double" Scope="User">
       <Value Profile="(Default)">400</Value>
     </Setting>
-    <Setting Name="Width" Type="System.String" Scope="User">
+    <Setting Name="Width" Type="System.Double" Scope="User">
       <Value Profile="(Default)">300</Value>
     </Setting>
-    <Setting Name="Maximized" Type="System.String" Scope="User">
+    <Setting Name="Maximized" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="encryption" Type="System.String" Scope="User">

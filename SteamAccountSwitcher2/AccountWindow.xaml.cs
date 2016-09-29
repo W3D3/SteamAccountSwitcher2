@@ -28,6 +28,19 @@ namespace SteamAccountSwitcher2
             comboBoxType.SelectedIndex = 0;
         }
 
+        public AccountWindow(SteamAccount accToEdit)
+        {
+            InitializeComponent();
+            this.Title = "Edit Account";
+
+            comboBoxType.ItemsSource = Enum.GetValues(typeof(AccountType));
+            comboBoxType.SelectedItem = accToEdit.Type;
+
+            textBoxName.Text  = accToEdit.Name;
+            textBoxUsername.Text = accToEdit.Username;
+            textBoxPassword.Password = accToEdit.Password;
+        }
+
         public SteamAccount Account
         {
             get { return newAcc; }

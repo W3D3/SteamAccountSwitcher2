@@ -34,18 +34,23 @@
                     </Button>
                 </ToolBar>
                 <ToolBar ToolBarTray.IsLocked="True">
-                    <Button Name="settingsButton" Content="Settings" Click="settingsButton_Click" />
+                    <Button Name="settingsButton" Click="settingsButton_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="images/gear.png" />
+                        <TextBlock Margin="3,0,0,0">Settings</TextBlock>
+                    </StackPanel>
+                    </Button>
                 </ToolBar>
             </ToolBarTray>
 
-            <StatusBar Name="infoBar" DockPanel.Dock="Bottom" >
+            <!--<StatusBar Name="infoBar" DockPanel.Dock="Bottom" >
                 <StackPanel Orientation="Horizontal">
                     
                     <Label Name="infoBarLabel">InfoBar</Label>
                     
                 </StackPanel>
                 
-            </StatusBar>
+            </StatusBar> -->
             <StatusBar Name="statusbar" DockPanel.Dock="Bottom" >
                 <StackPanel Orientation="Horizontal">
                     <!--<Button HorizontalAlignment="Right" Margin="0,0,1,0">Refresh</Button>-->
