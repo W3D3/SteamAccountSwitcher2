@@ -19,9 +19,65 @@ namespace SteamAccountSwitcher2
     /// </summary>
     public partial class AccountWindow : Window
     {
+        SteamAccount newAcc;
+
         public AccountWindow()
         {
             InitializeComponent();
+            comboBoxType.ItemsSource = Enum.GetValues(typeof(AccountType));
+            comboBoxType.SelectedIndex = 0;
+        }
+
+        public SteamAccount Account
+        {
+            get { return newAcc; }
+        }
+
+        private void buttonSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (ValidateInput())
+            {
+                newAcc = new SteamAccount();
+                newAcc.Type = (AccountType)comboBoxType.SelectedValue;
+                newAcc.Name = textBoxName.Text;
+                newAcc.Username = textBoxUsername.Text;
+                newAcc.Password = textBoxPassword.Password;
+
+                Close();
+            }
+        }
+
+        private bool ValidateInput()
+        {
+            bool success = true;
+            string errorstring = "";
+            if(String.IsNullOrEmpty(textBoxName.Text))
+            {
+                success = false;
+                errorstring += "Profile name cannot be empty!\n";
+            }
+            if (String.IsNullOrEmpty(textBoxUsername.Text))
+            {
+                success = false;
+                errorstring += "Username cannot be empty!\n";
+            }
+            if (String.IsNullOrEmpty(textBoxPassword.Password))
+            {
+                success = false;
+                errorstring += "Password cannot be empty!\n";
+            }
+
+            if(success)
+            {
+                return true;
+            }
+            else
+            {
+                MessageBox.Show(errorstring, "Validation problem", MessageBoxButton.OK, MessageBoxImage.Information);
+                return false;
+            }
+            
+
         }
     }
 }

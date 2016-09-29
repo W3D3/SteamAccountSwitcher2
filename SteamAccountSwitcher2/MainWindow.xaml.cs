@@ -123,6 +123,11 @@ namespace SteamAccountSwitcher2
             AccountWindow newAccWindow = new AccountWindow();
             newAccWindow.Owner = this;
             newAccWindow.ShowDialog();
+            if(newAccWindow.Account != null)
+            {
+                accountList.Add(newAccWindow.Account);
+            }
+            
         }
 
         private void listBoxAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -138,16 +143,23 @@ namespace SteamAccountSwitcher2
 
         private void listBoxAccounts_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            SteamAccount selectedAcc = (SteamAccount)listBoxAccounts.SelectedItem;
-            if (Properties.Settings.Default.safemode)
+            Mouse.OverrideCursor = Cursors.Wait;
+            try
             {
-                steam.StartSteamAccountSafe(selectedAcc);
+                SteamAccount selectedAcc = (SteamAccount)listBoxAccounts.SelectedItem;
+                if (Properties.Settings.Default.safemode)
+                {
+                    steam.StartSteamAccountSafe(selectedAcc);
+                }
+                else
+                {
+                    steam.StartSteamAccount(selectedAcc);
+                }
             }
-            else
+            finally
             {
-                steam.StartSteamAccount(selectedAcc);
+                Mouse.OverrideCursor = null;
             }
-            
         }
 
         private void listContextMenuRemove_Click(object sender, RoutedEventArgs e)

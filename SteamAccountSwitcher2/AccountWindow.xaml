@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SteamAccountSwitcher2"
         mc:Ignorable="d"
-        Title="AccountWindow" Height="230" Width="365" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+        Title="New Account" Height="230" Width="365" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Icon="images/plus.png">
     <Grid>
 
         <Grid Margin="10">
@@ -25,18 +25,19 @@
             </Grid.RowDefinitions>
 
             <Label>Account Type</Label>
-            <ComboBox Grid.Column="1" Grid.ColumnSpan="2" />
+            <ComboBox x:Name="comboBoxType" Grid.Column="1" Grid.ColumnSpan="2" />
 
             <Label Grid.Row="1">Profile Name</Label>
-            <TextBox Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" ToolTip="Test" Grid.ColumnSpan="2" />
+            <TextBox x:Name="textBoxName" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" ToolTip="Test" Grid.ColumnSpan="2" />
 
             <Label Grid.Row="3">Username</Label>
-            <TextBox Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="textBoxUsername" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
+            
             <Label Grid.Row="4">Password</Label>
-            <PasswordBox Grid.Row="4" Grid.Column="1" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
+            <PasswordBox x:Name="textBoxPassword" Grid.Row="4" Grid.Column="1" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
 
-            <Button Grid.Row="6" Grid.Column="1" Margin="2">Save</Button>
-            <Button Grid.Row="6" Grid.Column="2" Margin="2">Cancel</Button>
+            <Button x:Name="buttonSave" Grid.Row="6" Grid.Column="1" Margin="2" Click="buttonSave_Click">Save</Button>
+            <Button x:Name="buttonCancel" Grid.Row="6" Grid.Column="2" Margin="2">Cancel</Button>
         </Grid>
     </Grid>
 </Window>
