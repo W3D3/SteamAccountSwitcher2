@@ -28,7 +28,7 @@ namespace SteamAccountSwitcher2
     public partial class MainWindow : Window
     {
         ObservableCollection<SteamAccount> accountList = new ObservableCollection<SteamAccount>();
-        Steam steam;
+        public Steam steam;
         AccountLoader loader;
         bool autosaveAccounts = true;
         public MainWindow()
@@ -114,11 +114,16 @@ namespace SteamAccountSwitcher2
             listBoxAccounts.ItemContainerStyle = itemContainerStyle;
         }
 
+
         private void settingsButton_Click(object sender, RoutedEventArgs e)
         {
             SettingsWindow settingsWindow = new SettingsWindow();
             settingsWindow.Owner = this;
             settingsWindow.ShowDialog();
+            if(settingsWindow.Steam != null)
+            {
+                this.steam = settingsWindow.Steam;
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -175,13 +180,14 @@ namespace SteamAccountSwitcher2
 
         private void listBoxAccounts_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Mouse.OverrideCursor = Cursors.Wait;
+            
             try
             {
                 SteamAccount selectedAcc = (SteamAccount)listBoxAccounts.SelectedItem;
                 if (Properties.Settings.Default.safemode)
                 {
                     steam.StartSteamAccountSafe(selectedAcc);
+                    Mouse.OverrideCursor = Cursors.Wait;
                 }
                 else
                 {
@@ -208,19 +214,19 @@ namespace SteamAccountSwitcher2
             newAccWindow.ShowDialog();
             if (newAccWindow.Account != null)
             {
-                accountList.Add(newAccWindow.Account);
+                accountList[listBoxAccounts.SelectedIndex] = newAccWindow.Account;
             }
         }
 
         private void fixOutOfBoundsWindow()
         {
             bool outOfBounds =
-    (this.Left <= SystemParameters.VirtualScreenLeft - this.Width) ||
-    (this.Top <= SystemParameters.VirtualScreenTop - this.Height) ||
-    (SystemParameters.VirtualScreenLeft +
-        SystemParameters.VirtualScreenWidth <= this.Left) ||
-    (SystemParameters.VirtualScreenTop +
-        SystemParameters.VirtualScreenHeight <= this.Top);
+                (this.Left <= SystemParameters.VirtualScreenLeft - this.Width) ||
+                (this.Top <= SystemParameters.VirtualScreenTop - this.Height) ||
+                (SystemParameters.VirtualScreenLeft +
+                    SystemParameters.VirtualScreenWidth <= this.Left) ||
+                (SystemParameters.VirtualScreenTop +
+                    SystemParameters.VirtualScreenHeight <= this.Top);
 
             if(outOfBounds)
             {

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SteamAccountSwitcher2"
         xmlns:dd="urn:gong-wpf-dragdrop"
         mc:Ignorable="d"
-        Title="Steam Account Switcher v2" Height="500" Width="458" MinHeight="350" MinWidth="320" Closing="Window_Closing">
+        Title="Steam Account Switcher v2" Height="500" Width="458" MinHeight="350" MinWidth="300" MaxWidth="470" Closing="Window_Closing">
     <Grid>
         <DockPanel LastChildFill="True" >
             <ToolBarTray DockPanel.Dock="Top" >

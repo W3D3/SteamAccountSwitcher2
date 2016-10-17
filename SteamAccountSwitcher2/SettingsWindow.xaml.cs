@@ -19,6 +19,12 @@ namespace SteamAccountSwitcher2
     /// </summary>
     public partial class SettingsWindow : Window
     {
+        Steam changedSteam;
+        public Steam Steam
+        {
+            get { return changedSteam; }
+            set { this.changedSteam = value; }
+        }
 
         public SettingsWindow()
         {
@@ -56,6 +62,17 @@ namespace SteamAccountSwitcher2
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Properties.Settings.Default.safemode = safeModeToggle.IsChecked.Value;
+        }
+
+        private void buttonBrowseSteamInstallDir_Click(object sender, RoutedEventArgs e)
+        {
+            string installDir = UserInteraction.selectSteamDirectory(@"C:\Program Files (x86)\Steam");
+            if (installDir != null)
+            {
+                Properties.Settings.Default.steamInstallDir = installDir;
+                changedSteam = new Steam(installDir);
+                textSteamInstallDir.Text = Properties.Settings.Default.steamInstallDir;
+            }
         }
     }
 }

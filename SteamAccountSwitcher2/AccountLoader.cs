@@ -15,6 +15,7 @@ namespace SteamAccountSwitcher2
     {
         Encryption encryptionType;
         string directory;
+
         const string basicPassword = "OQPTu9Rf4u4vkywWy+GCBptmXeqC0e456SR3N31vutU=";
 
         public AccountLoader(Encryption e)

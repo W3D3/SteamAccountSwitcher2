@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
@@ -13,7 +14,7 @@ using WindowsInput.Native;
 
 namespace SteamAccountSwitcher2
 {
-    class Steam
+    public class Steam
     {
 
         [System.Runtime.InteropServices.DllImport("User32.dll")]
@@ -69,8 +70,15 @@ namespace SteamAccountSwitcher2
                 CleanKillSteam();
             }
 
+            int waitTimer = 30;
             while (finished == false)
             {
+
+                if(waitTimer == 0)
+                {
+                    KillSteam();
+                    Debug.WriteLine("Hard killed steam.");
+                }
                 if (IsSteamRunning() == false)
                 {
                     Process p = new Process();
@@ -83,6 +91,8 @@ namespace SteamAccountSwitcher2
                         return true;
                     }
                 }
+                Thread.Sleep(100);
+                waitTimer--;
             }
             return false;
         }
@@ -101,8 +111,16 @@ namespace SteamAccountSwitcher2
                 CleanKillSteam();
             }
 
+            int waitTimer = 30;
             while (finished == false)
             {
+                Debug.WriteLine("Waiting for steam to exit...");
+                if (waitTimer == 0)
+                {
+                    KillSteam();
+                    Debug.WriteLine("Hard killed steam.");
+                }
+
                 if (IsSteamRunning() == false)
                 {
                     p.Start();
@@ -120,23 +138,27 @@ namespace SteamAccountSwitcher2
                         try
                         {
                             Debug.WriteLine("Starting input manager!");
-                            System.Threading.Thread.Sleep(500);
-                            
+                            System.Threading.Thread.Sleep(1500);
+                            Debug.WriteLine("Done waiting.");
+
                             IntPtr handle = p.MainWindowHandle;
                             if (IsIconic(handle))
                             {
                                 ShowWindow(handle, SW_RESTORE);
                             }
-                            SetForegroundWindow(handle);
+                            //SetForegroundWindow(handle);
                             //Clipboard.SetText(acc.Username);
                             InputSimulator s = new InputSimulator();
                             //s.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
 
+                            Debug.WriteLine("Focused window");
                             //s.Keyboard.TextEntry(acc.Username);
                             //System.Threading.Thread.Sleep(100);
                             //s.Keyboard.KeyDown(VirtualKeyCode.TAB);
                             //s.Keyboard.KeyUp(VirtualKeyCode.TAB);
                             //System.Threading.Thread.Sleep(100);
+                            System.Threading.Thread.Sleep(500);
+                            Debug.WriteLine("ENTERING PW NOW");
                             s.Keyboard.TextEntry(acc.Password);
                             System.Threading.Thread.Sleep(100);
                             s.Keyboard.KeyDown(VirtualKeyCode.RETURN);
@@ -148,7 +170,9 @@ namespace SteamAccountSwitcher2
                             MessageBox.Show("Error logging in. Steam not in foreground.");
                         }
                         //MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
-                    }                    
+                    }
+                    Thread.Sleep(100);
+                    waitTimer--;                    
                 }
             }
             return false;
