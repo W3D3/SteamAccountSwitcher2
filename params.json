@@ -1,0 +1,6 @@
+{
+  "name": "SteamAccountSwitcher2",
+  "tagline": "advanced, fast switching between unlimited steam accounts",
+  "body": "# SteamAccountSwitcher2\r\nCompletely rewritten account switcher for Steam.\r\n\r\nThis is work in progress!\r\nThere are major bugs and missing features in this current version!\r\n\r\n###Download\r\n*There is no download yet, there are a lot of things to do before you should install this as your new Account Switcher!*\r\nIf you clone this and use it, expect things to break.\r\n\r\n###Current Features\r\n- new UI\r\n- launching Steam Account\r\n  - SafeMode to protect password (could be seen in task manager)\r\n- Saves and encrypts accounts locally (now AES-256 bit encryption)\r\n- Reorder accounts by drag and drop\r\n\r\n###More info\r\nIf you are interested, you can check out my blog, will share some stuff there, because i don't want to spam the old github repo with info about a unfinished second version ;)\r\n[Blog](https://wedenig.org/main/blog/steamaccountswitcher-v2)\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
