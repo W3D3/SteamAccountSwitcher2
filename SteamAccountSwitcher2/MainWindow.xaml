@@ -17,7 +17,7 @@
                             <TextBlock Margin="3,0,0,0">New</TextBlock>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="buttonEdit" IsEnabled="False">
+                    <Button x:Name="buttonEdit" IsEnabled="False" Click="buttonEdit_Click">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="images/pencil.png" />
                             <TextBlock Margin="3,0,0,0">Edit</TextBlock>

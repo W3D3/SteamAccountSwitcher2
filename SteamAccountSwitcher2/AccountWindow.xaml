@@ -37,7 +37,7 @@
             <PasswordBox x:Name="textBoxPassword" Grid.Row="4" Grid.Column="1" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
 
             <Button x:Name="buttonSave" Grid.Row="6" Grid.Column="1" Margin="2" Click="buttonSave_Click">Save</Button>
-            <Button x:Name="buttonCancel" Grid.Row="6" Grid.Column="2" Margin="2">Cancel</Button>
+            <Button x:Name="buttonCancel" Grid.Row="6" Grid.Column="2" Margin="2" Click="buttonCancel_Click">Cancel</Button>
         </Grid>
     </Grid>
 </Window>

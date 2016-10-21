@@ -92,5 +92,11 @@ namespace SteamAccountSwitcher2
             
 
         }
+
+        private void buttonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            newAcc = null;
+            Close();
+        }
     }
 }

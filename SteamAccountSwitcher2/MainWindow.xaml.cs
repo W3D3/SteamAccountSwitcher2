@@ -174,6 +174,10 @@ namespace SteamAccountSwitcher2
             {
                 buttonEdit.IsEnabled = true;
             }
+            else
+            {
+                buttonEdit.IsEnabled = false;
+            }
             listBoxAccounts.Items.Refresh();
 
         }
@@ -204,6 +208,7 @@ namespace SteamAccountSwitcher2
         {
             //MessageBox.Show(listBoxAccounts.SelectedItem.ToString());
             accountList.Remove((SteamAccount)listBoxAccounts.SelectedItem);
+            buttonEdit.IsEnabled = false; //Cannot edit deleted account
             listBoxAccounts.Items.Refresh();
         }
 
@@ -236,6 +241,11 @@ namespace SteamAccountSwitcher2
                 this.Width = 450;
                 this.Height = 400;
             }
+        }
+
+        private void buttonEdit_Click(object sender, RoutedEventArgs e)
+        {
+            listContextMenuEdit_Click(sender, e);
         }
     }
 }
