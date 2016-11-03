@@ -9,26 +9,41 @@ using System.Windows.Media;
 
 namespace SteamAccountSwitcher2
 {
-    class SteamStatus
+    /// <summary>
+    /// The <see cref="SteamStatus"/> Class is a static class offering steam status information.
+    /// </summary>
+    static class SteamStatus
     {
         const string STATUS_API = "https://steamgaug.es/api/v2";
 
+        /// <summary>
+        /// Checks Steam status by calling an external service.
+        /// </summary>
+        /// <returns>true if steam is up, false if not.</returns>
         private static bool isSteamUp()
         {
-            string statusJson = new WebClient().DownloadString(STATUS_API);
-            JObject status = JObject.Parse(statusJson);
-
-            string state = status["ISteamClient"]["online"].ToString();
-            if(state == "1")
+            try
             {
-                return true;
+                string statusJson = new WebClient().DownloadString(STATUS_API);
+                JObject status = JObject.Parse(statusJson);
+
+                string state = status["ISteamClient"]["online"].ToString();
+                if (state == "1")
+                    return true;
+                else
+                    return false;
             }
-            else
+            catch
             {
                 return false;
             }
+
         }
 
+        /// <summary>
+        /// Generates a GUI friendly string describing Steam's current status.
+        /// </summary>
+        /// <returns>GUI friendly <see cref="string"/>.</returns>
         public static string steamStatusMessage()
         {
             if(isSteamUp())
@@ -41,6 +56,10 @@ namespace SteamAccountSwitcher2
             }
         }
 
+        /// <summary>
+        /// Generates a <see cref="SolidColorBrush"/> indicating Steam's current status.
+        /// </summary>
+        /// <returns><see cref="SolidColorBrush"/> status indicator</returns>
         public static SolidColorBrush getStatusColor()
         {
 
