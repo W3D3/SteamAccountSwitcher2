@@ -135,18 +135,11 @@
     <Compile Include="AccountWindow.xaml.cs">
       <DependentUpon>AccountWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AddAccount.xaml.cs">
-      <DependentUpon>AddAccount.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Encryption.cs" />
     <Compile Include="NuGet.Modules\AesHelper.cs" />
     <Compile Include="SteamStatus.cs" />
     <Compile Include="UserInteraction.cs" />
     <Page Include="AccountWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="AddAccount.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
