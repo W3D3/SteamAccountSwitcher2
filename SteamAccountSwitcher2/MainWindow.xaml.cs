@@ -24,7 +24,6 @@ namespace SteamAccountSwitcher2
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
-    
     public partial class MainWindow : Window
     {
         ObservableCollection<SteamAccount> accountList = new ObservableCollection<SteamAccount>();
@@ -169,7 +168,6 @@ namespace SteamAccountSwitcher2
 
         private void listBoxAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //MessageBox.Show(sender.ToString());
             if (sender != null)
             {
                 buttonEdit.IsEnabled = true;
@@ -214,12 +212,16 @@ namespace SteamAccountSwitcher2
 
         private void listContextMenuEdit_Click(object sender, RoutedEventArgs e)
         {
-            AccountWindow newAccWindow = new AccountWindow((SteamAccount)listBoxAccounts.SelectedItem);
-            newAccWindow.Owner = this;
-            newAccWindow.ShowDialog();
-            if (newAccWindow.Account != null)
+            if (listBoxAccounts.SelectedItem != null)
             {
-                accountList[listBoxAccounts.SelectedIndex] = newAccWindow.Account;
+                AccountWindow newAccWindow = new AccountWindow((SteamAccount)listBoxAccounts.SelectedItem);
+                newAccWindow.Owner = this;
+                newAccWindow.ShowDialog();
+                if (newAccWindow.Account != null)
+                {
+                    accountList[listBoxAccounts.SelectedIndex] = newAccWindow.Account;
+                    listBoxAccounts.SelectedItem = newAccWindow.Account;
+                }
             }
         }
 

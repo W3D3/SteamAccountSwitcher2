@@ -25,6 +25,7 @@ namespace SteamAccountSwitcher2
         {
             get { return account; }
         }
+
         public AddAccount()
         {
             account = new SteamAccount();

@@ -19,8 +19,11 @@ namespace SteamAccountSwitcher2
     /// </summary>
     public partial class AccountWindow : Window
     {
-        SteamAccount newAcc;
+        private SteamAccount newAcc;
 
+        /// <summary>
+        /// Creates a new instance of the AccountWindow class. Allows the user to create new accounts.
+        /// </summary>
         public AccountWindow()
         {
             InitializeComponent();
@@ -28,8 +31,15 @@ namespace SteamAccountSwitcher2
             comboBoxType.SelectedIndex = 0;
         }
 
+        /// <summary>
+        /// Creates a new instance of the AccountWindow class. Allows the user to edit new accounts
+        /// </summary>
+        /// <param name="accToEdit">The account to edit.</param>
         public AccountWindow(SteamAccount accToEdit)
         {
+            if (accToEdit == null)
+                throw new ArgumentNullException();
+
             InitializeComponent();
             this.Title = "Edit Account";
 
@@ -41,11 +51,15 @@ namespace SteamAccountSwitcher2
             textBoxPassword.Password = accToEdit.Password;
         }
 
+        /// <summary>
+        /// Accessor to the Account associated with the window.
+        /// </summary>
         public SteamAccount Account
         {
             get { return newAcc; }
         }
 
+        
         private void buttonSave_Click(object sender, RoutedEventArgs e)
         {
             if (ValidateInput())
