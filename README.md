@@ -17,4 +17,4 @@ If you clone this and use it, expect things to break.
 
 ### More info
 If you are interested, you can check out my blog, will share some stuff there, because i don't want to spam the old github repo with info about a unfinished second version ;)
-[Blog](https://wedenig.org/main/blog/steamaccountswitcher-v2)
+[Blog](https://wedenig.org/blog/steamaccountswitcher-v2)
