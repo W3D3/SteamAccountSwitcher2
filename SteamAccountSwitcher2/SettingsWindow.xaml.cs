@@ -66,7 +66,8 @@ namespace SteamAccountSwitcher2
 
         private void buttonBrowseSteamInstallDir_Click(object sender, RoutedEventArgs e)
         {
-            string installDir = UserInteraction.selectSteamDirectory(@"C:\Program Files (x86)\Steam");
+            string initialDir = Properties.Settings.Default.steamInstallDir ?? @"C:\Program Files (x86)\Steam";
+            string installDir = UserInteraction.selectSteamDirectory(initialDir);
             if (installDir != null)
             {
                 Properties.Settings.Default.steamInstallDir = installDir;
