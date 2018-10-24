@@ -66,6 +66,33 @@ namespace SteamAccountSwitcher2
             }
         }
 
+        public string Background
+        {
+            get
+            {
+                if (this.type == AccountType.Main)
+                {
+                    return "sas_acc_bg_50.jpg";
+                }
+                else if (this.type == AccountType.Smurf)
+                {
+                    return "sas_acc_bg_smurfy.jpg";
+                }
+                else
+                {
+                    return "sas_acc_bg_50.jpg";
+                }
+            }
+        }
+
+        public string BackgroundPath
+        {
+            get
+            {
+                return "images/" + this.Background;
+            }
+        }
+
         public string getStartParameters()
         {
             return "-login " + this.username + " " + this.password;

@@ -14,7 +14,7 @@ namespace SteamAccountSwitcher2
     /// </summary>
     static class SteamStatus
     {
-        const string STATUS_API = "https://steamgaug.es/api/v2";
+        const string STATUS_API = "https://crowbar.steamstat.us/Barney";
 
         /// <summary>
         /// Checks Steam status by calling an external service.
@@ -24,17 +24,19 @@ namespace SteamAccountSwitcher2
         {
             try
             {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 string statusJson = new WebClient().DownloadString(STATUS_API);
                 JObject status = JObject.Parse(statusJson);
 
-                string state = status["ISteamClient"]["online"].ToString();
-                if (state == "1")
+                string state = status["services"]["steam"]["status"].ToString();
+                if (state == "good")
                     return true;
                 else
                     return false;
             }
-            catch
+            catch(Exception e)
             {
+                Console.WriteLine(e.ToString());
                 return false;
             }
 
