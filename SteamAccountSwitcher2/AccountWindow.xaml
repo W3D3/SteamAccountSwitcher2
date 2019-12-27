@@ -25,10 +25,10 @@
             </Grid.RowDefinitions>
 
             <Label>Account Type</Label>
-            <ComboBox x:Name="comboBoxType" Grid.Column="1" Grid.ColumnSpan="2" />
+            <ComboBox x:Name="comboBoxType" Grid.Column="1" Grid.ColumnSpan="2" ToolTip="Defines background used inside SteamAccountSwitcher"/>
 
             <Label Grid.Row="1">Profile Name</Label>
-            <TextBox x:Name="textBoxName" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" ToolTip="Test" Grid.ColumnSpan="2" />
+            <TextBox x:Name="textBoxName" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" ToolTip="Display name of profile inside SteamAccountSwitcher" Grid.ColumnSpan="2" />
 
             <Label Grid.Row="3">Username</Label>
             <TextBox x:Name="textBoxUsername" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>

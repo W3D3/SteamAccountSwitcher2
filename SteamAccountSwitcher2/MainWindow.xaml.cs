@@ -77,7 +77,7 @@ namespace SteamAccountSwitcher2
 
             showSteamStatus();
 
-            loader = new AccountLoader(Encryption.Basic);
+            loader = new AccountLoader(EncryptionType.Basic);
             
             if (loader.AccountFileExists())
             {
@@ -88,7 +88,7 @@ namespace SteamAccountSwitcher2
                 }
                 catch
                 {
-                    MessageBox.Show("Account file is currupted or wrong encryption method is set. Check Settings and try again. AutoSave has been disabled so that nothing can be overwritten! Make sure to restart the applications after switching Encryption method!", "Error parsing file", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    MessageBox.Show("Account file is currupted or wrong encryption method is set. Check Settings and try again. AutoSave has been disabled so that nothing can be overwritten! Make sure to restart the applications after switching EncryptionType method!", "Error parsing file", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     accountList = new ObservableCollection<SteamAccount>();
                     autosaveAccounts = false;
                 }

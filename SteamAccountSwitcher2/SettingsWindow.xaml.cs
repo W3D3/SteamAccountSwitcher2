@@ -35,19 +35,19 @@ namespace SteamAccountSwitcher2
             //Initialize Settings
             try
             {
-                Encryption enc = (Encryption)Enum.Parse(typeof(Encryption), Properties.Settings.Default.encryption);
-                if (enc == Encryption.Basic)
+                EncryptionType enc = (EncryptionType)Enum.Parse(typeof(EncryptionType), Properties.Settings.Default.encryption);
+                if (enc == EncryptionType.Basic)
                 {
                     radioButtonBasicEnc.IsChecked = true;
                 }
-                if (enc == Encryption.Password)
+                if (enc == EncryptionType.Password)
                 {
                     radioButtonPasswordEnc.IsChecked = true;
                 }
             }
             catch (ArgumentException)
             {
-                MessageBox.Show("Encryption type not supported! Make sure you are using the latest SteamAccountSwitcher!","Unspported Encryption", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("EncryptionType type not supported! Make sure you are using the latest SteamAccountSwitcher!","Unspported EncryptionType", MessageBoxButton.OK, MessageBoxImage.Error);
                 radioButtonBasicEnc.IsChecked = false;
                 radioButtonBasicEnc.IsEnabled = false;
                 radioButtonPasswordEnc.IsChecked = false;

@@ -135,7 +135,7 @@
     <Compile Include="AccountWindow.xaml.cs">
       <DependentUpon>AccountWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Encryption.cs" />
+    <Compile Include="EncryptionType.cs" />
     <Compile Include="NuGet.Modules\AesHelper.cs" />
     <Compile Include="SteamStatus.cs" />
     <Compile Include="UserInteraction.cs" />
@@ -216,12 +216,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\sas_acc_bg.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="images\sas_acc_bg.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="images\plus.png" />
   </ItemGroup>
   <ItemGroup>
@@ -243,12 +237,16 @@
     <Resource Include="images\gear.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\sas_acc_bg_50.jpg" />
+    <Resource Include="images\acc-bg-main.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\lock.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="images\acc-bg-banned.jpg" />
+    <Resource Include="images\acc-bg-friend.jpg" />
+    <Resource Include="images\acc-bg-smurf.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

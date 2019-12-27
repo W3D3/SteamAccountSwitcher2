@@ -25,14 +25,14 @@
                     </Button>
                     <Button Content="Export" ToolBar.OverflowMode="Always" />
                 </ToolBar>
-                <ToolBar ToolBarTray.IsLocked="True" >
+                <!--<ToolBar ToolBarTray.IsLocked="True" >
                     <Button >
                         <StackPanel Orientation="Horizontal">
                             <Image Source="images/lock.png" />
                             <TextBlock Margin="3,0,0,0">Authenticator</TextBlock>
                         </StackPanel>
                     </Button>
-                </ToolBar>
+                </ToolBar>-->
                 <ToolBar ToolBarTray.IsLocked="True">
                     <Button Name="settingsButton" Click="settingsButton_Click">
                     <StackPanel Orientation="Horizontal">
@@ -103,7 +103,7 @@
                             <Grid Background="White" VerticalAlignment="Top" Height="50" Margin="0">
                                 <Grid VerticalAlignment="Top" Height="50"  Margin="0">
                                     <Grid.Background>
-                                        <ImageBrush AlignmentX="Left" AlignmentY="Center" ImageSource="images/sas_acc_bg_50.jpg" Stretch="UniformToFill" TileMode="None"/>
+                                        <ImageBrush AlignmentX="Left" AlignmentY="Center" ImageSource="{Binding ImageSource}" Stretch="UniformToFill" TileMode="None"/>
                                     </Grid.Background>
 
                                     <StackPanel HorizontalAlignment="Stretch" Margin="90,0,0,0">

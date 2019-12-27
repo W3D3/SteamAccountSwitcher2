@@ -36,7 +36,7 @@
                     </Grid.ColumnDefinitions>
                     <GroupBox Margin="5,5,5,0" FontSize="11" FontWeight="Bold"
                     Height="119" VerticalAlignment="Top" Grid.ColumnSpan="2">
-                        <GroupBox.Header>Encryption Method</GroupBox.Header>
+                        <GroupBox.Header>EncryptionType Method</GroupBox.Header>
                         <Grid Margin="5">
                             <StackPanel>
                                 <RadioButton x:Name="radioButtonBasicEnc" Content="Basic" Margin="5,5,5,0"/>

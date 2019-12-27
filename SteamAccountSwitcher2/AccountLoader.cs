@@ -13,27 +13,27 @@ namespace SteamAccountSwitcher2
 {
     class AccountLoader
     {
-        Encryption encryptionType;
+        EncryptionType _encryptionType;
         string directory;
 
         const string basicPassword = "OQPTu9Rf4u4vkywWy+GCBptmXeqC0e456SR3N31vutU=";
 
-        public AccountLoader(Encryption e)
+        public AccountLoader(EncryptionType e)
         {
-            encryptionType = e;
+            _encryptionType = e;
             this.directory = AppDomain.CurrentDomain.BaseDirectory;
         }
 
-        public AccountLoader(Encryption e, string directory)
+        public AccountLoader(EncryptionType e, string directory)
         {
-            encryptionType = e;
+            _encryptionType = e;
             this.directory = directory;
         }
 
         public List<SteamAccount> LoadBasicAccounts()
         {
             
-            if(encryptionType == Encryption.Basic)
+            if(_encryptionType == EncryptionType.Basic)
             {
                 try
                 {
@@ -49,13 +49,13 @@ namespace SteamAccountSwitcher2
             }
             else
             {
-                throw new ArgumentException("Unsupported Encryption type!");
+                throw new ArgumentException("Unsupported EncryptionType type!");
             }
         }
 
         public bool SaveBasicAccounts(List<SteamAccount> list)
         {
-            if (encryptionType == Encryption.Basic)
+            if (_encryptionType == EncryptionType.Basic)
             {
                 string output = JsonConvert.SerializeObject(list);
                 //MessageBox.Show(output);
@@ -65,7 +65,7 @@ namespace SteamAccountSwitcher2
             }
             else
             {
-                throw new ArgumentException("Unsupported Encryption type is set!");
+                throw new ArgumentException("Unsupported EncryptionType type is set!");
             }
             return false;
         }

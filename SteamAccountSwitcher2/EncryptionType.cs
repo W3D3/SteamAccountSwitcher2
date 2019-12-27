@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SteamAccountSwitcher2
 {
-    enum Encryption
+    enum EncryptionType
     {
         Basic, Password
     }

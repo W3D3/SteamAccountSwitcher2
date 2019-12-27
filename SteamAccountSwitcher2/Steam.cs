@@ -42,10 +42,7 @@ namespace SteamAccountSwitcher2
         public bool IsSteamRunning()
         {
             Process[] pname = Process.GetProcessesByName("steam");
-            if (pname.Length == 0)
-                return false;
-            else
-                return true;
+            return pname.Length > 0;
         }
 
         public void KillSteam()
