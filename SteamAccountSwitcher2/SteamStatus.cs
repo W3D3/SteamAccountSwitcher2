@@ -10,25 +10,38 @@ using System.Windows.Media;
 namespace SteamAccountSwitcher2
 {
     /// <summary>
-    /// The <see cref="SteamStatus"/> Class is a static class offering steam status information.
+    /// The <see cref="SteamStatus"/> Class is offering steam status information.
     /// </summary>
-    static class SteamStatus
+    class SteamStatus
     {
-        const string STATUS_API = "https://steamgaug.es/api/v2";
+        const string STATUS_API = "https://crowbar.steamstat.us/Barney";
+        private bool onlineStatusGood = false;
+
+        public SteamStatus()
+        {
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            refreshStatus();
+        }
+
+        public void refreshStatus()
+        {
+            onlineStatusGood = checkSteamStatus();
+        }
 
         /// <summary>
         /// Checks Steam status by calling an external service.
         /// </summary>
         /// <returns>true if steam is up, false if not.</returns>
-        private static bool isSteamUp()
+        private static bool checkSteamStatus()
         {
             try
             {
                 string statusJson = new WebClient().DownloadString(STATUS_API);
                 JObject status = JObject.Parse(statusJson);
 
-                string state = status["ISteamClient"]["online"].ToString();
-                if (state == "1")
+                string state = status["services"]["online"]["status"].ToString();
+                if (state == "good")
                     return true;
                 else
                     return false;
@@ -41,29 +54,21 @@ namespace SteamAccountSwitcher2
         }
 
         /// <summary>
-        /// Generates a GUI friendly string describing Steam's current status.
+        /// Generates a GUI friendly string describing Steam's status at the time of last refresh.
         /// </summary>
         /// <returns>GUI friendly <see cref="string"/>.</returns>
-        public static string steamStatusMessage()
+        public string steamStatusMessage()
         {
-            if(isSteamUp())
-            {
-                return "Steam is operating normally.";
-            }
-            else
-            {
-                return "Steam is currently having issues!";
-            }
+            return onlineStatusGood ? "Steam is operating normally." : "Steam is currently having issues!";
         }
 
         /// <summary>
-        /// Generates a <see cref="SolidColorBrush"/> indicating Steam's current status.
+        /// Generates a <see cref="SolidColorBrush"/> indicating Steam's status at the time of last refresh.
         /// </summary>
         /// <returns><see cref="SolidColorBrush"/> status indicator</returns>
-        public static SolidColorBrush getStatusColor()
+        public SolidColorBrush getStatusColor()
         {
-
-            if (isSteamUp())
+            if (onlineStatusGood)
             {
                 Color green = Color.FromRgb(146, 247, 181);
                 SolidColorBrush greenbrush = new SolidColorBrush(green);

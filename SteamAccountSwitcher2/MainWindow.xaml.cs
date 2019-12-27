@@ -30,6 +30,7 @@ namespace SteamAccountSwitcher2
         public Steam steam;
         AccountLoader loader;
         bool autosaveAccounts = true;
+        private SteamStatus steamStatus;
         public MainWindow()
         {
             AutoUpdater.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US"); //Workaround for horrible AutoUpdater translations :D
@@ -74,13 +75,10 @@ namespace SteamAccountSwitcher2
                 steam = new Steam(Properties.Settings.Default.steamInstallDir);
             }
 
-            //statusBarLabel.Content = "Steam running in '" + Properties.Settings.Default.steamInstallDir + "'";
-            statusBarLabel.Content = SteamStatus.steamStatusMessage();
-            statusbar.Background = SteamStatus.getStatusColor();
+            showSteamStatus();
 
             loader = new AccountLoader(Encryption.Basic);
             
-            //accountList = new ObservableCollection<SteamAccount>(loader.LoadBasicAccounts());
             if (loader.AccountFileExists())
             {
                 //Try to get accounts
@@ -113,6 +111,12 @@ namespace SteamAccountSwitcher2
             listBoxAccounts.ItemContainerStyle = itemContainerStyle;
         }
 
+        private void showSteamStatus()
+        {
+            steamStatus = new SteamStatus();
+            statusBarLabel.Content = steamStatus.steamStatusMessage();
+            statusbar.Background = steamStatus.getStatusColor();
+        }
 
         private void settingsButton_Click(object sender, RoutedEventArgs e)
         {
