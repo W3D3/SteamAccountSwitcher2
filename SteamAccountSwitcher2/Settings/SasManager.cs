@@ -107,6 +107,7 @@ namespace SteamAccountSwitcher2
         public void setAutoStart(bool autostart)
         {
             Debug.WriteLine(Environment.SpecialFolder.Startup);
+            Settings.autostart = autostart;
             if (autostart)
             {
                 try

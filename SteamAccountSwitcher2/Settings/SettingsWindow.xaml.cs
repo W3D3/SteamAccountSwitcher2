@@ -27,6 +27,7 @@ namespace SteamAccountSwitcher2
             settings = SasManager.Instance.Settings;
 
             textSteamInstallDir.Text = settings.steamInstallDir;
+            checkBoxAutostart.IsChecked = settings.autostart;
 
             //Initialize Settings
             try

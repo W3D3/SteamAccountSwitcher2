@@ -29,7 +29,7 @@
                               Height="49" VerticalAlignment="Top" FontWeight="Bold">
                         <GroupBox.Header>AutoStart</GroupBox.Header>
                         <Grid Margin="5,5,5,5">
-                            <CheckBox x:Name="checkBox" Content="Start SteamAccountSwitcher with Windows"
+                            <CheckBox x:Name="checkBoxAutostart" Content="Start SteamAccountSwitcher with Windows"
                                       HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Normal" Checked="checkBox_Checked" Unchecked="checkBox_Unchecked" />
 
                         </Grid>

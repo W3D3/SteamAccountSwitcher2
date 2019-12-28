@@ -30,8 +30,6 @@ namespace SteamAccountSwitcher2
 
         public MainWindow()
         {
-            AutoUpdater.CurrentCulture =
-                CultureInfo.CreateSpecificCulture("en-US"); //Workaround for horrible AutoUpdater translations :D
             AutoUpdater.Start("https://wedenig.org/SteamAccountSwitcher/version.xml");
 
             InitializeComponent();
