@@ -12,7 +12,7 @@ namespace SteamAccountSwitcher2
     /// <summary>
     /// The <see cref="SteamStatus"/> Class is offering steam status information.
     /// </summary>
-    class SteamStatus
+    public class SteamStatus
     {
         const string STATUS_API = "https://crowbar.steamstat.us/Barney";
         private bool onlineStatusGood = false;

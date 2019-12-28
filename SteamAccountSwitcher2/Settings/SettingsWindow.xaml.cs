@@ -19,18 +19,14 @@ namespace SteamAccountSwitcher2
     /// </summary>
     public partial class SettingsWindow : Window
     {
-        Steam changedSteam;
-        public Steam Steam
-        {
-            get { return changedSteam; }
-            set { this.changedSteam = value; }
-        }
+        private Properties.Settings settings;
 
         public SettingsWindow()
         {
             InitializeComponent();
+            settings = SasManager.Instance.Settings;
 
-            textSteamInstallDir.Text = Properties.Settings.Default.steamInstallDir;
+            textSteamInstallDir.Text = settings.steamInstallDir;
 
             //Initialize Settings
             try
@@ -69,10 +65,19 @@ namespace SteamAccountSwitcher2
             string installDir = UserInteraction.selectSteamDirectory(@"C:\Program Files (x86)\Steam");
             if (installDir != null)
             {
-                Properties.Settings.Default.steamInstallDir = installDir;
-                changedSteam = new Steam(installDir);
-                textSteamInstallDir.Text = Properties.Settings.Default.steamInstallDir;
+                SasManager.Instance.setSteamInstallDir(installDir);
+                textSteamInstallDir.Text = settings.steamInstallDir;
             }
+        }
+
+        private void checkBox_Checked(object sender, RoutedEventArgs e)
+        {
+            SasManager.Instance.setAutoStart(true);
+        }
+
+        private void checkBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            SasManager.Instance.setAutoStart(false);
         }
     }
 }

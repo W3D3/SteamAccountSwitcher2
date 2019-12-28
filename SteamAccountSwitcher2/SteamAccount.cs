@@ -13,7 +13,7 @@ namespace SteamAccountSwitcher2
         private string _password;
         private AccountType _type;
 
-        private const string ImagePrefix = "images/";
+        private const string ImageFolder = "images";
 
         public SteamAccount()
         {
@@ -56,19 +56,7 @@ namespace SteamAccountSwitcher2
         {
             get
             {
-                return ImagePrefix + "acc-bg-" + _type.ToString().ToLower() + ".jpg";
-                /*switch (_type)
-                {
-                    case AccountType.Main:
-                        return ImagePrefix + "acc-bg-main.jpg";
-                    case AccountType.Smurf:
-                        return ImagePrefix + "acc-bg-smurf.png";
-                    case AccountType.Friend:
-                        return ImagePrefix + "acc-bg-friend.png";
-                    default:
-                        return ImagePrefix + "steam-ico-main.png";
-
-                }*/
+                return ImageFolder + "/acc-bg-" + _type.ToString().ToLower() + ".jpg";
             }
         }
 

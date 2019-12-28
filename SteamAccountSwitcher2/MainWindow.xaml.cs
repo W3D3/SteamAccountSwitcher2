@@ -26,18 +26,15 @@ namespace SteamAccountSwitcher2
     /// 
     public partial class MainWindow : Window
     {
-        ObservableCollection<SteamAccount> accountList = new ObservableCollection<SteamAccount>();
-        public Steam steam;
-        AccountLoader loader;
-        bool autosaveAccounts = true;
-        private SteamStatus steamStatus;
+        //ObservableCollection<SteamAccount> accountList = new ObservableCollection<SteamAccount>();
+
         public MainWindow()
         {
-            AutoUpdater.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US"); //Workaround for horrible AutoUpdater translations :D
-            AutoUpdater.Start("http://wedenig.org/SteamAccountSwitcher/version.xml");
+            AutoUpdater.CurrentCulture =
+                CultureInfo.CreateSpecificCulture("en-US"); //Workaround for horrible AutoUpdater translations :D
+            AutoUpdater.Start("https://wedenig.org/SteamAccountSwitcher/version.xml");
 
             InitializeComponent();
-            //statusBarLabel.Content = AppDomain.CurrentDomain.BaseDirectory; //Debug location
 
             //Restore size
             this.Top = Properties.Settings.Default.Top;
@@ -52,57 +49,28 @@ namespace SteamAccountSwitcher2
 
             fixOutOfBoundsWindow();
 
-            //No steam directory in Settings, let's find 'em!
-            if (Properties.Settings.Default.steamInstallDir == String.Empty)
-            {
-                //Run this on first start
-                string installDir = UserInteraction.selectSteamDirectory(@"C:\Program Files (x86)\Steam");
-                if (installDir == null)
-                {
-                    MessageBox.Show("You cannot use SteamAccountSwitcher without selecting your Steam.exe. Program will close now.", "Steam missing", MessageBoxButton.OK, MessageBoxImage.Error);
-                    Close();
-                }
-                else
-                {
-                    Properties.Settings.Default.steamInstallDir = installDir;
-                    steam = new Steam(installDir);
-                }
-        
-            }
-            else
-            {
-                //Start steam from existing installation path
-                steam = new Steam(Properties.Settings.Default.steamInstallDir);
-            }
+            askUserForSteamLocation();
 
             showSteamStatus();
 
-            loader = new AccountLoader(EncryptionType.Basic);
-            
-            if (loader.AccountFileExists())
+
+            try
             {
-                //Try to get accounts
-                try
-                { 
-                    accountList = new ObservableCollection<SteamAccount>(loader.LoadBasicAccounts());
-                }
-                catch
-                {
-                    MessageBox.Show("Account file is currupted or wrong encryption method is set. Check Settings and try again. AutoSave has been disabled so that nothing can be overwritten! Make sure to restart the applications after switching EncryptionType method!", "Error parsing file", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                    accountList = new ObservableCollection<SteamAccount>();
-                    autosaveAccounts = false;
-                }
+                SasManager.Instance.initializeAccountsFromFile();
             }
-            else
+            catch
             {
-                accountList = new ObservableCollection<SteamAccount>();
+                MessageBox.Show(
+                    "Account file is currupted or wrong encryption method is set. Check Settings and try again. Save on close has been disabled so that nothing can be overwritten! Make sure to restart the applications after switching EncryptionType method!",
+                    "Error parsing file", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
+
 
             SteamAccount sa = new SteamAccount("username", "testpw");
             sa.Name = "profile name";
             //accountList.Add(sa);
 
-            listBoxAccounts.ItemsSource = accountList;
+            listBoxAccounts.ItemsSource = SasManager.Instance.AccountList;
             listBoxAccounts.Items.Refresh();
 
             Style itemContainerStyle = new Style(typeof(ListBoxItem));
@@ -111,11 +79,31 @@ namespace SteamAccountSwitcher2
             listBoxAccounts.ItemContainerStyle = itemContainerStyle;
         }
 
+        private void askUserForSteamLocation()
+        {
+            //No steam directory in Settings, let's find 'em!
+            if (Properties.Settings.Default.steamInstallDir == String.Empty)
+            {
+                //Run this on first start
+                string installDir = UserInteraction.selectSteamDirectory(@"C:\Program Files (x86)\Steam");
+                if (installDir == null)
+                {
+                    MessageBox.Show(
+                        "You cannot use SteamAccountSwitcher without selecting your Steam.exe. Program will close now.",
+                        "Steam missing", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Close();
+                }
+                else
+                {
+                    SasManager.Instance.setSteamInstallDir(installDir);
+                }
+            }
+        }
+
         private void showSteamStatus()
         {
-            steamStatus = new SteamStatus();
-            statusBarLabel.Content = steamStatus.steamStatusMessage();
-            statusbar.Background = steamStatus.getStatusColor();
+            statusBarLabel.Content = SasManager.Instance.SteamStatus.steamStatusMessage();
+            statusbar.Background = SasManager.Instance.SteamStatus.getStatusColor();
         }
 
         private void settingsButton_Click(object sender, RoutedEventArgs e)
@@ -123,19 +111,11 @@ namespace SteamAccountSwitcher2
             SettingsWindow settingsWindow = new SettingsWindow();
             settingsWindow.Owner = this;
             settingsWindow.ShowDialog();
-            if(settingsWindow.Steam != null)
-            {
-                this.steam = settingsWindow.Steam;
-            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            //User has exited the application, save all data
-            if (autosaveAccounts)
-            {
-                loader.SaveBasicAccounts(accountList.ToList<SteamAccount>());
-            }
+            SasManager.Instance.saveOnExit();
 
             if (WindowState == WindowState.Maximized)
             {
@@ -163,11 +143,10 @@ namespace SteamAccountSwitcher2
             AccountWindow newAccWindow = new AccountWindow();
             newAccWindow.Owner = this;
             newAccWindow.ShowDialog();
-            if(newAccWindow.Account != null)
+            if (newAccWindow.Account != null)
             {
-                accountList.Add(newAccWindow.Account);
+                SasManager.Instance.AccountList.Add(newAccWindow.Account);
             }
-            
         }
 
         private void listBoxAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -180,37 +159,20 @@ namespace SteamAccountSwitcher2
             {
                 buttonEdit.IsEnabled = false;
             }
-            listBoxAccounts.Items.Refresh();
 
+            listBoxAccounts.Items.Refresh();
         }
 
         private void listBoxAccounts_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            
-            try
-            {
-                SteamAccount selectedAcc = (SteamAccount)listBoxAccounts.SelectedItem;
-                if (Properties.Settings.Default.safemode)
-                {
-                    steam.StartSteamAccountSafe(selectedAcc);
-                    Mouse.OverrideCursor = Cursors.Wait;
-                }
-                else
-                {
-                    steam.StartSteamAccount(selectedAcc);
-                }
-            }
-            finally
-            {
-                Mouse.OverrideCursor = null;
-            }
+            SteamAccount selectedAcc = (SteamAccount) listBoxAccounts.SelectedItem;
+            SasManager.Instance.startSteamWithAccount(selectedAcc);
         }
 
         private void listContextMenuRemove_Click(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show(listBoxAccounts.SelectedItem.ToString());
-            accountList.Remove((SteamAccount)listBoxAccounts.SelectedItem);
-            buttonEdit.IsEnabled = false; //Cannot edit deleted account
+            SasManager.Instance.AccountList.Remove((SteamAccount) listBoxAccounts.SelectedItem);
+            buttonEdit.IsEnabled = false; // Cannot edit deleted account
             listBoxAccounts.Items.Refresh();
         }
 
@@ -218,12 +180,12 @@ namespace SteamAccountSwitcher2
         {
             if (listBoxAccounts.SelectedItem != null)
             {
-                AccountWindow newAccWindow = new AccountWindow((SteamAccount)listBoxAccounts.SelectedItem);
+                AccountWindow newAccWindow = new AccountWindow((SteamAccount) listBoxAccounts.SelectedItem);
                 newAccWindow.Owner = this;
                 newAccWindow.ShowDialog();
                 if (newAccWindow.Account != null)
                 {
-                    accountList[listBoxAccounts.SelectedIndex] = newAccWindow.Account;
+                    SasManager.Instance.AccountList[listBoxAccounts.SelectedIndex] = newAccWindow.Account;
                     listBoxAccounts.SelectedItem = newAccWindow.Account;
                 }
             }
@@ -235,13 +197,13 @@ namespace SteamAccountSwitcher2
                 (this.Left <= SystemParameters.VirtualScreenLeft - this.Width) ||
                 (this.Top <= SystemParameters.VirtualScreenTop - this.Height) ||
                 (SystemParameters.VirtualScreenLeft +
-                    SystemParameters.VirtualScreenWidth <= this.Left) ||
+                 SystemParameters.VirtualScreenWidth <= this.Left) ||
                 (SystemParameters.VirtualScreenTop +
-                    SystemParameters.VirtualScreenHeight <= this.Top);
+                 SystemParameters.VirtualScreenHeight <= this.Top);
 
-            if(outOfBounds)
+            if (outOfBounds)
             {
-                MessageBox.Show("out of bounds, window resetting");
+                Debug.WriteLine("Out of bounds window was reset to default offsets");
                 this.Left = 0;
                 this.Top = 0;
                 this.Width = 450;
