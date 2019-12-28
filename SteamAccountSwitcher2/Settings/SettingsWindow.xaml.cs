@@ -50,14 +50,14 @@ namespace SteamAccountSwitcher2
                 radioButtonPasswordEnc.IsEnabled = false;
             }
 
-            bool safemode = Properties.Settings.Default.safemode;
-            safeModeToggle.IsChecked = safemode;
+            /*bool safemode = Properties.Settings.Default.safemode;
+            safeModeToggle.IsChecked = safemode;*/
 
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Properties.Settings.Default.safemode = safeModeToggle.IsChecked.Value;
+            /*Properties.Settings.Default.safemode = safeModeToggle.IsChecked.Value;*/
         }
 
         private void buttonBrowseSteamInstallDir_Click(object sender, RoutedEventArgs e)
