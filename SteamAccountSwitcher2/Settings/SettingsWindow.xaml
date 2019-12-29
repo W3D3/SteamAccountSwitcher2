@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SteamAccountSwitcher2"
         mc:Ignorable="d"
-        Title="Settings" Height="314" Width="400" Icon="../images/gear.png" MinWidth="400" MinHeight="300"
-        Closing="Window_Closing" WindowStartupLocation="CenterOwner">
+        Title="Settings" Height="268" Width="247" Icon="../images/gear.png" MinWidth="400"
+        Closing="Window_Closing" WindowStartupLocation="CenterOwner" MinHeight="300">
     <Grid>
-        <TabControl Margin="5,5,5,5">
+
+        <TabControl Margin="5,5,5,34" MinHeight="200">
             <TabItem Header="General">
                 <Grid>
                     <GroupBox Margin="5,5,5,0" FontSize="11" FontWeight="Bold"
@@ -53,9 +54,6 @@
                                              ToolTip="Forgetting your master password will lead to the loss of all account access through SteamAccountSwitcher!" />
                                 <Label FontSize="10" Margin="0" FontWeight="Normal">Encrypts Accounts with your own password</Label>
                             </StackPanel>
-
-                            <Button Content="Save and reload" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                    Width="105" Height="23" />
                         </Grid>
                     </GroupBox>
                     <!-- <GroupBox Margin="5,129,5,0" FontSize="11" FontWeight="Bold"
@@ -80,5 +78,10 @@
 
 
         </TabControl>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button x:Name="buttonDiscard" Content="Discard" Margin="5,5,5,5" Height="24" Width="106"/>
+            <Button x:Name="buttonApply" Content="Apply" Margin="5,5,5,5" Height="24" Width="106"/>
+        </StackPanel>
+        
     </Grid>
 </Window>

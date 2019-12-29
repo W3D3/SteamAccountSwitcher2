@@ -139,6 +139,7 @@
     <Compile Include="NuGet.Modules\AesHelper.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\SasManager.cs" />
+    <Compile Include="Settings\UserSettings.cs" />
     <Compile Include="SteamStatus.cs" />
     <Compile Include="UserInteraction.cs" />
     <Page Include="AccountWindow.xaml">

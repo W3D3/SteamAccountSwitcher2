@@ -41,11 +41,6 @@ namespace SteamAccountSwitcher2
             }
         }
 
-        public Properties.Settings Settings
-        {
-            get => Properties.Settings.Default;
-        }
-
         public Steam SteamInstance => steamInstance;
 
         public SteamStatus SteamStatus => steamStatus;
@@ -107,7 +102,7 @@ namespace SteamAccountSwitcher2
         public void setAutoStart(bool autostart)
         {
             Debug.WriteLine(Environment.SpecialFolder.Startup);
-            Settings.autostart = autostart;
+            Properties.Settings.Default.autostart = autostart;
             if (autostart)
             {
                 try

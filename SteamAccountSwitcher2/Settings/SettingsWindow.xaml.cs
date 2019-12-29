@@ -19,15 +19,15 @@ namespace SteamAccountSwitcher2
     /// </summary>
     public partial class SettingsWindow : Window
     {
-        private Properties.Settings settings;
+        private readonly Properties.Settings _settings;
 
         public SettingsWindow()
         {
             InitializeComponent();
-            settings = SasManager.Instance.Settings;
+            _settings = Properties.Settings.Default;
 
-            textSteamInstallDir.Text = settings.steamInstallDir;
-            checkBoxAutostart.IsChecked = settings.autostart;
+            textSteamInstallDir.Text = _settings.steamInstallDir;
+            checkBoxAutostart.IsChecked = _settings.autostart;
 
             //Initialize Settings
             try
@@ -67,7 +67,7 @@ namespace SteamAccountSwitcher2
             if (installDir != null)
             {
                 SasManager.Instance.setSteamInstallDir(installDir);
-                textSteamInstallDir.Text = settings.steamInstallDir;
+                textSteamInstallDir.Text = _settings.steamInstallDir;
             }
         }
 

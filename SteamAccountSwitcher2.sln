@@ -1,12 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamAccountSwitcher2", "SteamAccountSwitcher2\SteamAccountSwitcher2.csproj", "{CD84E7B0-56E4-43F0-8532-55972070F563}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamAccountSwitcher", "SteamAccountSwitcher2\SteamAccountSwitcher.csproj", "{CD84E7B0-56E4-43F0-8532-55972070F563}"
+EndProject
+Project("{840C416C-B8F3-42BC-B0DD-F6BB14C9F8CB}") = "SteamAccountSwitcherSetup", "SteamAccountSwitcherSetup\SteamAccountSwitcherSetup.aiproj", "{DF67B771-6F39-474C-9833-5FC8AE064EEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		All|Any CPU = All|Any CPU
 		CD_ROM|Any CPU = CD_ROM|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Deploy|Any CPU = Deploy|Any CPU
@@ -15,6 +18,8 @@ Global
 		SingleImage|Any CPU = SingleImage|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CD84E7B0-56E4-43F0-8532-55972070F563}.All|Any CPU.ActiveCfg = Release|Any CPU
+		{CD84E7B0-56E4-43F0-8532-55972070F563}.All|Any CPU.Build.0 = Release|Any CPU
 		{CD84E7B0-56E4-43F0-8532-55972070F563}.CD_ROM|Any CPU.ActiveCfg = Deploy|Any CPU
 		{CD84E7B0-56E4-43F0-8532-55972070F563}.CD_ROM|Any CPU.Build.0 = Deploy|Any CPU
 		{CD84E7B0-56E4-43F0-8532-55972070F563}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -28,8 +33,25 @@ Global
 		{CD84E7B0-56E4-43F0-8532-55972070F563}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CD84E7B0-56E4-43F0-8532-55972070F563}.SingleImage|Any CPU.ActiveCfg = Deploy|Any CPU
 		{CD84E7B0-56E4-43F0-8532-55972070F563}.SingleImage|Any CPU.Build.0 = Deploy|Any CPU
+		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.All|Any CPU.ActiveCfg = DefaultBuild
+		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.All|Any CPU.Build.0 = DefaultBuild
+		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.CD_ROM|Any CPU.ActiveCfg = DefaultBuild
+		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.CD_ROM|Any CPU.Build.0 = DefaultBuild
+		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.Debug|Any CPU.ActiveCfg = DefaultBuild
+		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.Debug|Any CPU.Build.0 = DefaultBuild
+		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.Deploy|Any CPU.ActiveCfg = DefaultBuild
+		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.Deploy|Any CPU.Build.0 = DefaultBuild
+		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.DVD-5|Any CPU.ActiveCfg = DefaultBuild
+		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.DVD-5|Any CPU.Build.0 = DefaultBuild
+		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.Release|Any CPU.ActiveCfg = DefaultBuild
+		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.Release|Any CPU.Build.0 = DefaultBuild
+		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.SingleImage|Any CPU.ActiveCfg = DefaultBuild
+		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.SingleImage|Any CPU.Build.0 = DefaultBuild
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3CC09722-36B7-4CBB-B9F9-73DBF8664D57}
 	EndGlobalSection
 EndGlobal
