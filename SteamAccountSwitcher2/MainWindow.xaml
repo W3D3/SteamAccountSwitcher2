@@ -109,7 +109,7 @@
                             <Grid Background="White" VerticalAlignment="Top" Height="50" Margin="0">
                                 <Grid VerticalAlignment="Top" Height="50"  Margin="0">
                                     <Grid.Background>
-                                        <ImageBrush AlignmentX="Left" AlignmentY="Center" ImageSource="{Binding ImageSource}" Stretch="UniformToFill" TileMode="None"/>
+                                        <ImageBrush AlignmentX="Left" AlignmentY="Center" ImageSource="{Binding BGImage}" Stretch="UniformToFill" TileMode="None"/>
                                     </Grid.Background>
 
                                     <StackPanel HorizontalAlignment="Stretch" Margin="90,0,0,0">
@@ -118,7 +118,7 @@
                                             <TextBlock Text="{Binding Name}" FontSize="12pt" Canvas.Top="2" Canvas.Left="10" FontFamily="Source Sans Pro Semibold" Foreground="White"/>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="Username: " />
-                                                <TextBlock Text="{Binding Username}" >
+                                                <TextBlock Text="{Binding AccountName}" >
                                                     <TextBlock.Background>
                                                         <ImageBrush Stretch="None"/>
                                                     </TextBlock.Background>

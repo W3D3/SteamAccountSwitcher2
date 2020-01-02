@@ -9,64 +9,108 @@ namespace SteamAccountSwitcher2
     public class SteamAccount
     {
         private string _name;
-        private string _username;
+        private string _accountName;
         private string _password;
         private AccountType _type;
+        private string _steamId;
+        private string _personaName;
+        private bool _rememberPassword;
+        private bool _mostrecent;
+        private long _timestamp;
 
         private const string ImageFolder = "images";
 
         public SteamAccount()
         {
-
         }
 
-        public SteamAccount(string username, string password)
+        public SteamAccount(string accountName, string password)
         {
-            this._name = username;
-            this._username = username;
+            this._name = accountName;
+            this._accountName = accountName;
             this._password = password;
             this._type = AccountType.Main;
         }
 
-        public string Name
+        public SteamAccount(string steamId, string accountName, string personaName, bool rememberPassword,
+            bool mostrecent, long timestamp)
         {
-            get { return _name; }
-            set { this._name = value; }
+            SteamId = steamId;
+            AccountName = accountName;
+            PersonaName = personaName;
+            Name = PersonaName; // For UI
+            RememberPassword = rememberPassword;
+            Mostrecent = mostrecent;
+            Timestamp = timestamp;
+            this._type = AccountType.Main;
         }
 
-        public string Username
+        public string SteamId
         {
-            get { return _username; }
-            set { this._username = value; }
+            get => _steamId;
+            set => _steamId = value;
+        }
+
+        public string AccountName
+        {
+            get => _accountName;
+            set => _accountName = value;
+        }
+
+        public string PersonaName
+        {
+            get => _personaName;
+            set => _personaName = value;
+        }
+
+        public bool RememberPassword
+        {
+            get => _rememberPassword;
+            set => _rememberPassword = value;
+        }
+
+        public bool Mostrecent
+        {
+            get => _mostrecent;
+            set => _mostrecent = value;
+        }
+
+        public long Timestamp
+        {
+            get => _timestamp;
+            set => _timestamp = value;
+        }
+
+        public string Name
+        {
+            get => _name;
+            set => this._name = value;
         }
 
         public string Password
         {
-            get { return _password; }
-            set { this._password = value; }
+            get => _password;
+            set => this._password = value;
         }
 
         public AccountType Type
         {
-            get { return _type; }
-            set { this._type = value; }
+            get => _type;
+            set => this._type = value;
         }
 
-        public string ImageSource
+        public string BGImage => ImageFolder + "/acc-bg-" + _type.ToString().ToLower() + ".jpg";
+
+        public bool IsCached => string.IsNullOrEmpty(_password);
+
+        public string StartParameters()
         {
-            get
-            {
-                return ImageFolder + "/acc-bg-" + _type.ToString().ToLower() + ".jpg";
-            }
+            return "-login " + AccountName + " " + Password;
         }
 
-        public string getStartParameters()
-        {
-            return "-login " + this._username + " " + this._password;
-        }
         public override string ToString()
         {
-            return _name + "~ (user: " + _username + ")";
+            return _name + "~ (user: " + AccountName + ")";
         }
     }
 }

@@ -53,14 +53,27 @@ namespace SteamAccountSwitcher2
         public void KillSteam()
         {
             Process[] proc = Process.GetProcessesByName("steam");
-            proc[0].Kill();
+            if(proc.Length > 0) proc[0].Kill();
         }
 
         public void CleanKillSteam()
         {
             Process[] proc = Process.GetProcessesByName("steam");
-            proc[0].CloseMainWindow();
-            proc[0].Close();
+            if (proc.Length > 0)
+            {
+                proc[0].CloseMainWindow();
+                proc[0].Close();
+            }
+        }
+
+        public void Start()
+        {
+            Process p = new Process();
+            if (File.Exists(installLocation))
+            {
+                p.StartInfo = new ProcessStartInfo(installLocation);
+                p.Start();
+            }
         }
 
         public bool StartSteamAccount(SteamAccount acc)
@@ -86,7 +99,7 @@ namespace SteamAccountSwitcher2
                     Process p = new Process();
                     if (File.Exists(installLocation))
                     {
-                        p.StartInfo = new ProcessStartInfo(installLocation, acc.getStartParameters());
+                        p.StartInfo = new ProcessStartInfo(installLocation, acc.StartParameters());
                         p.Start();
                         finished = true;
 
@@ -103,7 +116,7 @@ namespace SteamAccountSwitcher2
         {
             Process p;
             bool finished = false;
-            string loginString = "-login " + acc.Username + " SAS-SAFEMODE";
+            string loginString = "-login " + acc.AccountName + " SAS-SAFEMODE";
 
             p = new Process();
             p.StartInfo = new ProcessStartInfo(installLocation, "-fs_log " + loginString);

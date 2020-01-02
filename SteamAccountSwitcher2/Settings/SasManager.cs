@@ -15,6 +15,7 @@ namespace SteamAccountSwitcher2
     {
         private Steam steamInstance;
         ObservableCollection<SteamAccount> accountList = new ObservableCollection<SteamAccount>();
+        CachedAccountManager _cachedAccountManager;
 
         AccountLoader loader;
         bool autosaveAccounts = true;
@@ -23,6 +24,8 @@ namespace SteamAccountSwitcher2
         private SasManager()
         {
             steamInstance = new Steam(Properties.Settings.Default.steamInstallDir);
+            
+            _cachedAccountManager = new CachedAccountManager(steamInstance);
             steamStatus = new SteamStatus();
         }
 
@@ -83,7 +86,16 @@ namespace SteamAccountSwitcher2
         {
             try
             {
-                steamInstance.StartSteamAccount(selectedAcc);
+                if (selectedAcc.IsCached)
+                {
+                    MessageBox.Show("Is cached account!");
+                    _cachedAccountManager.setActiveAccount(selectedAcc);
+                }
+                else
+                {
+                    steamInstance.StartSteamAccount(selectedAcc);
+                }
+                
                 /*if (Properties.Settings.Default.safemode)
                 {
                     steamInstance.StartSteamAccountSafe(selectedAcc);
@@ -145,10 +157,9 @@ namespace SteamAccountSwitcher2
 
         public void ScanAccounts()
         {
-            AccountScanner scanner = new AccountScanner(steamInstance);
-            scanner.scanForAccounts();
+            _cachedAccountManager.scanForAccounts();
 
-            foreach (var scannerAccount in scanner.Accounts)
+            foreach (var scannerAccount in _cachedAccountManager.CachedAccounts)
             {
                 accountList.Add(scannerAccount);
             }

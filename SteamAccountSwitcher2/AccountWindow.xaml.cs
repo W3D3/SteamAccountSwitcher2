@@ -47,7 +47,7 @@ namespace SteamAccountSwitcher2
             comboBoxType.SelectedItem = accToEdit.Type;
 
             textBoxName.Text  = accToEdit.Name;
-            textBoxUsername.Text = accToEdit.Username;
+            textBoxUsername.Text = accToEdit.AccountName;
             textBoxPassword.Password = accToEdit.Password;
         }
 
@@ -67,7 +67,7 @@ namespace SteamAccountSwitcher2
                 newAcc = new SteamAccount();
                 newAcc.Type = (AccountType)comboBoxType.SelectedValue;
                 newAcc.Name = textBoxName.Text;
-                newAcc.Username = textBoxUsername.Text;
+                newAcc.AccountName = textBoxUsername.Text;
                 newAcc.Password = textBoxPassword.Password;
 
                 Close();

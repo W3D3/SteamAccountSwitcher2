@@ -44,7 +44,7 @@ namespace SteamAccountSwitcher2
                 }
                 catch
                 {
-                    throw new ApplicationException("mistaaake");
+                    throw new ApplicationException("Fatal Error when reading accounts file!");
                 }
             }
             else
