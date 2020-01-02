@@ -24,10 +24,10 @@
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
     <ROW Property="CTRLS" Value="2"/>
     <ROW Property="Manufacturer" Value="W3D3"/>
-    <ROW Property="ProductCode" Value="1033:{FA306CD0-144A-4673-B9D3-ECD26D3F25C8} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{8A4CF9D2-85DC-44B5-9550-30782C6BBF88} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Steam Account Switcher"/>
-    <ROW Property="ProductVersion" Value="2.0.0" Type="32"/>
+    <ROW Property="ProductVersion" Value="2.0.1" Type="32"/>
     <ROW Property="RUNAPPLICATION" Value="1" Type="4"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{04753A22-B4F2-4FC4-92AA-822C0363B2FD}"/>

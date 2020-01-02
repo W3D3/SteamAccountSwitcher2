@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SteamAccountSwitcher2.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="steamInstallDir" Type="System.String" Scope="User">
+    <Setting Name="steamInstallLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Top" Type="System.Double" Scope="User">

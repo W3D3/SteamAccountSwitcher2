@@ -213,5 +213,11 @@ namespace SteamAccountSwitcher2
         {
             listContextMenuEdit_Click(sender, e);
         }
+
+        private void buttonScanAccounts_Click(object sender, RoutedEventArgs e)
+        {
+            SasManager.Instance.ScanAccounts();
+            listBoxAccounts.Items.Refresh();
+        }
     }
 }

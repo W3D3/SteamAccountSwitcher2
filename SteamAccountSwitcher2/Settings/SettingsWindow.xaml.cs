@@ -80,5 +80,7 @@ namespace SteamAccountSwitcher2
         {
             SasManager.Instance.setAutoStart(false);
         }
+
+       
     }
 }

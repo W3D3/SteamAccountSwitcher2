@@ -71,7 +71,9 @@
             <TabItem Header="Details">
                 <Grid>
                     <Image x:Name="image" Height="100" Width="100" />
-                    <TextBlock x:Name="appNameText" Height="100" TextWrapping="Wrap" Text="Steam Account Switcher v2" Width="100" />
+                    <TextBlock x:Name="appNameText" Height="100" TextWrapping="Wrap" Width="100" ><Run Text="Steam Account Switcher v2"/><InlineUIContainer>
+                            
+                        </InlineUIContainer></TextBlock>
                 </Grid>
 
             </TabItem>

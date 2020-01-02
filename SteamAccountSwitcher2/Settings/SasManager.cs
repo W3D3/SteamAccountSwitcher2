@@ -83,7 +83,8 @@ namespace SteamAccountSwitcher2
         {
             try
             {
-                if (Properties.Settings.Default.safemode)
+                steamInstance.StartSteamAccount(selectedAcc);
+                /*if (Properties.Settings.Default.safemode)
                 {
                     steamInstance.StartSteamAccountSafe(selectedAcc);
                     Mouse.OverrideCursor = Cursors.Wait;
@@ -91,7 +92,11 @@ namespace SteamAccountSwitcher2
                 else
                 {
                     steamInstance.StartSteamAccount(selectedAcc);
-                }
+                }*/
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
             }
             finally
             {
@@ -136,6 +141,18 @@ namespace SteamAccountSwitcher2
                     Debug.WriteLine("Failed to remove autostart");
                 }
             }
+        }
+
+        public void ScanAccounts()
+        {
+            AccountScanner scanner = new AccountScanner(steamInstance);
+            scanner.scanForAccounts();
+
+            foreach (var scannerAccount in scanner.Accounts)
+            {
+                accountList.Add(scannerAccount);
+            }
+            Debug.WriteLine(accountList.Count);
         }
     }
 }

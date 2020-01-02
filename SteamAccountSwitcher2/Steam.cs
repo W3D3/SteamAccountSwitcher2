@@ -26,17 +26,22 @@ namespace SteamAccountSwitcher2
 
         const int SW_RESTORE = 9;
 
-        string installDir;
+        string installLocation;
 
-        public Steam(string installDir)
+        public Steam(string installLocation)
         {
-            this.installDir = installDir;
+            this.installLocation = installLocation;
         }
 
+        public string InstallLocation
+        {
+            get { return installLocation; }
+            set { installLocation = value; }
+        }
+        
         public string InstallDir
         {
-            get { return installDir; }
-            set { installDir = value; }
+            get { return installLocation.Replace("Steam.exe", ""); ; }
         }
 
         public bool IsSteamRunning()
@@ -79,9 +84,9 @@ namespace SteamAccountSwitcher2
                 if (IsSteamRunning() == false)
                 {
                     Process p = new Process();
-                    if (File.Exists(installDir))
+                    if (File.Exists(installLocation))
                     {
-                        p.StartInfo = new ProcessStartInfo(installDir, acc.getStartParameters());
+                        p.StartInfo = new ProcessStartInfo(installLocation, acc.getStartParameters());
                         p.Start();
                         finished = true;
 
@@ -101,7 +106,7 @@ namespace SteamAccountSwitcher2
             string loginString = "-login " + acc.Username + " SAS-SAFEMODE";
 
             p = new Process();
-            p.StartInfo = new ProcessStartInfo(installDir, "-fs_log " + loginString);
+            p.StartInfo = new ProcessStartInfo(installLocation, "-fs_log " + loginString);
 
             if (IsSteamRunning())
             {
@@ -177,7 +182,7 @@ namespace SteamAccountSwitcher2
 
         private bool IsSteamReady()
         {
-            string logDir = installDir.Replace("Steam.exe", "logs\\");
+            string logDir = installLocation.Replace("Steam.exe", "logs\\");
             string filename = logDir + "bootstrap_log.txt";
 
             using (FileStream fs = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -205,9 +210,9 @@ namespace SteamAccountSwitcher2
         public bool LogoutSteam()
         {
             Process p = new Process();
-            if (File.Exists(installDir))
+            if (File.Exists(installLocation))
             {
-                p.StartInfo = new ProcessStartInfo(installDir, "-shutdown");
+                p.StartInfo = new ProcessStartInfo(installLocation, "-shutdown");
                 p.Start();
                 return true;
             }

@@ -131,10 +131,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AccountLoader.cs" />
+    <Compile Include="AccountScanner.cs" />
     <Compile Include="AccountType.cs" />
     <Compile Include="AccountWindow.xaml.cs">
       <DependentUpon>AccountWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CachedAccount.cs" />
     <Compile Include="EncryptionType.cs" />
     <Compile Include="NuGet.Modules\AesHelper.cs" />
     <Compile Include="Settings\Settings.cs" />

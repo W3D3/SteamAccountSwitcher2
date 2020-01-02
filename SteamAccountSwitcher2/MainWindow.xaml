@@ -40,6 +40,12 @@
                         <TextBlock Margin="3,0,0,0">Settings</TextBlock>
                     </StackPanel>
                     </Button>
+                    <Button x:Name="buttonScanAccounts" Click="buttonScanAccounts_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="images/gear.png" />
+                        <TextBlock Margin="3,0,0,0">Scan Accounts</TextBlock>
+                    </StackPanel>
+                    </Button>
                 </ToolBar>
             </ToolBarTray>
 
