@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -24,7 +21,7 @@ namespace SteamAccountSwitcher2
         private SasManager()
         {
             steamInstance = new Steam(Properties.Settings.Default.steamInstallDir);
-            
+
             _cachedAccountManager = new CachedAccountManager(steamInstance);
             steamStatus = new SteamStatus();
         }
@@ -86,16 +83,17 @@ namespace SteamAccountSwitcher2
         {
             try
             {
-                if (selectedAcc.IsCached)
+                if (selectedAcc.CachedAccount)
                 {
-                    MessageBox.Show("Is cached account!");
-                    _cachedAccountManager.setActiveAccount(selectedAcc);
+                    // If no password login is possible / needed
+                    _cachedAccountManager.startCachedAccount(selectedAcc);
                 }
                 else
                 {
+                    _cachedAccountManager.resetActiveAccount();
                     steamInstance.StartSteamAccount(selectedAcc);
                 }
-                
+
                 /*if (Properties.Settings.Default.safemode)
                 {
                     steamInstance.StartSteamAccountSafe(selectedAcc);
@@ -146,7 +144,6 @@ namespace SteamAccountSwitcher2
                             true);
                     Assembly curAssembly = Assembly.GetExecutingAssembly();
                     key.DeleteValue(curAssembly.GetName().Name);
-                    //key.SetValue(curAssembly.GetName().Name, curAssembly.Location);
                 }
                 catch
                 {
@@ -155,15 +152,15 @@ namespace SteamAccountSwitcher2
             }
         }
 
-        public void ScanAccounts()
+        public void ScanAndAddAccounts()
         {
             _cachedAccountManager.scanForAccounts();
 
             foreach (var scannerAccount in _cachedAccountManager.CachedAccounts)
             {
-                accountList.Add(scannerAccount);
+                if (!accountList.Contains(scannerAccount))
+                    accountList.Add(scannerAccount);
             }
-            Debug.WriteLine(accountList.Count);
         }
     }
 }

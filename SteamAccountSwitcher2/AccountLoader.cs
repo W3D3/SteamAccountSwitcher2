@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using Newtonsoft.Json;
 using NuGet.Modules;
-using Newtonsoft.Json;
-using System.Windows;
+using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace SteamAccountSwitcher2
@@ -32,8 +27,8 @@ namespace SteamAccountSwitcher2
 
         public List<SteamAccount> LoadBasicAccounts()
         {
-            
-            if(_encryptionType == EncryptionType.Basic)
+
+            if (_encryptionType == EncryptionType.Basic)
             {
                 try
                 {
@@ -42,7 +37,7 @@ namespace SteamAccountSwitcher2
                     List<SteamAccount> accountList = JsonConvert.DeserializeObject<List<SteamAccount>>(decrypted);
                     return accountList;
                 }
-                catch
+                catch(Exception e)
                 {
                     throw new ApplicationException("Fatal Error when reading accounts file!");
                 }
@@ -57,7 +52,7 @@ namespace SteamAccountSwitcher2
         {
             if (_encryptionType == EncryptionType.Basic)
             {
-                string output = JsonConvert.SerializeObject(list);
+                string output = JsonConvert.SerializeObject(list, Formatting.None);
                 //MessageBox.Show(output);
                 byte[] encrypted = AesHelper.Encrypt(GetBytes(output), basicPassword);
 

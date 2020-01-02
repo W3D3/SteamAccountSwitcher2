@@ -1,22 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoUpdaterDotNET;
+using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using AutoUpdaterDotNET;
-using System.Globalization;
-using System.IO;
-using System.Diagnostics;
 
 namespace SteamAccountSwitcher2
 {
@@ -161,15 +148,9 @@ namespace SteamAccountSwitcher2
             listBoxAccounts.Items.Refresh();
         }
 
-        private void listBoxAccounts_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            SteamAccount selectedAcc = (SteamAccount) listBoxAccounts.SelectedItem;
-            SasManager.Instance.startSteamWithAccount(selectedAcc);
-        }
-
         private void listContextMenuRemove_Click(object sender, RoutedEventArgs e)
         {
-            SasManager.Instance.AccountList.Remove((SteamAccount) listBoxAccounts.SelectedItem);
+            SasManager.Instance.AccountList.Remove((SteamAccount)listBoxAccounts.SelectedItem);
             buttonEdit.IsEnabled = false; // Cannot edit deleted account
             listBoxAccounts.Items.Refresh();
         }
@@ -178,14 +159,10 @@ namespace SteamAccountSwitcher2
         {
             if (listBoxAccounts.SelectedItem != null)
             {
-                AccountWindow newAccWindow = new AccountWindow((SteamAccount) listBoxAccounts.SelectedItem);
+                AccountWindow newAccWindow = new AccountWindow((SteamAccount)listBoxAccounts.SelectedItem);
                 newAccWindow.Owner = this;
                 newAccWindow.ShowDialog();
-                if (newAccWindow.Account != null)
-                {
-                    SasManager.Instance.AccountList[listBoxAccounts.SelectedIndex] = newAccWindow.Account;
-                    listBoxAccounts.SelectedItem = newAccWindow.Account;
-                }
+                listBoxAccounts.Items.Refresh();
             }
         }
 
@@ -216,8 +193,19 @@ namespace SteamAccountSwitcher2
 
         private void buttonScanAccounts_Click(object sender, RoutedEventArgs e)
         {
-            SasManager.Instance.ScanAccounts();
+            SasManager.Instance.ScanAndAddAccounts();
             listBoxAccounts.Items.Refresh();
+        }
+
+        private void steamAccount_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount >= 2)
+            {
+                MessageBox.Show(listBoxAccounts.SelectedItem.ToString());
+                SteamAccount selectedAcc = (SteamAccount)listBoxAccounts.SelectedItem;
+                SasManager.Instance.startSteamWithAccount(selectedAcc);
+            }
+
         }
     }
 }

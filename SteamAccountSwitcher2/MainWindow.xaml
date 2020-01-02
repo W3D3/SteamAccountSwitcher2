@@ -103,18 +103,20 @@
                 <ListView x:Name="listBoxAccounts" Padding="-6,0,-6,0"
                           dd:DragDrop.IsDragSource="True"
                           dd:DragDrop.IsDropTarget="True"
-                          dd:DragDrop.UseDefaultDragAdorner="True" SelectionChanged="listBoxAccounts_SelectionChanged" MouseDoubleClick="listBoxAccounts_MouseDoubleClick">
+                          dd:DragDrop.UseDefaultDragAdorner="True" SelectionChanged="listBoxAccounts_SelectionChanged">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Background="White" VerticalAlignment="Top" Height="50" Margin="0">
+                            <Grid Background="White" VerticalAlignment="Top" Height="50" Margin="0" MouseDown="steamAccount_MouseDown">
+                                
                                 <Grid VerticalAlignment="Top" Height="50"  Margin="0">
                                     <Grid.Background>
                                         <ImageBrush AlignmentX="Left" AlignmentY="Center" ImageSource="{Binding BGImage}" Stretch="UniformToFill" TileMode="None"/>
                                     </Grid.Background>
-
+                                    <Image Source="{Binding AccountImage}" Stretch="Fill" Height="50" Width="50" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Right"/>
                                     <StackPanel HorizontalAlignment="Stretch" Margin="90,0,0,0">
 
                                         <StackPanel Orientation="Vertical" Margin="5">
+                                            
                                             <TextBlock Text="{Binding Name}" FontSize="12pt" Canvas.Top="2" Canvas.Left="10" FontFamily="Source Sans Pro Semibold" Foreground="White"/>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="Username: " />
@@ -124,14 +126,17 @@
                                                     </TextBlock.Background>
                                                 </TextBlock>
                                             </StackPanel>
+                                            
 
                                         </StackPanel>
+                                        
                                     </StackPanel>
                                 </Grid>
                             </Grid>
                         </DataTemplate>
 
                     </ListView.ItemTemplate>
+                    
                     <ListView.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Login with this account">

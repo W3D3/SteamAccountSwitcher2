@@ -1,16 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace SteamAccountSwitcher2
 {
@@ -29,6 +18,7 @@ namespace SteamAccountSwitcher2
             InitializeComponent();
             comboBoxType.ItemsSource = Enum.GetValues(typeof(AccountType));
             comboBoxType.SelectedIndex = 0;
+            labelIsCached.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -42,33 +32,42 @@ namespace SteamAccountSwitcher2
 
             InitializeComponent();
             this.Title = "Edit Account";
+            newAcc = accToEdit;
 
             comboBoxType.ItemsSource = Enum.GetValues(typeof(AccountType));
             comboBoxType.SelectedItem = accToEdit.Type;
 
-            textBoxName.Text  = accToEdit.Name;
+            textBoxName.Text = accToEdit.Name;
             textBoxUsername.Text = accToEdit.AccountName;
             textBoxPassword.Password = accToEdit.Password;
+
+            textBoxUsername.IsEnabled = accToEdit.CachedAccount;
+            labelIsCached.Visibility = accToEdit.CachedAccount ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
         /// Accessor to the Account associated with the window.
         /// </summary>
-        public SteamAccount Account
-        {
-            get { return newAcc; }
-        }
+        public SteamAccount Account => newAcc;
 
-        
         private void buttonSave_Click(object sender, RoutedEventArgs e)
         {
             if (ValidateInput())
             {
-                newAcc = new SteamAccount();
-                newAcc.Type = (AccountType)comboBoxType.SelectedValue;
-                newAcc.Name = textBoxName.Text;
-                newAcc.AccountName = textBoxUsername.Text;
-                newAcc.Password = textBoxPassword.Password;
+                if (newAcc == null)
+                {
+                    newAcc = new SteamAccount(textBoxUsername.Text, textBoxPassword.Password);
+                    newAcc.Type = (AccountType)comboBoxType.SelectedValue;
+                    newAcc.Name = textBoxName.Text;
+                }
+                else
+                {
+                    newAcc.AccountName = textBoxUsername.Text;
+                    newAcc.Password = textBoxPassword.Password;
+                    newAcc.Name = textBoxName.Text;
+                    newAcc.Type = (AccountType)comboBoxType.SelectedValue;
+                }
+                
 
                 Close();
             }
@@ -78,23 +77,25 @@ namespace SteamAccountSwitcher2
         {
             bool success = true;
             string errorstring = "";
-            if(String.IsNullOrEmpty(textBoxName.Text))
+            if (String.IsNullOrEmpty(textBoxName.Text))
             {
                 success = false;
                 errorstring += "Profile name cannot be empty!\n";
             }
+
             if (String.IsNullOrEmpty(textBoxUsername.Text))
             {
                 success = false;
                 errorstring += "Username cannot be empty!\n";
             }
-            if (String.IsNullOrEmpty(textBoxPassword.Password))
+
+            if (String.IsNullOrEmpty(textBoxPassword.Password) && labelIsCached.Visibility != Visibility.Visible)
             {
                 success = false;
                 errorstring += "Password cannot be empty!\n";
             }
 
-            if(success)
+            if (success)
             {
                 return true;
             }
@@ -103,8 +104,6 @@ namespace SteamAccountSwitcher2
                 MessageBox.Show(errorstring, "Validation problem", MessageBoxButton.OK, MessageBoxImage.Information);
                 return false;
             }
-            
-
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)

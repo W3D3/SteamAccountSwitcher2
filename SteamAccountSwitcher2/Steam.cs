@@ -1,64 +1,55 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
-using System.Windows;
-using System.Windows.Input;
-using WindowsInput;
-using WindowsInput.Native;
 
 namespace SteamAccountSwitcher2
 {
     public class Steam
     {
-
         [System.Runtime.InteropServices.DllImport("User32.dll")]
         private static extern bool SetForegroundWindow(IntPtr handle);
+
         [System.Runtime.InteropServices.DllImport("User32.dll")]
         private static extern bool ShowWindow(IntPtr handle, int nCmdShow);
+
         [System.Runtime.InteropServices.DllImport("User32.dll")]
         private static extern bool IsIconic(IntPtr handle);
 
-        const int SW_RESTORE = 9;
+        private const int SW_RESTORE = 9;
 
-        string installLocation;
+        private string _installLocation;
 
         public Steam(string installLocation)
         {
-            this.installLocation = installLocation;
+            _installLocation = installLocation;
         }
 
         public string InstallLocation
         {
-            get { return installLocation; }
-            set { installLocation = value; }
+            get => _installLocation;
+            set => _installLocation = value;
         }
-        
-        public string InstallDir
-        {
-            get { return installLocation.Replace("Steam.exe", ""); ; }
-        }
+
+        public string InstallDir => _installLocation.Replace("Steam.exe", "");
 
         public bool IsSteamRunning()
         {
-            Process[] pname = Process.GetProcessesByName("steam");
-            return pname.Length > 0;
+            var steamProcesses = Process.GetProcessesByName("steam");
+            return steamProcesses.Length > 0;
         }
 
         public void KillSteam()
         {
-            Process[] proc = Process.GetProcessesByName("steam");
-            if(proc.Length > 0) proc[0].Kill();
+            var steamProcesses = Process.GetProcessesByName("steam");
+            if (steamProcesses.Length > 0) 
+                steamProcesses[0].Kill();
         }
 
         public void CleanKillSteam()
         {
-            Process[] proc = Process.GetProcessesByName("steam");
+            var proc = Process.GetProcessesByName("steam");
             if (proc.Length > 0)
             {
                 proc[0].CloseMainWindow();
@@ -68,68 +59,23 @@ namespace SteamAccountSwitcher2
 
         public void Start()
         {
-            Process p = new Process();
-            if (File.Exists(installLocation))
+            var p = new Process();
+            if (File.Exists(_installLocation))
             {
-                p.StartInfo = new ProcessStartInfo(installLocation);
+                p.StartInfo = new ProcessStartInfo(_installLocation);
                 p.Start();
             }
         }
 
         public bool StartSteamAccount(SteamAccount acc)
         {
-            bool finished = false;
+            var finished = false;
 
-            if (IsSteamRunning())
-            {
-                CleanKillSteam();
-            }
+            if (IsSteamRunning()) CleanKillSteam();
 
-            int waitTimer = 30;
+            var waitTimer = 30;
             while (finished == false)
             {
-
-                if(waitTimer == 0)
-                {
-                    KillSteam();
-                    Debug.WriteLine("Hard killed steam.");
-                }
-                if (IsSteamRunning() == false)
-                {
-                    Process p = new Process();
-                    if (File.Exists(installLocation))
-                    {
-                        p.StartInfo = new ProcessStartInfo(installLocation, acc.StartParameters());
-                        p.Start();
-                        finished = true;
-
-                        return true;
-                    }
-                }
-                Thread.Sleep(100);
-                waitTimer--;
-            }
-            return false;
-        }
-
-        public bool StartSteamAccountSafe(SteamAccount acc)
-        {
-            Process p;
-            bool finished = false;
-            string loginString = "-login " + acc.AccountName + " SAS-SAFEMODE";
-
-            p = new Process();
-            p.StartInfo = new ProcessStartInfo(installLocation, "-fs_log " + loginString);
-
-            if (IsSteamRunning())
-            {
-                CleanKillSteam();
-            }
-
-            int waitTimer = 30;
-            while (finished == false)
-            {
-                Debug.WriteLine("Waiting for steam to exit...");
                 if (waitTimer == 0)
                 {
                     KillSteam();
@@ -138,83 +84,47 @@ namespace SteamAccountSwitcher2
 
                 if (IsSteamRunning() == false)
                 {
-                    p.Start();
-                    finished = true;
-
-                    System.Threading.Thread.Sleep(5000);
-                    bool steamNotUpdating = false;
-                    while(steamNotUpdating == false)
+                    var p = new Process();
+                    if (File.Exists(_installLocation))
                     {
-                        steamNotUpdating = IsSteamReady();
+                        p.StartInfo = new ProcessStartInfo(_installLocation, acc.StartParameters());
+                        p.Start();
+                        finished = true;
+
+                        return true;
                     }
-
-                    if (steamNotUpdating)
-                    {
-                        try
-                        {
-                            Debug.WriteLine("Starting input manager!");
-                            System.Threading.Thread.Sleep(1500);
-                            Debug.WriteLine("Done waiting.");
-
-                            IntPtr handle = p.MainWindowHandle;
-                            if (IsIconic(handle))
-                            {
-                                ShowWindow(handle, SW_RESTORE);
-                            }
-                            //SetForegroundWindow(handle);
-                            //Clipboard.SetText(acc.Username);
-                            InputSimulator s = new InputSimulator();
-                            //s.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
-
-                            Debug.WriteLine("Focused window");
-                            //s.Keyboard.TextEntry(acc.Username);
-                            //System.Threading.Thread.Sleep(100);
-                            //s.Keyboard.KeyDown(VirtualKeyCode.TAB);
-                            //s.Keyboard.KeyUp(VirtualKeyCode.TAB);
-                            //System.Threading.Thread.Sleep(100);
-                            System.Threading.Thread.Sleep(500);
-                            Debug.WriteLine("ENTERING PW NOW");
-                            s.Keyboard.TextEntry(acc.Password);
-                            System.Threading.Thread.Sleep(100);
-                            s.Keyboard.KeyDown(VirtualKeyCode.RETURN);
-
-                            return true;
-                        }
-                        catch
-                        {
-                            MessageBox.Show("Error logging in. Steam not in foreground.");
-                        }
-                        //MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
-                    }
-                    Thread.Sleep(100);
-                    waitTimer--;                    
                 }
+
+                Thread.Sleep(100);
+                waitTimer--;
             }
+
             return false;
         }
 
+        [Obsolete("IsSteamReady is deprecated.")]
         private bool IsSteamReady()
         {
-            string logDir = installLocation.Replace("Steam.exe", "logs\\");
-            string filename = logDir + "bootstrap_log.txt";
+            var logDir = _installLocation.Replace("Steam.exe", "logs\\");
+            var filename = logDir + "bootstrap_log.txt";
 
-            using (FileStream fs = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (var fs = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 // Seek 1024 bytes from the end of the file
                 fs.Seek(-512, SeekOrigin.End);
                 // read 1024 bytes
-                byte[] bytes = new byte[512];
+                var bytes = new byte[512];
                 fs.Read(bytes, 0, 512);
                 // Convert bytes to string
-                string s = Encoding.Default.GetString(bytes);
+                var s = Encoding.Default.GetString(bytes);
                 // or string s = Encoding.UTF8.GetString(bytes);
                 // and output to console
                 //Debug.WriteLine(s);
-                string[] splitter = new string[1];
+                var splitter = new string[1];
                 splitter[0] = "Startup - updater";
-                string[] parts = s.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+                var parts = s.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
 
-                bool steamDone = parts[parts.Length - 1].Contains("Background update loop checking for update.");
+                var steamDone = parts[parts.Length - 1].Contains("Background update loop checking for update.");
                 Debug.WriteLineIf(steamDone, "steam is Done.");
                 return steamDone;
             }
@@ -222,20 +132,15 @@ namespace SteamAccountSwitcher2
 
         public bool LogoutSteam()
         {
-            Process p = new Process();
-            if (File.Exists(installLocation))
+            var p = new Process();
+            if (File.Exists(_installLocation))
             {
-                p.StartInfo = new ProcessStartInfo(installLocation, "-shutdown");
+                p.StartInfo = new ProcessStartInfo(_installLocation, "-shutdown");
                 p.Start();
                 return true;
             }
+
             return false;
-
-        }
-
-        public override string ToString()
-        {
-            return base.ToString();
         }
     }
 }

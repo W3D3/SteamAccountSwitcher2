@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SteamAccountSwitcher2"
         mc:Ignorable="d"
         Title="New Account" Height="230" Width="365" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Icon="images/plus.png">
     <Grid>
@@ -32,9 +31,11 @@
 
             <Label Grid.Row="3">Username</Label>
             <TextBox x:Name="textBoxUsername" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
-            
+
             <Label Grid.Row="4">Password</Label>
             <PasswordBox x:Name="textBoxPassword" Grid.Row="4" Grid.Column="1" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
+            <Label x:Name="labelIsCached" Grid.Row="5" Grid.ColumnSpan="3" Foreground="#FF03A012" Visibility="Visible">Password is optional. Steam Cached Account.</Label>
+
 
             <Button x:Name="buttonSave" Grid.Row="6" Grid.Column="1" Margin="2" Click="buttonSave_Click">Save</Button>
             <Button x:Name="buttonCancel" Grid.Row="6" Grid.Column="2" Margin="2" Click="buttonCancel_Click">Cancel</Button>
