@@ -157,6 +157,7 @@ namespace SteamAccountSwitcher2
         {
             if (listBoxAccounts.SelectedItem != null)
             {
+                MessageBox.Show(sender.ToString());
                 AccountWindow newAccWindow = new AccountWindow((SteamAccount) listBoxAccounts.SelectedItem);
                 newAccWindow.Owner = this;
                 newAccWindow.ShowDialog();
@@ -218,7 +219,9 @@ namespace SteamAccountSwitcher2
 
         private void AskForDeletionOfAccount(SteamAccount selectedAccount)
         {
-            var result = MessageBox.Show("Are you sure you want to delete the account profile of " + selectedAccount.ToString() + "?", "Deletion prompt",
+            var result = MessageBox.Show(
+                "Are you sure you want to delete the account profile of " + selectedAccount.ToString() + "?",
+                "Deletion prompt",
                 MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
             if (result == MessageBoxResult.Yes)
             {

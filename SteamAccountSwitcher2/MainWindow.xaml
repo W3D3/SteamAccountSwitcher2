@@ -13,23 +13,28 @@
                 <ToolBar ToolBarTray.IsLocked="True">
                     <Button x:Name="buttonAdd" Click="buttonAdd_Click">
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="images/plus.png" Width="16" Height="16"/>
+                            <Image Source="images/icons/small/plus.png" Width="16" Height="16"/>
                             <TextBlock Margin="3,0,0,0">New</TextBlock>
                         </StackPanel>
                     </Button>
                     <Button x:Name="buttonScanAccounts" Click="buttonScanAccounts_Click">
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="images/gear.png" />
+                            <Image Source="images/icons/small/synchronize.png" Width="16" Height="16" />
                             <TextBlock Margin="3,0,0,0">Scan Accounts</TextBlock>
                         </StackPanel>
                     </Button>
                     <Button x:Name="buttonEdit" IsEnabled="False" Click="buttonEdit_Click">
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="images/pencil.png" />
+                            <Image Source="images/icons/small/edit.png" Width="16" Height="16" />
                             <TextBlock Margin="3,0,0,0">Edit</TextBlock>
                         </StackPanel>
                     </Button>
-                    <Button Content="Export" ToolBar.OverflowMode="Always" />
+                    <Button x:Name="buttonExport" ToolBar.OverflowMode="Always" >
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="images/icons/smallexport.png" Width="16" Height="16" />
+                            <TextBlock Margin="3,0,0,0">Export</TextBlock>
+                        </StackPanel>
+                    </Button>
                 </ToolBar>
                 <!--<ToolBar ToolBarTray.IsLocked="True" >
                     <Button >
@@ -42,7 +47,7 @@
                 <ToolBar ToolBarTray.IsLocked="True">
                     <Button Name="settingsButton" Click="settingsButton_Click">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="images/gear.png" />
+                        <Image Source="images/icons/small/settings.png" Width="16" Height="16" />
                         <TextBlock Margin="3,0,0,0">Settings</TextBlock>
                     </StackPanel>
                     </Button>
@@ -110,6 +115,26 @@
                             <Grid Background="White" VerticalAlignment="Top" Height="50" Margin="0" MouseDown="steamAccount_MouseDown">
                                 
                                 <Grid VerticalAlignment="Top" Height="50"  Margin="0">
+                                    <Grid.ContextMenu>
+                                        <ContextMenu x:Name="ContextMenu">
+                                            <MenuItem Header="Login with this account">
+                                                <MenuItem.Icon>
+                                                    <Image Width="16" Height="16" Source="images/pencil-button.png" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <Separator />
+                                            <MenuItem Header="Edit" Click="listContextMenuEdit_Click">
+                                                <MenuItem.Icon>
+                                                    <Image Width="16" Height="16" Source="images/pencil-button.png" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Header="Remove" Click="listContextMenuRemove_Click">
+                                                <MenuItem.Icon>
+                                                    <Image Width="16" Height="16" Source="images/cross-button.png" />
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </Grid.ContextMenu>
                                     <Grid.Background>
                                         <ImageBrush AlignmentX="Left" AlignmentY="Center" ImageSource="{Binding BGImage}" Stretch="UniformToFill" TileMode="None"/>
                                     </Grid.Background>
@@ -134,30 +159,15 @@
                                     </StackPanel>
                                 </Grid>
                             </Grid>
+
                         </DataTemplate>
+                        
 
                     </ListView.ItemTemplate>
                     
-                    <ListView.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Login with this account">
-                                <MenuItem.Icon>
-                                    <Image Width="16" Height="16" Source="images/pencil-button.png" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <Separator />
-                            <MenuItem Header="Edit" Click="listContextMenuEdit_Click">
-                                <MenuItem.Icon>
-                                    <Image Width="16" Height="16" Source="images/pencil-button.png" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Header="Remove" Click="listContextMenuRemove_Click">
-                                <MenuItem.Icon>
-                                    <Image Width="16" Height="16" Source="images/cross-button.png" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                        </ContextMenu>
-                    </ListView.ContextMenu>
+
+                        
+
                 </ListView>
                 
 

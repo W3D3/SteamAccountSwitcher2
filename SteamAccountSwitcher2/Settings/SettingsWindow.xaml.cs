@@ -14,7 +14,7 @@ namespace SteamAccountSwitcher2
         public SettingsWindow()
         {
             InitializeComponent();
-            
+
             RefreshGUIWithSettings();
         }
 

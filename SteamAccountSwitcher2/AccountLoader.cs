@@ -66,6 +66,7 @@ namespace SteamAccountSwitcher2
                             _password = AskForPassword();
                             encryptionKey = _password;
                         }
+
                         break;
                     default:
                         throw new ArgumentException("Unsupported EncryptionType type!");
@@ -105,6 +106,7 @@ namespace SteamAccountSwitcher2
             {
                 System.Environment.Exit(1);
             }
+
             return passwordWindow.Password;
         }
 

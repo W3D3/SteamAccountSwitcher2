@@ -20,22 +20,30 @@ namespace SteamAccountSwitcher2
     public partial class PasswordWindow : Window
     {
         private string _password;
-        private bool _repeatPassword;
+        private readonly bool _setNewPw;
 
-        public PasswordWindow(bool repeatPassword)
+        /// <summary>
+        /// A password window where the user enters a password (duh?)
+        /// </summary>
+        /// <param name="setNewPw">Set to true to make the user enter a password twice for verification</param>
+        public PasswordWindow(bool setNewPw)
         {
-            _repeatPassword = repeatPassword;
+            _setNewPw = setNewPw;
             InitializeComponent();
             passwordBox.Focus();
-            if (_repeatPassword)
+            if (_setNewPw)
             {
+                PwWindow.Title = "Set new password";
                 PwWindow.Height = 140;
                 repeatPasswordPanel.Visibility = Visibility.Visible;
+                Image.Source = ImageHelper.GetIconImageSource("key");
             }
             else
             {
+                PwWindow.Title = "Decrypt accounts with password";
                 PwWindow.Height = 120;
                 repeatPasswordPanel.Visibility = Visibility.Collapsed;
+                Image.Source = ImageHelper.GetIconImageSource("unlock");
             }
         }
 
@@ -43,14 +51,15 @@ namespace SteamAccountSwitcher2
 
         private void ButtonOK_Click(object sender, RoutedEventArgs e)
         {
-            if (passwordBox.Password == passwordBoxRepeat.Password || !_repeatPassword)
+            if (passwordBox.Password == passwordBoxRepeat.Password || !_setNewPw)
             {
                 _password = passwordBox.Password;
                 Close();
             }
             else
             {
-                MessageBox.Show("Passwords do not match. Try again.", "Passwords not matching", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show("Passwords do not match. Try again.", "Passwords not matching", MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation);
             }
         }
 

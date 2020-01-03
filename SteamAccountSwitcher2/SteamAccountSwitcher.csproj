@@ -138,6 +138,7 @@
     </Compile>
     <Compile Include="EncryptionType.cs" />
     <Compile Include="Encryption\EncryptionHelper.cs" />
+    <Compile Include="ImageHelper.cs" />
     <Compile Include="PasswordWindow.xaml.cs">
       <DependentUpon>PasswordWindow.xaml</DependentUpon>
     </Compile>
@@ -261,15 +262,50 @@
     <Resource Include="images\plus.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="plus.png" />
+    <Resource Include="images\icons\lock.png" />
+    <Resource Include="images\icons\unlock.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\key.png" />
+    <Resource Include="images\icons\download.png" />
+    <Resource Include="images\icons\export.png" />
+    <Resource Include="images\icons\external.png" />
+    <Resource Include="images\icons\full_trash.png" />
+    <Resource Include="images\icons\import.png" />
+    <Resource Include="images\icons\internal.png" />
+    <Resource Include="images\icons\key.png" />
+    <Resource Include="images\icons\minus.png" />
+    <Resource Include="images\icons\multiple_inputs.png" />
+    <Resource Include="images\icons\plus.png" />
+    <Resource Include="images\icons\search.png" />
+    <Resource Include="images\icons\settings.png" />
+    <Resource Include="images\icons\synchronize.png" />
+    <Resource Include="images\icons\upload.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="key.png" />
+    <Resource Include="images\icons\edit.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\icons\small\download.png" />
+    <Resource Include="images\icons\small\edit.png" />
+    <Resource Include="images\icons\small\export.png" />
+    <Resource Include="images\icons\small\external.png" />
+    <Resource Include="images\icons\small\full_trash.png" />
+    <Resource Include="images\icons\small\import.png" />
+    <Resource Include="images\icons\small\internal.png" />
+    <Resource Include="images\icons\small\key.png" />
+    <Resource Include="images\icons\small\lock.png" />
+    <Resource Include="images\icons\small\minus.png" />
+    <Resource Include="images\icons\small\multiple_inputs.png" />
+    <Resource Include="images\icons\small\plus.png" />
+    <Resource Include="images\icons\small\search.png" />
+    <Resource Include="images\icons\small\settings.png" />
+    <Resource Include="images\icons\small\synchronize.png" />
+    <Resource Include="images\icons\small\unlock.png" />
+    <Resource Include="images\icons\small\upload.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
