@@ -4,13 +4,22 @@ namespace SteamAccountSwitcher2.Settings
 {
     public class UserSettings
     {
+        private bool _globalSettings;
+
         private string _steamInstallDir;
         private EncryptionType _ecryptionType;
         private bool _autostart;
 
-        public UserSettings(bool fromProperties)
+
+        public UserSettings() : this(false)
         {
-            if (fromProperties)
+
+        }
+
+        public UserSettings(bool global)
+        {
+            _globalSettings = global;
+            if (_globalSettings)
             {
                 _autostart = Properties.Settings.Default.autostart;
                 _steamInstallDir = Properties.Settings.Default.steamInstallDir;
@@ -22,19 +31,32 @@ namespace SteamAccountSwitcher2.Settings
         public string SteamInstallDir
         {
             get => _steamInstallDir;
-            set => _steamInstallDir = value;
+            set
+            {
+                _steamInstallDir = value; 
+                if(_globalSettings) Properties.Settings.Default.steamInstallDir = value; 
+            }
         }
 
         public EncryptionType EcryptionType
         {
             get => _ecryptionType;
-            set => _ecryptionType = value;
+            set
+            {
+                _ecryptionType = value;
+                if (_globalSettings) 
+                    Properties.Settings.Default.encryption = value.ToString();
+            }
         }
 
         public bool Autostart
         {
             get => _autostart;
-            set => _autostart = value;
+            set
+            {
+                _autostart = value;
+                if (_globalSettings) Properties.Settings.Default.autostart = value;
+            }
         }
 
         protected bool Equals(UserSettings otherUserSettings)

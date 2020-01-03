@@ -45,27 +45,32 @@
                     </Grid.ColumnDefinitions>
                     <GroupBox Margin="5,5,5,0" FontSize="11" FontWeight="Bold"
                               Height="119" VerticalAlignment="Top" Grid.ColumnSpan="2">
-                        <GroupBox.Header>EncryptionType Method</GroupBox.Header>
+                        <GroupBox.Header>Encryption Method</GroupBox.Header>
                         <Grid Margin="5">
                             <StackPanel>
-                                <RadioButton x:Name="radioButtonBasicEnc" Content="Basic" Margin="5,5,5,0" />
+                                <RadioButton x:Name="radioButtonBasicEnc" Content="Basic" Margin="5,5,5,0" Checked="radioButtonBasicEnc_Checked" />
                                 <Label FontSize="10" Margin="0" FontWeight="Normal">Encrypts Accounts with 256-bit AES key</Label>
                                 <RadioButton x:Name="radioButtonPasswordEnc" Content="Master Password" Margin="5,5,5,0"
-                                             ToolTip="Forgetting your master password will lead to the loss of all account access through SteamAccountSwitcher!" />
-                                <Label FontSize="10" Margin="0" FontWeight="Normal">Encrypts Accounts with your own password</Label>
+                                             ToolTip="Forgetting your master password will lead to the loss of all account access through SteamAccountSwitcher!" Checked="radioButtonPasswordEnc_Checked" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label FontSize="10" Margin="0" FontWeight="Normal">Encrypts accounts with a password that has to be entered on start</Label>
+                                    <!--<Button Content="Set new password" FontWeight="Normal" HorizontalAlignment="Right" HorizontalContentAlignment="Center"/>
+                               -->
+                                    </StackPanel>
+                                
                             </StackPanel>
                         </Grid>
                     </GroupBox>
-                    <!-- <GroupBox Margin="5,129,5,0" FontSize="11" FontWeight="Bold"
-                              Height="94" VerticalAlignment="Top" Grid.ColumnSpan="2">
-                        <GroupBox.Header>Login Method</GroupBox.Header>
+                    <GroupBox Margin="5,129,5,0" FontSize="11" FontWeight="Bold"
+                              Height="53" VerticalAlignment="Top" Grid.ColumnSpan="2" x:Name="PasswordOptionsGroupBox" Visibility="Collapsed">
+                        <GroupBox.Header>Password Options</GroupBox.Header>
                         <Grid Margin="5">
                             <StackPanel>
-                                <CheckBox x:Name="safeModeToggle" Content="Use SafeMode" FontWeight="Medium" />
-                                <TextBlock FontSize="10" FontWeight="Normal" TextWrapping="Wrap" Margin="5">SafeMode uses different login method that doesn't expose your password in the task manager. It is slower and you cannot move your mouse during login!</TextBlock>
+                                <Button x:Name="ButtonSetPassword" Content="Set new password" FontWeight="Normal" HorizontalAlignment="Left" Padding="20,2" Click="ButtonSetPassword_Click"/>
+                                <!--<TextBlock FontSize="10" FontWeight="Normal" TextWrapping="Wrap" Margin="5">SafeMode uses different login method that doesn't expose your password in the task manager. It is slower and you cannot move your mouse during login!</TextBlock>-->
                             </StackPanel>
                         </Grid>
-                    </GroupBox>-->
+                    </GroupBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Details">
@@ -81,8 +86,9 @@
 
         </TabControl>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Button x:Name="buttonDiscard" Content="Discard" Margin="5,5,5,5" Height="24" Width="106"/>
-            <Button x:Name="buttonApply" Content="Apply" Margin="5,5,5,5" Height="24" Width="106" Click="buttonApply_Click"/>
+            <Button x:Name="buttonOk" Content="OK" Margin="5,5,5,5" Height="24" Width="90" Click="buttonOk_Click" IsDefault="True"/>
+            <Button x:Name="buttonCancel" Content="Cancel" Margin="0,5,5,5" Height="24" Width="90" Click="buttonCancel_Click"/>
+            <Button x:Name="buttonApply" Content="Apply" Margin="0,5,5,5" Height="24" Width="90" Click="buttonApply_Click"/>
         </StackPanel>
         
     </Grid>

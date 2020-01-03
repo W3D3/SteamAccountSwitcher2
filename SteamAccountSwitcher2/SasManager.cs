@@ -14,7 +14,7 @@ namespace SteamAccountSwitcher2
 
         private Steam _steamInstallation;
         private CachedAccountManager _cachedAccountManager;
-        private UserSettings _userSettings;
+        private UserSettings _globalSettings;
         private AccountLoader loader;
         private SteamStatus _steamStatus;
 
@@ -22,8 +22,8 @@ namespace SteamAccountSwitcher2
 
         private SasManager()
         {
-            _userSettings = new UserSettings(true);
-            _steamInstallation = new Steam(UserSettings.SteamInstallDir);
+            _globalSettings = new UserSettings(true);
+            _steamInstallation = new Steam(GlobalSettings.SteamInstallDir);
 
             _cachedAccountManager = new CachedAccountManager(_steamInstallation);
             _steamStatus = new SteamStatus();
@@ -50,24 +50,24 @@ namespace SteamAccountSwitcher2
 
         public ObservableCollection<SteamAccount> AccountList => _accountList;
 
-        public UserSettings UserSettings
+        public UserSettings GlobalSettings
         {
-            get => _userSettings;
-            set => _userSettings = value;
+            get => _globalSettings
+                .Copy(); // Only give copies so no accidental global changes can be made, copy is non global
         }
 
         public void SetSteamInstallDir(string installDir)
         {
             if (installDir != null)
             {
-                Properties.Settings.Default.steamInstallDir = installDir;
                 _steamInstallation = new Steam(installDir);
+                _globalSettings.SteamInstallDir = installDir;
             }
         }
 
         public void InitializeAccountsFromFile()
         {
-            loader = new AccountLoader(UserSettings.EcryptionType);
+            loader = new AccountLoader(GlobalSettings.EcryptionType);
 
             if (loader.AccountFileExists())
             {
@@ -111,8 +111,6 @@ namespace SteamAccountSwitcher2
 
         public void SetAutoStart(bool autostart)
         {
-            Properties.Settings.Default.autostart = autostart;
-
             try
             {
                 Microsoft.Win32.RegistryKey key =
@@ -128,6 +126,9 @@ namespace SteamAccountSwitcher2
                 {
                     key.DeleteValue(curAssembly.GetName().Name);
                 }
+
+                // Success
+                _globalSettings.Autostart = autostart;
             }
             catch
             {
@@ -148,27 +149,46 @@ namespace SteamAccountSwitcher2
 
         public void ApplyUserSettings(UserSettings newSettings)
         {
-            if (newSettings.Autostart != _userSettings.Autostart)
+            if (newSettings.Autostart != _globalSettings.Autostart)
             {
                 SetAutoStart(newSettings.Autostart);
             }
 
-            if (newSettings.SteamInstallDir != _userSettings.SteamInstallDir)
+            if (newSettings.SteamInstallDir != _globalSettings.SteamInstallDir)
             {
                 SetSteamInstallDir(newSettings.SteamInstallDir);
             }
 
-            if (newSettings.EcryptionType != _userSettings.EcryptionType)
+            if (newSettings.EcryptionType != _globalSettings.EcryptionType)
             {
                 SetEncryption(newSettings.EcryptionType);
             }
-
-            _userSettings = newSettings;
         }
 
-        private void SetEncryption(EncryptionType newEcryption)
+        public void SetEncryption(EncryptionType newEcryptionType)
         {
-            //loader
+            switch (newEcryptionType)
+            {
+                case EncryptionType.Password:
+                    PasswordWindow passwordWindow = new PasswordWindow(true);
+                    passwordWindow.ShowDialog();
+                    var password = passwordWindow.Password;
+                    if (string.IsNullOrEmpty(password))
+                    {
+                        Debug.WriteLine("Will not change encryption to empty password");
+                        return;
+                    }
+
+                    loader.Password = password;
+                    break;
+                case EncryptionType.Basic:
+                    loader.Password = null;
+                    break;
+            }
+
+            loader.EncryptionType = newEcryptionType;
+            loader.SaveAccounts(AccountList.ToList());
+            _globalSettings.EcryptionType = newEcryptionType;
         }
     }
 }

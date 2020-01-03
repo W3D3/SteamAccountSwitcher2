@@ -137,11 +137,10 @@
       <DependentUpon>AccountWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="EncryptionType.cs" />
-    <Compile Include="NuGet.Modules\AesHelper.cs" />
+    <Compile Include="Encryption\EncryptionHelper.cs" />
     <Compile Include="PasswordWindow.xaml.cs">
       <DependentUpon>PasswordWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings\Settings.cs" />
     <Compile Include="SasManager.cs" />
     <Compile Include="Settings\UserSettings.cs" />
     <Compile Include="SteamStatus.cs" />
@@ -261,6 +260,16 @@
   <ItemGroup>
     <Resource Include="images\plus.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="plus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\key.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="key.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

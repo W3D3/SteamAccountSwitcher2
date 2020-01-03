@@ -19,9 +19,44 @@ namespace SteamAccountSwitcher2
     /// </summary>
     public partial class PasswordWindow : Window
     {
-        public PasswordWindow()
+        private string _password;
+        private bool _repeatPassword;
+
+        public PasswordWindow(bool repeatPassword)
         {
+            _repeatPassword = repeatPassword;
             InitializeComponent();
+            passwordBox.Focus();
+            if (_repeatPassword)
+            {
+                PwWindow.Height = 140;
+                repeatPasswordPanel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                PwWindow.Height = 120;
+                repeatPasswordPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        public string Password => _password;
+
+        private void ButtonOK_Click(object sender, RoutedEventArgs e)
+        {
+            if (passwordBox.Password == passwordBoxRepeat.Password || !_repeatPassword)
+            {
+                _password = passwordBox.Password;
+                Close();
+            }
+            else
+            {
+                MessageBox.Show("Passwords do not match. Try again.", "Passwords not matching", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+        }
+
+        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

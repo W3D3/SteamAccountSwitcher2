@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
-using NuGet.Modules;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
+using System.Windows;
+using SteamAccountSwitcher2.Encryption;
 
 namespace SteamAccountSwitcher2
 {
@@ -45,30 +47,65 @@ namespace SteamAccountSwitcher2
 
         public List<SteamAccount> LoadAccounts()
         {
-            string encryptionKey;
-            switch (_encryptionType)
+            bool retry = true;
+            while (retry)
             {
-                case EncryptionType.Basic:
-                    encryptionKey = BasicKey;
-                    break;
-                case EncryptionType.Password:
-                    encryptionKey = _password;
-                    break;
-                default:
-                    throw new ArgumentException("Unsupported EncryptionType type!");
+                string encryptionKey;
+                switch (_encryptionType)
+                {
+                    case EncryptionType.Basic:
+                        encryptionKey = BasicKey;
+                        break;
+                    case EncryptionType.Password:
+                        if (!string.IsNullOrEmpty(_password))
+                        {
+                            encryptionKey = _password;
+                        }
+                        else
+                        {
+                            _password = AskForPassword();
+                            encryptionKey = _password;
+                        }
+                        break;
+                    default:
+                        throw new ArgumentException("Unsupported EncryptionType type!");
+                }
+
+                try
+                {
+                    string encrypted = File.ReadAllText(this._directory + "accounts.ini");
+                    string decrypted = EncryptionHelper.Decrypt(encrypted, encryptionKey);
+                    List<SteamAccount> accountList = JsonConvert.DeserializeObject<List<SteamAccount>>(decrypted);
+                    return accountList;
+                }
+                catch (CryptographicException e)
+                {
+                    MessageBox.Show("Try entering the password again.", "Could not decrypt");
+                    _password = null;
+                }
+                catch (JsonException e)
+                {
+                    MessageBox.Show(e.Message, "Fatal Error when reading accounts file!");
+                    retry = false;
+                }
+                catch (Exception e)
+                {
+                    retry = false;
+                }
             }
 
-            try
+            return null;
+        }
+
+        private string AskForPassword()
+        {
+            PasswordWindow passwordWindow = new PasswordWindow(false);
+            passwordWindow.ShowDialog();
+            if (passwordWindow.Password == null)
             {
-                byte[] encrypted = File.ReadAllBytes(this._directory + "accounts.ini");
-                string decrypted = GetString(AesHelper.Decrypt(encrypted, encryptionKey));
-                List<SteamAccount> accountList = JsonConvert.DeserializeObject<List<SteamAccount>>(decrypted);
-                return accountList;
+                System.Environment.Exit(1);
             }
-            catch (Exception e)
-            {
-                throw new ApplicationException("Fatal Error when reading accounts file!", e);
-            }
+            return passwordWindow.Password;
         }
 
         public void SaveAccounts(List<SteamAccount> list)
@@ -88,9 +125,9 @@ namespace SteamAccountSwitcher2
 
 
             string output = JsonConvert.SerializeObject(list, Formatting.None);
-            byte[] encrypted = AesHelper.Encrypt(GetBytes(output), encryptionKey);
+            string encrypted = EncryptionHelper.Encrypt(output, encryptionKey);
 
-            File.WriteAllBytes(AccountsFilePath, encrypted);
+            File.WriteAllText(AccountsFilePath, encrypted);
         }
 
         public bool AccountFileExists()
