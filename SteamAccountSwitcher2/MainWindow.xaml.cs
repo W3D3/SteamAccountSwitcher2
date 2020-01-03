@@ -207,5 +207,14 @@ namespace SteamAccountSwitcher2
             }
 
         }
+
+        private void OnKeyDownHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                MessageBox.Show("Wanna delete " + listBoxAccounts.SelectedItem.ToString());
+                //TODO really ask for deletion
+            }
+        }
     }
 }

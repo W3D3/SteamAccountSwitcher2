@@ -17,6 +17,12 @@
                             <TextBlock Margin="3,0,0,0">New</TextBlock>
                         </StackPanel>
                     </Button>
+                    <Button x:Name="buttonScanAccounts" Click="buttonScanAccounts_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="images/gear.png" />
+                            <TextBlock Margin="3,0,0,0">Scan Accounts</TextBlock>
+                        </StackPanel>
+                    </Button>
                     <Button x:Name="buttonEdit" IsEnabled="False" Click="buttonEdit_Click">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="images/pencil.png" />
@@ -38,12 +44,6 @@
                     <StackPanel Orientation="Horizontal">
                         <Image Source="images/gear.png" />
                         <TextBlock Margin="3,0,0,0">Settings</TextBlock>
-                    </StackPanel>
-                    </Button>
-                    <Button x:Name="buttonScanAccounts" Click="buttonScanAccounts_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="images/gear.png" />
-                        <TextBlock Margin="3,0,0,0">Scan Accounts</TextBlock>
                     </StackPanel>
                     </Button>
                 </ToolBar>
@@ -103,7 +103,8 @@
                 <ListView x:Name="listBoxAccounts" Padding="-6,0,-6,0"
                           dd:DragDrop.IsDragSource="True"
                           dd:DragDrop.IsDropTarget="True"
-                          dd:DragDrop.UseDefaultDragAdorner="True" SelectionChanged="listBoxAccounts_SelectionChanged">
+                          dd:DragDrop.UseDefaultDragAdorner="True" SelectionChanged="listBoxAccounts_SelectionChanged"
+                          KeyDown="OnKeyDownHandler">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid Background="White" VerticalAlignment="Top" Height="50" Margin="0" MouseDown="steamAccount_MouseDown">
