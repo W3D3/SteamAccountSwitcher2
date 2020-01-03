@@ -9,65 +9,93 @@ namespace SteamAccountSwitcher2
     class AccountLoader
     {
         EncryptionType _encryptionType;
-        string directory;
+        string _directory;
+        private string _password;
 
-        const string basicPassword = "OQPTu9Rf4u4vkywWy+GCBptmXeqC0e456SR3N31vutU=";
+        const string BasicKey = "OQPTu9Rf4u4vkywWy+GCBptmXeqC0e456SR3N31vutU=";
 
         public AccountLoader(EncryptionType e)
         {
             _encryptionType = e;
-            this.directory = AppDomain.CurrentDomain.BaseDirectory;
+            this._directory = AppDomain.CurrentDomain.BaseDirectory;
         }
 
         public AccountLoader(EncryptionType e, string directory)
         {
             _encryptionType = e;
-            this.directory = directory;
+            this._directory = directory;
         }
 
-        public List<SteamAccount> LoadBasicAccounts()
+        public EncryptionType EncryptionType
         {
+            get => _encryptionType;
+            set => _encryptionType = value;
+        }
 
-            if (_encryptionType == EncryptionType.Basic)
+        /// <summary>
+        /// Password that is used only when Encryption Type is set to Password!
+        /// </summary>
+        public string Password
+        {
+            get => _password;
+            set => _password = value;
+        }
+
+        public string AccountsFilePath => Path.Combine(_directory, "accounts.ini");
+
+        public List<SteamAccount> LoadAccounts()
+        {
+            string encryptionKey;
+            switch (_encryptionType)
             {
-                try
-                {
-                    byte[] encrypted = File.ReadAllBytes(this.directory + "accounts.ini");
-                    string decrypted = GetString(AesHelper.Decrypt(encrypted, basicPassword));
-                    List<SteamAccount> accountList = JsonConvert.DeserializeObject<List<SteamAccount>>(decrypted);
-                    return accountList;
-                }
-                catch(Exception e)
-                {
-                    throw new ApplicationException("Fatal Error when reading accounts file!");
-                }
+                case EncryptionType.Basic:
+                    encryptionKey = BasicKey;
+                    break;
+                case EncryptionType.Password:
+                    encryptionKey = _password;
+                    break;
+                default:
+                    throw new ArgumentException("Unsupported EncryptionType type!");
             }
-            else
+
+            try
             {
-                throw new ArgumentException("Unsupported EncryptionType type!");
+                byte[] encrypted = File.ReadAllBytes(this._directory + "accounts.ini");
+                string decrypted = GetString(AesHelper.Decrypt(encrypted, encryptionKey));
+                List<SteamAccount> accountList = JsonConvert.DeserializeObject<List<SteamAccount>>(decrypted);
+                return accountList;
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException("Fatal Error when reading accounts file!", e);
             }
         }
 
-        public bool SaveBasicAccounts(List<SteamAccount> list)
+        public void SaveAccounts(List<SteamAccount> list)
         {
-            if (_encryptionType == EncryptionType.Basic)
+            string encryptionKey;
+            switch (_encryptionType)
             {
-                string output = JsonConvert.SerializeObject(list, Formatting.None);
-                //MessageBox.Show(output);
-                byte[] encrypted = AesHelper.Encrypt(GetBytes(output), basicPassword);
+                case EncryptionType.Basic:
+                    encryptionKey = BasicKey;
+                    break;
+                case EncryptionType.Password:
+                    encryptionKey = _password;
+                    break;
+                default:
+                    throw new ArgumentException("Unsupported EncryptionType type!");
+            }
 
-                File.WriteAllBytes(directory + "accounts.ini", encrypted);
-            }
-            else
-            {
-                throw new ArgumentException("Unsupported EncryptionType type is set!");
-            }
-            return false;
+
+            string output = JsonConvert.SerializeObject(list, Formatting.None);
+            byte[] encrypted = AesHelper.Encrypt(GetBytes(output), encryptionKey);
+
+            File.WriteAllBytes(AccountsFilePath, encrypted);
         }
 
         public bool AccountFileExists()
         {
-            return File.Exists(directory + "accounts.ini");
+            return File.Exists(AccountsFilePath);
         }
 
         private static byte[] GetBytes(string str)
@@ -83,7 +111,5 @@ namespace SteamAccountSwitcher2
             System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
             return new string(chars);
         }
-
-
     }
 }

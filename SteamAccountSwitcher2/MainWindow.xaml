@@ -13,7 +13,7 @@
                 <ToolBar ToolBarTray.IsLocked="True">
                     <Button x:Name="buttonAdd" Click="buttonAdd_Click">
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="images/plus.png" />
+                            <Image Source="images/plus.png" Width="16" Height="16"/>
                             <TextBlock Margin="3,0,0,0">New</TextBlock>
                         </StackPanel>
                     </Button>

@@ -100,7 +100,7 @@ namespace SteamAccountSwitcher2
             set => this._type = value;
         }
 
-        public string AccountImage => Path.Combine(SasManager.Instance.SteamInstance.InstallDir, "config\\avatarcache", SteamId + ".png");
+        public string AccountImage => Path.Combine(SasManager.Instance.SteamInstallation.InstallDir, "config\\avatarcache", SteamId + ".png");
 
         public string BGImage => ImageFolder + "/acc-bg-" + _type.ToString().ToLower() + ".jpg";
 
@@ -118,12 +118,12 @@ namespace SteamAccountSwitcher2
 
         public override string ToString()
         {
-            return _name + "~ (user: " + AccountName + ")";
+            return Name + " (Username: " + AccountName + ")";
         }
 
         protected bool Equals(SteamAccount other)
         {
-            return _name == other._name && _accountName == other._accountName && _password == other._password && _type == other._type && _steamId == other._steamId && _personaName == other._personaName && _cachedAccount == other._cachedAccount;
+            return Name == other._name && _accountName == other._accountName && _password == other._password && _type == other._type && _steamId == other._steamId && _personaName == other._personaName && _cachedAccount == other._cachedAccount;
         }
 
         public override bool Equals(object obj)

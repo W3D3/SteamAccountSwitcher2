@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using SteamAccountSwitcher2.Settings;
 
 namespace SteamAccountSwitcher2
 {
@@ -8,46 +9,48 @@ namespace SteamAccountSwitcher2
     /// </summary>
     public partial class SettingsWindow : Window
     {
-        private readonly Properties.Settings _settings;
+        private UserSettings _windowSettings;
 
         public SettingsWindow()
         {
             InitializeComponent();
-            _settings = Properties.Settings.Default;
+            _windowSettings = SasManager.Instance.UserSettings.Copy();
 
-            textSteamInstallDir.Text = _settings.steamInstallDir;
-            checkBoxAutostart.IsChecked = _settings.autostart;
+            textSteamInstallDir.Text = _windowSettings.SteamInstallDir;
+            checkBoxAutostart.IsChecked = _windowSettings.Autostart;
 
             //Initialize Settings
             try
             {
-                EncryptionType enc = (EncryptionType)Enum.Parse(typeof(EncryptionType), Properties.Settings.Default.encryption);
-                if (enc == EncryptionType.Basic)
+                EncryptionType enc = (EncryptionType) Enum.Parse(typeof(EncryptionType), _windowSettings.EcryptionType);
+                switch (enc)
                 {
-                    radioButtonBasicEnc.IsChecked = true;
-                }
-                if (enc == EncryptionType.Password)
-                {
-                    radioButtonPasswordEnc.IsChecked = true;
+                    case EncryptionType.Basic:
+                        radioButtonBasicEnc.IsChecked = true;
+                        break;
+                    case EncryptionType.Password:
+                        radioButtonPasswordEnc.IsChecked = true;
+                        break;
                 }
             }
-            catch (ArgumentException)
+            catch (ArgumentException e)
             {
-                MessageBox.Show("EncryptionType type not supported! Make sure you are using the latest SteamAccountSwitcher!", "Unspported EncryptionType", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(
+                    "EncryptionType type not supported! Make sure you are using the latest SteamAccountSwitcher!",
+                    "Unspported EncryptionType", MessageBoxButton.OK, MessageBoxImage.Error);
                 radioButtonBasicEnc.IsChecked = false;
                 radioButtonBasicEnc.IsEnabled = false;
                 radioButtonPasswordEnc.IsChecked = false;
                 radioButtonPasswordEnc.IsEnabled = false;
             }
-
-            /*bool safemode = Properties.Settings.Default.safemode;
-            safeModeToggle.IsChecked = safemode;*/
-
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            /*Properties.Settings.Default.safemode = safeModeToggle.IsChecked.Value;*/
+            if (!SasManager.Instance.UserSettings.Equals(_windowSettings))
+            {
+                MessageBox.Show("Discard changes?");
+            }
         }
 
         private void buttonBrowseSteamInstallDir_Click(object sender, RoutedEventArgs e)
@@ -55,21 +58,24 @@ namespace SteamAccountSwitcher2
             string installDir = UserInteraction.selectSteamDirectory(@"C:\Program Files (x86)\Steam");
             if (installDir != null)
             {
-                SasManager.Instance.setSteamInstallDir(installDir);
-                textSteamInstallDir.Text = _settings.steamInstallDir;
+                _windowSettings.SteamInstallDir = installDir;
+                textSteamInstallDir.Text = _windowSettings.SteamInstallDir;
             }
         }
 
         private void checkBox_Checked(object sender, RoutedEventArgs e)
         {
-            SasManager.Instance.setAutoStart(true);
+            _windowSettings.Autostart = true;
         }
 
         private void checkBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            SasManager.Instance.setAutoStart(false);
+            _windowSettings.Autostart = false;
         }
 
-
+        private void buttonApply_Click(object sender, RoutedEventArgs e)
+        {
+            SasManager.Instance.ApplyUserSettings(_windowSettings);
+        }
     }
 }

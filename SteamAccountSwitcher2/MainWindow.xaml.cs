@@ -41,7 +41,7 @@ namespace SteamAccountSwitcher2
 
             try
             {
-                SasManager.Instance.initializeAccountsFromFile();
+                SasManager.Instance.InitializeAccountsFromFile();
             }
             catch
             {
@@ -80,7 +80,7 @@ namespace SteamAccountSwitcher2
                 }
                 else
                 {
-                    SasManager.Instance.setSteamInstallDir(installDir);
+                    SasManager.Instance.SetSteamInstallDir(installDir);
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace SteamAccountSwitcher2
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            SasManager.Instance.saveOnExit();
+            SasManager.Instance.SaveAccounts();
 
             if (WindowState == WindowState.Maximized)
             {
@@ -150,16 +150,14 @@ namespace SteamAccountSwitcher2
 
         private void listContextMenuRemove_Click(object sender, RoutedEventArgs e)
         {
-            SasManager.Instance.AccountList.Remove((SteamAccount)listBoxAccounts.SelectedItem);
-            buttonEdit.IsEnabled = false; // Cannot edit deleted account
-            listBoxAccounts.Items.Refresh();
+            AskForDeletionOfAccount((SteamAccount) listBoxAccounts.SelectedItem);
         }
 
         private void listContextMenuEdit_Click(object sender, RoutedEventArgs e)
         {
             if (listBoxAccounts.SelectedItem != null)
             {
-                AccountWindow newAccWindow = new AccountWindow((SteamAccount)listBoxAccounts.SelectedItem);
+                AccountWindow newAccWindow = new AccountWindow((SteamAccount) listBoxAccounts.SelectedItem);
                 newAccWindow.Owner = this;
                 newAccWindow.ShowDialog();
                 listBoxAccounts.Items.Refresh();
@@ -202,18 +200,31 @@ namespace SteamAccountSwitcher2
             if (e.ClickCount >= 2)
             {
                 MessageBox.Show(listBoxAccounts.SelectedItem.ToString());
-                SteamAccount selectedAcc = (SteamAccount)listBoxAccounts.SelectedItem;
-                SasManager.Instance.startSteamWithAccount(selectedAcc);
+                SteamAccount selectedAcc = (SteamAccount) listBoxAccounts.SelectedItem;
+                SasManager.Instance.StartSteamWithAccount(selectedAcc);
             }
-
         }
 
+        /// <summary>
+        /// Handles key downs on listBox with steam accounts
+        /// </summary>
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Delete)
             {
-                MessageBox.Show("Wanna delete " + listBoxAccounts.SelectedItem.ToString());
-                //TODO really ask for deletion
+                AskForDeletionOfAccount((SteamAccount) listBoxAccounts.SelectedItem);
+            }
+        }
+
+        private void AskForDeletionOfAccount(SteamAccount selectedAccount)
+        {
+            var result = MessageBox.Show("Are you sure you want to delete the account profile of " + selectedAccount.ToString() + "?", "Deletion prompt",
+                MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+            if (result == MessageBoxResult.Yes)
+            {
+                SasManager.Instance.AccountList.Remove(selectedAccount);
+                buttonEdit.IsEnabled = false; // Cannot edit deleted account
+                listBoxAccounts.Items.Refresh();
             }
         }
     }

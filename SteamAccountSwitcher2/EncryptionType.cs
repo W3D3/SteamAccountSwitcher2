@@ -1,6 +1,6 @@
 ﻿namespace SteamAccountSwitcher2
 {
-    enum EncryptionType
+    public enum EncryptionType
     {
         Basic, Password
     }

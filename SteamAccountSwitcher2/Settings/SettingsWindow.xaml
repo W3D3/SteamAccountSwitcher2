@@ -82,7 +82,7 @@
         </TabControl>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <Button x:Name="buttonDiscard" Content="Discard" Margin="5,5,5,5" Height="24" Width="106"/>
-            <Button x:Name="buttonApply" Content="Apply" Margin="5,5,5,5" Height="24" Width="106"/>
+            <Button x:Name="buttonApply" Content="Apply" Margin="5,5,5,5" Height="24" Width="106" Click="buttonApply_Click"/>
         </StackPanel>
         
     </Grid>
