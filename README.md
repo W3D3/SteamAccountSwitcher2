@@ -1,5 +1,6 @@
 # Steam Account Switcher (v2)
-This is a fork of [W3D3's excellent repo](https://github.com/W3D3/SteamAccountSwitcher2)
+This is a fork of [W3D3's excellent repo](https://github.com/W3D3/SteamAccountSwitcher2).
+
 I just fixed the bugs that prevented me from using it.
 
 
