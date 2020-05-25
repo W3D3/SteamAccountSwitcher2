@@ -5,7 +5,7 @@ I just fixed the bugs that blocked me from using it.
 
 ### Download
 You can download the source code and compile it.
-Or, download the pre-compiled installer from [Releases]https://github.com/Ogglord/SteamAccountSwitcher2/releases/tag/ogglord
+Or, download the pre-compiled installer from [GitHub Releases](https://github.com/Ogglord/SteamAccountSwitcher2/releases/tag/ogglord)
 
 ### Whats added
 - Logging of unhandled exceptions to file
