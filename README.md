@@ -1,4 +1,4 @@
-# SteamAccountSwitcher24
+# Steam Account Switcher (v2)
 ## This is a fork of W3D3's work
 I just fixed the bugs that blocked me from using it.
 
