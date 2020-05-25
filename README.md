@@ -1,20 +1,17 @@
-# SteamAccountSwitcher2
-Completely rewritten account switcher for Steam.
+# SteamAccountSwitcher24
+## This is a fork of W3D3's work
+I just fixed the bugs that blocked me from using it.
 
-This is work in progress!
-There are major bugs and missing features in this current version!
 
 ### Download
-*There is no download yet, there are a lot of things to do before you should install this as your new Account Switcher!*
-If you clone this and use it, expect things to break.
+You can download the source code and compile it.
+Or, download the pre-compiled installer from [Releases]https://github.com/Ogglord/SteamAccountSwitcher2/releases/tag/ogglord
 
-### Current Features
-- new UI
-- launching Steam Account
-  - SafeMode to protect password (could be seen in task manager)
-- Saves and encrypts accounts locally (now AES-256 bit encryption)
-- Reorder accounts by drag and drop
+### Whats added
+- Logging of unhandled exceptions to file
+- Disabled the steam status since the API was download
+- Making sure the program handles steam.exe in lowercase now :)
+- Making sure the program works for new users, there was a bug that prevented the steam location from being saved properly
 
 ### More info
-If you are interested, you can check out my blog, will share some stuff there, because i don't want to spam the old github repo with info about a unfinished second version ;)
-[Blog](https://wedenig.org/blog/steamaccountswitcher-v2)
+Please report any bugs on github here or at W3D3s repository
