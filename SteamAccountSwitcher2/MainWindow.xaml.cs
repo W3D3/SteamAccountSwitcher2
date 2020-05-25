@@ -91,6 +91,7 @@ namespace SteamAccountSwitcher2
                 }
                 else
                 {
+                    Properties.Settings.Default.steamInstallDir = installDir;
                     SasManager.InitiateInstanceWithDir(installDir);
                 }
             }
@@ -111,27 +112,39 @@ namespace SteamAccountSwitcher2
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            SasManager.Instance.SaveAccounts();
-
-            if (WindowState == WindowState.Maximized)
+            try
             {
-                // Use the RestoreBounds as the current values will be 0, 0 and the size of the screen
-                Properties.Settings.Default.Top = RestoreBounds.Top;
-                Properties.Settings.Default.Left = RestoreBounds.Left;
-                Properties.Settings.Default.Height = RestoreBounds.Height;
-                Properties.Settings.Default.Width = RestoreBounds.Width;
-                Properties.Settings.Default.Maximized = true;
+                SasManager.Instance.SaveAccounts();
+
+                if (this.WindowState == WindowState.Maximized)
+                {
+                    // Use the RestoreBounds as the current values will be 0, 0 and the size of the screen
+                    Properties.Settings.Default.Top = RestoreBounds.Top;
+                    Properties.Settings.Default.Left = RestoreBounds.Left;
+                    Properties.Settings.Default.Height = RestoreBounds.Height;
+                    Properties.Settings.Default.Width = RestoreBounds.Width;
+                    Properties.Settings.Default.Maximized = true;
+                }
+                else
+                {
+                    Properties.Settings.Default.Top = this.Top;
+                    Properties.Settings.Default.Left = this.Left;
+                    Properties.Settings.Default.Height = this.Height;
+                    Properties.Settings.Default.Width = this.Width;
+                    Properties.Settings.Default.Maximized = false;
+                }
+            
             }
-            else
+            catch (Exception ex)
             {
-                Properties.Settings.Default.Top = this.Top;
-                Properties.Settings.Default.Left = this.Left;
-                Properties.Settings.Default.Height = this.Height;
-                Properties.Settings.Default.Width = this.Width;
-                Properties.Settings.Default.Maximized = false;
+                Log.Logger.Error(ex, "Error while saving accounts");
+            }
+            finally
+            {
+                Properties.Settings.Default.Save();
             }
 
-            Properties.Settings.Default.Save();
+            
         }
 
         private void buttonAdd_Click(object sender, RoutedEventArgs e)

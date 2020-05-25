@@ -80,7 +80,7 @@ namespace SteamAccountSwitcher2
 
         public void SetSteamInstallDir(string pathToSteamExe)
         {
-            if (string.IsNullOrEmpty(pathToSteamExe) || !pathToSteamExe.EndsWith("steam.exe"))
+            if (string.IsNullOrEmpty(pathToSteamExe) || !pathToSteamExe.ToLower().EndsWith("steam.exe"))
                 throw new ArgumentException("Invalid Steam Path: " + pathToSteamExe);
 
             if (pathToSteamExe != null)
