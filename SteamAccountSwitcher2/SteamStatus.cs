@@ -21,7 +21,7 @@ namespace SteamAccountSwitcher2
 
         public void refreshStatus()
         {
-            onlineStatusGood = checkSteamStatus();
+            onlineStatusGood = true;// checkSteamStatus();
         }
 
         /// <summary>

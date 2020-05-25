@@ -19,20 +19,24 @@ namespace SteamAccountSwitcher2
 
         private const int SW_RESTORE = 9;
 
-        private string _installLocation;
+        private string _pathToSteamExe;
 
-        public Steam(string installLocation)
+        public Steam(string pathToSteamExe)
         {
-            _installLocation = installLocation;
+            PathToSteamExe = pathToSteamExe;
         }
 
-        public string InstallLocation
+        public string PathToSteamExe
         {
-            get => _installLocation;
-            set => _installLocation = value;
+            get { return _pathToSteamExe; }
+            set {
+                if (string.IsNullOrEmpty(value) || !value.EndsWith("steam.exe"))
+                    throw new ArgumentException("Invalid Steam Path: " + value);
+
+                _pathToSteamExe = value; }
         }
 
-        public string InstallDir => _installLocation.Replace("Steam.exe", "");
+        public string PathToSteamInstallationFolder => _pathToSteamExe.ToLower().Replace("steam.exe", "");
 
         public bool IsSteamRunning()
         {
@@ -60,9 +64,9 @@ namespace SteamAccountSwitcher2
         public void Start()
         {
             var p = new Process();
-            if (File.Exists(_installLocation))
+            if (File.Exists(_pathToSteamExe))
             {
-                p.StartInfo = new ProcessStartInfo(_installLocation);
+                p.StartInfo = new ProcessStartInfo(_pathToSteamExe);
                 p.Start();
             }
         }
@@ -85,9 +89,9 @@ namespace SteamAccountSwitcher2
                 if (IsSteamRunning() == false)
                 {
                     var p = new Process();
-                    if (File.Exists(_installLocation))
+                    if (File.Exists(_pathToSteamExe))
                     {
-                        p.StartInfo = new ProcessStartInfo(_installLocation, acc.StartParameters());
+                        p.StartInfo = new ProcessStartInfo(_pathToSteamExe, acc.StartParameters());
                         p.Start();
                         finished = true;
 
@@ -105,7 +109,7 @@ namespace SteamAccountSwitcher2
         [Obsolete("IsSteamReady is deprecated.")]
         private bool IsSteamReady()
         {
-            var logDir = _installLocation.Replace("Steam.exe", "logs\\");
+            var logDir = _pathToSteamExe.Replace("Steam.exe", "logs\\");
             var filename = logDir + "bootstrap_log.txt";
 
             using (var fs = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -133,9 +137,9 @@ namespace SteamAccountSwitcher2
         public bool LogoutSteam()
         {
             var p = new Process();
-            if (File.Exists(_installLocation))
+            if (File.Exists(_pathToSteamExe))
             {
-                p.StartInfo = new ProcessStartInfo(_installLocation, "-shutdown");
+                p.StartInfo = new ProcessStartInfo(_pathToSteamExe, "-shutdown");
                 p.Start();
                 return true;
             }

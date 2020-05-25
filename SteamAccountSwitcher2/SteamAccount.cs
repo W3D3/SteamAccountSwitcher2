@@ -100,7 +100,7 @@ namespace SteamAccountSwitcher2
             set => this._type = value;
         }
 
-        public string AccountImage => Path.Combine(SasManager.Instance.SteamInstallation.InstallDir, "config\\avatarcache", SteamId + ".png");
+        public string AccountImage => Path.Combine(SasManager.Instance.SteamInstallation.PathToSteamInstallationFolder, "config\\avatarcache", SteamId + ".png");
 
         public string BGImage => ImageFolder + "/acc-bg-" + _type.ToString().ToLower() + ".jpg";
 

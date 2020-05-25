@@ -28,6 +28,13 @@ namespace SteamAccountSwitcher2
             _cachedAccountManager = new CachedAccountManager(_steamInstallation);
             _steamStatus = new SteamStatus();
         }
+        private SasManager(string installDir)
+        {
+            _globalSettings = new UserSettings(true);
+            _steamInstallation = new Steam(installDir);
+            _cachedAccountManager = new CachedAccountManager(_steamInstallation);
+            _steamStatus = new SteamStatus();
+        }
 
         private static SasManager _instance = null;
 
@@ -44,6 +51,21 @@ namespace SteamAccountSwitcher2
             }
         }
 
+        public static void InitiateInstanceWithDir(string installDir)
+        {
+            if (installDir == null)
+            {
+                throw new ArgumentException("installDir cannot be empty or null!");
+            }
+            if (_instance == null)
+            {
+                _instance = new SasManager(installDir);
+            }
+            else
+                _instance.SetSteamInstallDir(installDir);
+
+        }
+
         public Steam SteamInstallation => _steamInstallation;
 
         public SteamStatus SteamStatus => _steamStatus;
@@ -56,12 +78,16 @@ namespace SteamAccountSwitcher2
                 .Copy(); // Only give copies so no accidental global changes can be made, copy is non global
         }
 
-        public void SetSteamInstallDir(string installDir)
+        public void SetSteamInstallDir(string pathToSteamExe)
         {
-            if (installDir != null)
+            if (string.IsNullOrEmpty(pathToSteamExe) || !pathToSteamExe.EndsWith("steam.exe"))
+                throw new ArgumentException("Invalid Steam Path: " + pathToSteamExe);
+
+            if (pathToSteamExe != null)
             {
-                _steamInstallation = new Steam(installDir);
-                _globalSettings.SteamInstallDir = installDir;
+                _steamInstallation = new Steam(pathToSteamExe);
+                _cachedAccountManager = new CachedAccountManager(_steamInstallation);
+                _globalSettings.SteamInstallDir = _steamInstallation.PathToSteamInstallationFolder;
             }
         }
 

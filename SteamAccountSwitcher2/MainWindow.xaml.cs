@@ -1,9 +1,11 @@
-﻿using AutoUpdaterDotNET;
+﻿//using AutoUpdaterDotNET;
+using Serilog;
 using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace SteamAccountSwitcher2
 {
@@ -17,7 +19,10 @@ namespace SteamAccountSwitcher2
 
         public MainWindow()
         {
-            AutoUpdater.Start("https://wedenig.org/SteamAccountSwitcher/version.xml");
+            //AutoUpdater.Start("https://wedenig.org/SteamAccountSwitcher/version.xml");
+
+            Dispatcher.UnhandledException += Dispatcher_UnhandledException;
+            Application.Current.DispatcherUnhandledException += Dispatcher_UnhandledException;
 
             InitializeComponent();
 
@@ -51,8 +56,8 @@ namespace SteamAccountSwitcher2
             }
 
 
-            SteamAccount sa = new SteamAccount("username", "testpw");
-            sa.Name = "profile name";
+            //SteamAccount sa = new SteamAccount("username", "testpw");
+            //sa.Name = "profile name";
             //accountList.Add(sa);
 
             listBoxAccounts.ItemsSource = SasManager.Instance.AccountList;
@@ -62,6 +67,12 @@ namespace SteamAccountSwitcher2
             //take full width
             itemContainerStyle.Setters.Add(new Setter(HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
             listBoxAccounts.ItemContainerStyle = itemContainerStyle;
+        }
+
+    
+        private void Dispatcher_UnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            Log.Logger.Error(e.Exception, "Dispatcher_UnhandledException");
         }
 
         private void askUserForSteamLocation()
@@ -80,7 +91,7 @@ namespace SteamAccountSwitcher2
                 }
                 else
                 {
-                    SasManager.Instance.SetSteamInstallDir(installDir);
+                    SasManager.InitiateInstanceWithDir(installDir);
                 }
             }
         }
@@ -157,7 +168,7 @@ namespace SteamAccountSwitcher2
         {
             if (listBoxAccounts.SelectedItem != null)
             {
-                MessageBox.Show(sender.ToString());
+                //MessageBox.Show(sender.ToString());
                 AccountWindow newAccWindow = new AccountWindow((SteamAccount) listBoxAccounts.SelectedItem);
                 newAccWindow.Owner = this;
                 newAccWindow.ShowDialog();
@@ -200,7 +211,7 @@ namespace SteamAccountSwitcher2
         {
             if (e.ClickCount >= 2)
             {
-                MessageBox.Show(listBoxAccounts.SelectedItem.ToString());
+                //MessageBox.Show(listBoxAccounts.SelectedItem.ToString());
                 SteamAccount selectedAcc = (SteamAccount) listBoxAccounts.SelectedItem;
                 SasManager.Instance.StartSteamWithAccount(selectedAcc);
             }

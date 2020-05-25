@@ -12,6 +12,7 @@ Global
 		All|Any CPU = All|Any CPU
 		CD_ROM|Any CPU = CD_ROM|Any CPU
 		Debug|Any CPU = Debug|Any CPU
+		DefaultBuild|Any CPU = DefaultBuild|Any CPU
 		Deploy|Any CPU = Deploy|Any CPU
 		DVD-5|Any CPU = DVD-5|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -24,6 +25,8 @@ Global
 		{CD84E7B0-56E4-43F0-8532-55972070F563}.CD_ROM|Any CPU.Build.0 = Deploy|Any CPU
 		{CD84E7B0-56E4-43F0-8532-55972070F563}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CD84E7B0-56E4-43F0-8532-55972070F563}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD84E7B0-56E4-43F0-8532-55972070F563}.DefaultBuild|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD84E7B0-56E4-43F0-8532-55972070F563}.DefaultBuild|Any CPU.Build.0 = Debug|Any CPU
 		{CD84E7B0-56E4-43F0-8532-55972070F563}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
 		{CD84E7B0-56E4-43F0-8532-55972070F563}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
 		{CD84E7B0-56E4-43F0-8532-55972070F563}.Deploy|Any CPU.Deploy.0 = Deploy|Any CPU
@@ -39,6 +42,8 @@ Global
 		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.CD_ROM|Any CPU.Build.0 = DefaultBuild
 		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.Debug|Any CPU.ActiveCfg = DefaultBuild
 		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.Debug|Any CPU.Build.0 = DefaultBuild
+		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.DefaultBuild|Any CPU.ActiveCfg = DefaultBuild
+		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.DefaultBuild|Any CPU.Build.0 = DefaultBuild
 		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.Deploy|Any CPU.ActiveCfg = DefaultBuild
 		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.Deploy|Any CPU.Build.0 = DefaultBuild
 		{DF67B771-6F39-474C-9833-5FC8AE064EEA}.DVD-5|Any CPU.ActiveCfg = DefaultBuild

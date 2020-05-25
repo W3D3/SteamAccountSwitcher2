@@ -19,26 +19,33 @@ namespace SteamAccountSwitcher2
         public CachedAccountManager(Steam installation)
         {
             _steamInstallation = installation;
-            loginUsersVDFPath = Path.Combine(installation.InstallDir, "config/loginusers.vdf");
+            loginUsersVDFPath = Path.Combine(installation.PathToSteamInstallationFolder, @"config\loginusers.vdf");
         }
 
         public IEnumerable<SteamAccount> CachedAccounts => _cachedAccounts;
 
         public void scanForAccounts()
         {
-            dynamic loginUsersVdf = VdfConvert.Deserialize(File.ReadAllText(loginUsersVDFPath));
-            // 'volvo' is a VProperty, analogous to Json.NET's JProperty
-            _cachedAccounts.Clear();
-            foreach (var account in loginUsersVdf.Value)
+            try
             {
-                _cachedAccounts.Add(new SteamAccount(
-                        (string)account.Key.ToString(),
-                        (string)account.Value.AccountName.Value.ToString(),
-                        (string)account.Value.PersonaName.Value.ToString(),
-                        account.Value.RememberPassword.Value.ToString() == "1",
-                        account.Value.mostrecent.Value.ToString() == "1",
-                        long.Parse(account.Value.Timestamp.Value.ToString())
-                ));
+                dynamic loginUsersVdf = VdfConvert.Deserialize(File.ReadAllText(loginUsersVDFPath));
+                // 'volvo' is a VProperty, analogous to Json.NET's JProperty
+                _cachedAccounts.Clear();
+                foreach (var account in loginUsersVdf.Value)
+                {
+                    _cachedAccounts.Add(new SteamAccount(
+                            (string)account.Key.ToString(),
+                            (string)account.Value.AccountName.Value.ToString(),
+                            (string)account.Value.PersonaName.Value.ToString(),
+                            account.Value.RememberPassword.Value.ToString() == "1",
+                            account.Value.MostRecent.Value.ToString() == "1",
+                            long.Parse(account.Value.Timestamp.Value.ToString())
+                    ));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occured when scanning for accounts...\nInstallDir: " + this._steamInstallation.PathToSteamInstallationFolder + "\nInstallLocation: " + this._steamInstallation.PathToSteamExe + "\n\n" + ex.ToString());
             }
         }
 
@@ -58,7 +65,7 @@ namespace SteamAccountSwitcher2
                 {
                     if (account.Key.ToString() == selectedAccount.SteamId)
                     {
-                        account.Value.mostrecent.Value = "1";
+                        account.Value.MostRecent.Value = "1";
                         if (account.Value.RememberPassword.Value == "0")
                         {
                             // Steam does not remember this accounts password!
@@ -81,7 +88,7 @@ namespace SteamAccountSwitcher2
                     }
                     else
                     {
-                        account.Value.mostrecent.Value = "0";
+                        account.Value.MostRecent.Value = "0";
                     }
                 }
 
