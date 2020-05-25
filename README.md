@@ -9,8 +9,8 @@ You can download the source code and compile it.
 Or, download the pre-compiled installer from [GitHub Releases](https://github.com/Ogglord/SteamAccountSwitcher2/releases/tag/ogglord)
 
 ### Whats added
-- Logging of unhandled exceptions to file
-- Disabled the steam status since the API was download
+- Logging of unhandled exceptions to file ([Serilog](https://serilog.net/) library)
+- Disabled the steam status (the API seems to be offline)
 - Making sure the program handles steam.exe in lowercase now :)
 - Making sure the program works for new users, there was a bug that prevented the steam location from being saved properly
 
