@@ -1,6 +1,6 @@
 # Steam Account Switcher (v2)
-## This is a fork of W3D3's work
-I just fixed the bugs that blocked me from using it.
+This is a fork of [W3D3's excellent repo](https://github.com/W3D3/SteamAccountSwitcher2)
+I just fixed the bugs that prevented me from using it.
 
 
 ### Download
@@ -14,4 +14,4 @@ Or, download the pre-compiled installer from [GitHub Releases](https://github.co
 - Making sure the program works for new users, there was a bug that prevented the steam location from being saved properly
 
 ### More info
-Please report any bugs on github here or at W3D3s repository
+Please report any bugs on github here or at W3D3s repository directly
