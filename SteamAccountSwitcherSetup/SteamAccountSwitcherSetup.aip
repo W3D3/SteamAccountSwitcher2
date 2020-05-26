@@ -29,13 +29,13 @@
     <ROW Property="AI_RUN_AS_ADMIN" Value="0"/>
     <ROW Property="ALLUSERS" Value="1"/>
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
-    <ROW Property="ARPCONTACT" Value="oggelito@gmail.com"/>
+    <ROW Property="ARPCONTACT" Value="christoph@wedenig.org / oggelito@gmail.com"/>
     <ROW Property="ARPPRODUCTICON" Value="steam_icon.exe" Type="8"/>
     <ROW Property="CTRLS" Value="2"/>
-    <ROW Property="Manufacturer" Value="W3D3 and Ogglord"/>
+    <ROW Property="Manufacturer" Value="W3D3"/>
     <ROW Property="ProductCode" Value="1033:{90CB04E7-A9CD-42CC-BC1A-F72357D0B372} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
-    <ROW Property="ProductName" Value="Steam Account Switcher Modified By Ogglord"/>
+    <ROW Property="ProductName" Value="Steam Account Switcher"/>
     <ROW Property="ProductVersion" Value="2.2.1" Type="32"/>
     <ROW Property="RUNAPPLICATION" Value="1" Type="4"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
