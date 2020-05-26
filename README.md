@@ -11,8 +11,9 @@ Or, download the pre-compiled installer from [GitHub Releases](https://github.co
 ### Whats added
 - Logging of unhandled exceptions to file ([Serilog](https://serilog.net/) library)
 - Disabled the steam status (the API seems to be offline)
+- Disabled the update check (the URL is offline)
 - Making sure the program handles the steam path without case sensitivity
-- Making sure the program works for new users, there was a bug occured for fresh installs
+- Making sure the program works for new users, there was a bug that occured for fresh installs only
 
 ### More info
 Please report any bugs on github here or at W3D3s repository directly
