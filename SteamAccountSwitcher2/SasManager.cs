@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using Serilog;
 using SteamAccountSwitcher2.Settings;
 
 namespace SteamAccountSwitcher2
@@ -131,6 +132,7 @@ namespace SteamAccountSwitcher2
             }
             catch (Exception e)
             {
+                Log.Logger.Error(e, "StartSteamWithAccount");
                 MessageBox.Show(e.Message, "Error when starting account", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -156,8 +158,9 @@ namespace SteamAccountSwitcher2
                 // Success
                 _globalSettings.Autostart = autostart;
             }
-            catch
+            catch(Exception e)
             {
+                Log.Logger.Error(e, "SetAutoStart");
                 Debug.WriteLine("Failed to set autostart to " + autostart);
             }
         }

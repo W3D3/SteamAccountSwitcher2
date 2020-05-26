@@ -1,4 +1,4 @@
-﻿//using AutoUpdaterDotNET;
+﻿using AutoUpdaterDotNET;
 using Serilog;
 using System;
 using System.Diagnostics;
@@ -19,6 +19,7 @@ namespace SteamAccountSwitcher2
 
         public MainWindow()
         {
+            // URL is not working
             //AutoUpdater.Start("https://wedenig.org/SteamAccountSwitcher/version.xml");
 
             Dispatcher.UnhandledException += Dispatcher_UnhandledException;
