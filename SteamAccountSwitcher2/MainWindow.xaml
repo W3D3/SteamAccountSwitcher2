@@ -31,7 +31,7 @@
                     </Button>
                     <Button x:Name="buttonExport" ToolBar.OverflowMode="Always" >
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="images/icons/smallexport.png" Width="16" Height="16" />
+                            <Image Source="/images/icons/smallexport.png" Width="16" Height="16" />
                             <TextBlock Margin="3,0,0,0">Export</TextBlock>
                         </StackPanel>
                     </Button>

@@ -29,7 +29,6 @@ namespace SteamAccountSwitcher2
             AccountName = accountName;
             Password = password;
             Type = AccountType.Main;
-            CachedAccount = false;
         }
 
         public SteamAccount(string steamId, string accountName, string personaName, bool rememberPassword,
@@ -43,7 +42,6 @@ namespace SteamAccountSwitcher2
             Mostrecent = mostrecent;
             Timestamp = timestamp;
             Type = AccountType.Main;
-            CachedAccount = true;
         }
 
         public string SteamId
@@ -107,8 +105,8 @@ namespace SteamAccountSwitcher2
         //public bool IsCached => string.IsNullOrEmpty(_password);
         public bool CachedAccount
         {
-            get => _cachedAccount;
-            set => _cachedAccount = value;
+            get => string.IsNullOrEmpty(_password);
+            //set => _cachedAccount = value;
         }
 
         public string StartParameters()

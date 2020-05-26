@@ -36,7 +36,7 @@ namespace SteamAccountSwitcher2
                         (string)account.Value.AccountName.Value.ToString(),
                         (string)account.Value.PersonaName.Value.ToString(),
                         account.Value.RememberPassword.Value.ToString() == "1",
-                        account.Value.mostrecent.Value.ToString() == "1",
+                        account.Value.MostRecent?.Value.ToString() == "1",
                         long.Parse(account.Value.Timestamp.Value.ToString())
                 ));
             }
@@ -58,7 +58,7 @@ namespace SteamAccountSwitcher2
                 {
                     if (account.Key.ToString() == selectedAccount.SteamId)
                     {
-                        account.Value.mostrecent.Value = "1";
+                        account.Value.MostRecent.Value = "1";
                         if (account.Value.RememberPassword.Value == "0")
                         {
                             // Steam does not remember this accounts password!
@@ -73,7 +73,7 @@ namespace SteamAccountSwitcher2
                                 // Else we notify the user and let him log in
                                 MessageBox.Show(
                                     "This account does not have a password associated with it and can only be started if it has already logged in once and 'Remember Password' has been checked. Log in and select 'Remember Password' now or add a password in SteamAccountSwitcher.",
-                                    "Cannot start with account", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                                    "Cannot start with selected account", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                                 break;
                             }
                             
@@ -81,11 +81,10 @@ namespace SteamAccountSwitcher2
                     }
                     else
                     {
-                        account.Value.mostrecent.Value = "0";
+                        account.Value.MostRecent.Value = "0";
                     }
                 }
 
-                //MessageBox.Show(loginUsersVdf.ToString());
                 File.WriteAllText(loginUsersVDFPath, loginUsersVdf.ToString());
 
                 using (RegistryKey key = Registry.CurrentUser.CreateSubKey(@"Software\Valve\Steam"))

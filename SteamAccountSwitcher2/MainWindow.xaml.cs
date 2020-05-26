@@ -157,7 +157,6 @@ namespace SteamAccountSwitcher2
         {
             if (listBoxAccounts.SelectedItem != null)
             {
-                MessageBox.Show(sender.ToString());
                 AccountWindow newAccWindow = new AccountWindow((SteamAccount) listBoxAccounts.SelectedItem);
                 newAccWindow.Owner = this;
                 newAccWindow.ShowDialog();
@@ -200,7 +199,6 @@ namespace SteamAccountSwitcher2
         {
             if (e.ClickCount >= 2)
             {
-                MessageBox.Show(listBoxAccounts.SelectedItem.ToString());
                 SteamAccount selectedAcc = (SteamAccount) listBoxAccounts.SelectedItem;
                 SasManager.Instance.StartSteamWithAccount(selectedAcc);
             }

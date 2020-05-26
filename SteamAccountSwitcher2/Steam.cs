@@ -32,7 +32,8 @@ namespace SteamAccountSwitcher2
             set => _installLocation = value;
         }
 
-        public string InstallDir => _installLocation.Replace("Steam.exe", "");
+        // TODO improve this
+        public string InstallDir => _installLocation.Replace("Steam.exe", "").Replace("steam.exe", "");
 
         public bool IsSteamRunning()
         {

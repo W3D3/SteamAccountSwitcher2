@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Net;
+using System.Text;
 using System.Windows.Media;
 
 namespace SteamAccountSwitcher2
@@ -9,7 +10,7 @@ namespace SteamAccountSwitcher2
     /// </summary>
     public class SteamStatus
     {
-        const string STATUS_API = "https://crowbar.steamstat.us/Barney";
+        const string STATUS_API = "https://crowbar.steamstat.us/gravity.json";
         private bool onlineStatusGood = false;
 
         public SteamStatus()
@@ -32,11 +33,14 @@ namespace SteamAccountSwitcher2
         {
             try
             {
-                string statusJson = new WebClient().DownloadString(STATUS_API);
+                WebClient client = new WebClient() { Encoding = Encoding.UTF8 };
+                client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+                string statusJson = client.DownloadString(STATUS_API);
                 JObject status = JObject.Parse(statusJson);
 
-                string state = status["services"]["online"]["status"].ToString();
-                if (state == "good")
+                // TODO get a proper steam status check, this is unreliable
+                string state = status["services"][2][1].ToString();
+                if (state == "0")
                     return true;
                 else
                     return false;
