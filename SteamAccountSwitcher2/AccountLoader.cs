@@ -79,7 +79,7 @@ namespace SteamAccountSwitcher2
                     List<SteamAccount> accountList = JsonConvert.DeserializeObject<List<SteamAccount>>(decrypted);
                     return accountList;
                 }
-                catch (CryptographicException e)
+                catch (CryptographicException)
                 {
                     MessageBox.Show("Try entering the password again.", "Could not decrypt");
                     _password = null;
@@ -89,7 +89,7 @@ namespace SteamAccountSwitcher2
                     MessageBox.Show(e.Message, "Fatal Error when reading accounts file!");
                     retry = false;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     retry = false;
                 }
