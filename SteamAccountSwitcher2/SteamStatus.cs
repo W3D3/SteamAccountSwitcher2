@@ -11,39 +11,39 @@ namespace SteamAccountSwitcher2
     public class SteamStatus
     {
         const string STATUS_API = "https://crowbar.steamstat.us/gravity.json";
-        private bool onlineStatusGood = false;
+        private bool _onlineStatusGood = false;
 
         public SteamStatus()
         {
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            refreshStatus();
+            RefreshStatus();
         }
 
-        public void refreshStatus()
+        public void RefreshStatus()
         {
-            onlineStatusGood = checkSteamStatus();
+            _onlineStatusGood = CheckSteamStatus();
         }
 
         /// <summary>
         /// Checks Steam status by calling an external service.
         /// </summary>
         /// <returns>true if steam is up, false if not.</returns>
-        private static bool checkSteamStatus()
+        private static bool CheckSteamStatus()
         {
             try
             {
-                WebClient client = new WebClient() { Encoding = Encoding.UTF8 };
+                var client = new WebClient() { Encoding = Encoding.UTF8 };
                 client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
-                string statusJson = client.DownloadString(STATUS_API);
-                JObject status = JObject.Parse(statusJson);
+                var statusJson = client.DownloadString(STATUS_API);
+                var status = JObject.Parse(statusJson);
 
                 // TODO get a proper steam status check, this is unreliable
-                string state = status["services"][2][1].ToString();
+                var state = status["services"][2][1].ToString();
                 if (state == "0")
                     return true;
-                else
-                    return false;
+
+                return false;
             }
             catch
             {
@@ -56,27 +56,27 @@ namespace SteamAccountSwitcher2
         /// Generates a GUI friendly string describing Steam's status at the time of last refresh.
         /// </summary>
         /// <returns>GUI friendly <see cref="string"/>.</returns>
-        public string steamStatusMessage()
+        public string SteamStatusMessage()
         {
-            return onlineStatusGood ? "Steam is operating normally." : "Steam is currently having issues!";
+            return _onlineStatusGood ? "Steam is operating normally." : "Steam is currently having issues!";
         }
 
         /// <summary>
         /// Generates a <see cref="SolidColorBrush"/> indicating Steam's status at the time of last refresh.
         /// </summary>
         /// <returns><see cref="SolidColorBrush"/> status indicator</returns>
-        public SolidColorBrush getStatusColor()
+        public SolidColorBrush GetStatusColor()
         {
-            if (onlineStatusGood)
+            if (_onlineStatusGood)
             {
-                Color green = Color.FromRgb(146, 247, 181);
-                SolidColorBrush greenbrush = new SolidColorBrush(green);
+                var green = Color.FromRgb(146, 247, 181);
+                var greenbrush = new SolidColorBrush(green);
                 return greenbrush;
             }
             else
             {
-                Color red = Color.FromRgb(250, 165, 165);
-                SolidColorBrush redbrush = new SolidColorBrush(red);
+                var red = Color.FromRgb(250, 165, 165);
+                var redbrush = new SolidColorBrush(red);
                 return redbrush;
             }
         }

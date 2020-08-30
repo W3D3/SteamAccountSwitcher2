@@ -10,23 +10,29 @@ namespace SteamAccountSwitcher2
 {
     public sealed class SasManager
     {
-        private ObservableCollection<SteamAccount> _accountList = new ObservableCollection<SteamAccount>();
-
-        private Steam _steamInstallation;
         private CachedAccountManager _cachedAccountManager;
+
         private UserSettings _globalSettings;
-        private AccountLoader loader;
-        private SteamStatus _steamStatus;
+
+        private AccountLoader _loader;
 
         bool autosaveAccounts = true;
+
+        public Steam SteamInstallation { get; private set; }
+
+        public SteamStatus SteamStatus { get; }
+
+        public ObservableCollection<SteamAccount> AccountList { get; private set; } = new ObservableCollection<SteamAccount>();
+
+        public UserSettings GlobalSettings =>  _globalSettings.Copy(); // Only give copies so no accidental global changes can be made, copy is non global
 
         private SasManager()
         {
             _globalSettings = new UserSettings(true);
-            _steamInstallation = new Steam(GlobalSettings.SteamInstallDir);
+            SteamInstallation = new Steam(GlobalSettings.SteamInstallDir);
 
-            _cachedAccountManager = new CachedAccountManager(_steamInstallation);
-            _steamStatus = new SteamStatus();
+            _cachedAccountManager = new CachedAccountManager(SteamInstallation);
+            SteamStatus = new SteamStatus();
         }
 
         private static SasManager _instance = null;
@@ -43,39 +49,27 @@ namespace SteamAccountSwitcher2
                 return _instance;
             }
         }
-
-        public Steam SteamInstallation => _steamInstallation;
-
-        public SteamStatus SteamStatus => _steamStatus;
-
-        public ObservableCollection<SteamAccount> AccountList => _accountList;
-
-        public UserSettings GlobalSettings
-        {
-            get => _globalSettings
-                .Copy(); // Only give copies so no accidental global changes can be made, copy is non global
-        }
-
+        
         public void SetSteamInstallDir(string installDir)
         {
             if (installDir != null)
             {
-                _steamInstallation = new Steam(installDir);
+                SteamInstallation = new Steam(installDir);
                 _globalSettings.SteamInstallDir = installDir;
             }
         }
 
         public void InitializeAccountsFromFile()
         {
-            loader = new AccountLoader(GlobalSettings.EcryptionType);
+            _loader = new AccountLoader(GlobalSettings.EncryptionType);
 
-            if (loader.AccountFileExists())
+            if (_loader.AccountFileExists())
             {
-                _accountList = new ObservableCollection<SteamAccount>(loader.LoadAccounts());
+                AccountList = new ObservableCollection<SteamAccount>(_loader.LoadAccounts());
             }
             else
             {
-                _accountList = new ObservableCollection<SteamAccount>();
+                AccountList = new ObservableCollection<SteamAccount>();
             }
         }
 
@@ -84,7 +78,7 @@ namespace SteamAccountSwitcher2
             //User has exited the application, save all accounts
             if (autosaveAccounts)
             {
-                loader.SaveAccounts(_accountList.ToList());
+                _loader.SaveAccounts(AccountList.ToList());
             }
         }
 
@@ -95,12 +89,12 @@ namespace SteamAccountSwitcher2
                 if (selectedAcc.CachedAccount)
                 {
                     // If no password login is possible / needed
-                    _cachedAccountManager.startCachedAccount(selectedAcc);
+                    _cachedAccountManager.StartCachedAccount(selectedAcc);
                 }
                 else
                 {
-                    _cachedAccountManager.resetActiveAccount();
-                    _steamInstallation.StartSteamAccount(selectedAcc);
+                    _cachedAccountManager.ResetActiveAccount();
+                    SteamInstallation.StartSteamAccount(selectedAcc);
                 }
             }
             catch (Exception e)
@@ -113,11 +107,10 @@ namespace SteamAccountSwitcher2
         {
             try
             {
-                Microsoft.Win32.RegistryKey key =
-                    Microsoft.Win32.Registry.CurrentUser.OpenSubKey(
+                var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(
                         "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
                         true);
-                Assembly curAssembly = Assembly.GetExecutingAssembly();
+                var curAssembly = Assembly.GetExecutingAssembly();
                 if (autostart)
                 {
                     key.SetValue(curAssembly.GetName().Name, curAssembly.Location);
@@ -138,12 +131,12 @@ namespace SteamAccountSwitcher2
 
         public void ScanAndAddAccounts()
         {
-            _cachedAccountManager.scanForAccounts();
+            _cachedAccountManager.ScanForAccounts();
 
             foreach (var scannerAccount in _cachedAccountManager.CachedAccounts)
             {
-                if (!_accountList.Contains(scannerAccount))
-                    _accountList.Add(scannerAccount);
+                if (!AccountList.Contains(scannerAccount))
+                    AccountList.Add(scannerAccount);
             }
         }
 
@@ -159,18 +152,18 @@ namespace SteamAccountSwitcher2
                 SetSteamInstallDir(newSettings.SteamInstallDir);
             }
 
-            if (newSettings.EcryptionType != _globalSettings.EcryptionType)
+            if (newSettings.EncryptionType != _globalSettings.EncryptionType)
             {
-                SetEncryption(newSettings.EcryptionType);
+                SetEncryption(newSettings.EncryptionType);
             }
         }
 
-        public void SetEncryption(EncryptionType newEcryptionType)
+        public void SetEncryption(EncryptionType newEncryptionType)
         {
-            switch (newEcryptionType)
+            switch (newEncryptionType)
             {
                 case EncryptionType.Password:
-                    PasswordWindow passwordWindow = new PasswordWindow(true);
+                    var passwordWindow = new PasswordWindow(true);
                     passwordWindow.ShowDialog();
                     var password = passwordWindow.Password;
                     if (string.IsNullOrEmpty(password))
@@ -179,16 +172,16 @@ namespace SteamAccountSwitcher2
                         return;
                     }
 
-                    loader.Password = password;
+                    _loader.Password = password;
                     break;
                 case EncryptionType.Basic:
-                    loader.Password = null;
+                    _loader.Password = null;
                     break;
             }
 
-            loader.EncryptionType = newEcryptionType;
-            loader.SaveAccounts(AccountList.ToList());
-            _globalSettings.EcryptionType = newEcryptionType;
+            _loader.EncryptionType = newEncryptionType;
+            _loader.SaveAccounts(AccountList.ToList());
+            _globalSettings.EncryptionType = newEncryptionType;
         }
     }
 }

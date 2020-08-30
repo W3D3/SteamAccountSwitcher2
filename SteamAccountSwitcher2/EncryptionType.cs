@@ -2,6 +2,7 @@
 {
     public enum EncryptionType
     {
-        Basic, Password
+        Basic, 
+        Password
     }
 }

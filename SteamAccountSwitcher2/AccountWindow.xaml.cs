@@ -8,7 +8,7 @@ namespace SteamAccountSwitcher2
     /// </summary>
     public partial class AccountWindow : Window
     {
-        private SteamAccount newAcc;
+        public SteamAccount Account { get; set; }
 
         /// <summary>
         /// Creates a new instance of the AccountWindow class. Allows the user to create new accounts.
@@ -31,8 +31,8 @@ namespace SteamAccountSwitcher2
                 throw new ArgumentNullException();
 
             InitializeComponent();
-            this.Title = "Edit Account";
-            newAcc = accToEdit;
+            Title = "Edit Account";
+            Account = accToEdit;
 
             comboBoxType.ItemsSource = Enum.GetValues(typeof(AccountType));
             comboBoxType.SelectedItem = accToEdit.Type;
@@ -48,67 +48,64 @@ namespace SteamAccountSwitcher2
         /// <summary>
         /// Accessor to the Account associated with the window.
         /// </summary>
-        public SteamAccount Account => newAcc;
-
-        private void buttonSave_Click(object sender, RoutedEventArgs e)
+        private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            if (ValidateInput())
-            {
-                if (newAcc == null)
-                {
-                    newAcc = new SteamAccount(textBoxUsername.Text, textBoxPassword.Password);
-                    newAcc.Type = (AccountType)comboBoxType.SelectedValue;
-                    newAcc.Name = textBoxName.Text;
-                }
-                else
-                {
-                    newAcc.AccountName = textBoxUsername.Text;
-                    newAcc.Password = textBoxPassword.Password;
-                    newAcc.Name = textBoxName.Text;
-                    newAcc.Type = (AccountType)comboBoxType.SelectedValue;
-                }
-                
+            if (!ValidateInput()) 
+                return;
 
-                Close();
+            if (Account == null)
+            {
+                Account = new SteamAccount(textBoxUsername.Text, textBoxPassword.Password)
+                {
+                    Type = (AccountType) comboBoxType.SelectedValue, Name = textBoxName.Text
+                };
             }
+            else
+            {
+                Account.AccountName = textBoxUsername.Text;
+                Account.Password = textBoxPassword.Password;
+                Account.Name = textBoxName.Text;
+                Account.Type = (AccountType)comboBoxType.SelectedValue;
+            }
+
+            Close();
         }
 
         private bool ValidateInput()
         {
-            bool success = true;
-            string errorstring = "";
-            if (String.IsNullOrEmpty(textBoxName.Text))
+            var success = true;
+            var errorMessage = "";
+
+            if (string.IsNullOrEmpty(textBoxName.Text))
             {
                 success = false;
-                errorstring += "Profile name cannot be empty!\n";
+                errorMessage += "Profile name cannot be empty!\n";
             }
 
-            if (String.IsNullOrEmpty(textBoxUsername.Text))
+            if (string.IsNullOrEmpty(textBoxUsername.Text))
             {
                 success = false;
-                errorstring += "Username cannot be empty!\n";
+                errorMessage += "Username cannot be empty!\n";
             }
 
-            if (String.IsNullOrEmpty(textBoxPassword.Password) && labelIsCached.Visibility != Visibility.Visible)
+            if (string.IsNullOrEmpty(textBoxPassword.Password) && labelIsCached.Visibility != Visibility.Visible)
             {
                 success = false;
-                errorstring += "Password cannot be empty!\n";
+                errorMessage += "Password cannot be empty!\n";
             }
 
             if (success)
             {
                 return true;
             }
-            else
-            {
-                MessageBox.Show(errorstring, "Validation problem", MessageBoxButton.OK, MessageBoxImage.Information);
-                return false;
-            }
+
+            MessageBox.Show(errorMessage, "Validation problem", MessageBoxButton.OK, MessageBoxImage.Information);
+            return false;
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
-            newAcc = null;
+            Account = null;
             Close();
         }
     }

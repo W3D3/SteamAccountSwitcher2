@@ -11,19 +11,19 @@
         <DockPanel LastChildFill="True" >
             <ToolBarTray DockPanel.Dock="Top" >
                 <ToolBar ToolBarTray.IsLocked="True">
-                    <Button x:Name="buttonAdd" Click="buttonAdd_Click">
+                    <Button x:Name="buttonAdd" Click="ButtonAdd_Click">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="images/icons/small/plus.png" Width="16" Height="16"/>
                             <TextBlock Margin="3,0,0,0">New</TextBlock>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="buttonScanAccounts" Click="buttonScanAccounts_Click">
+                    <Button x:Name="buttonScanAccounts" Click="ButtonScanAccounts_Click">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="images/icons/small/synchronize.png" Width="16" Height="16" />
                             <TextBlock Margin="3,0,0,0">Scan Accounts</TextBlock>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="buttonEdit" IsEnabled="False" Click="buttonEdit_Click">
+                    <Button x:Name="buttonEdit" IsEnabled="False" Click="ButtonEdit_Click">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="images/icons/small/edit.png" Width="16" Height="16" />
                             <TextBlock Margin="3,0,0,0">Edit</TextBlock>
@@ -45,7 +45,7 @@
                     </Button>
                 </ToolBar>-->
                 <ToolBar ToolBarTray.IsLocked="True">
-                    <Button Name="settingsButton" Click="settingsButton_Click">
+                    <Button Name="settingsButton" Click="SettingsButton_Click">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="images/icons/small/settings.png" Width="16" Height="16" />
                         <TextBlock Margin="3,0,0,0">Settings</TextBlock>
@@ -108,11 +108,11 @@
                 <ListView x:Name="listBoxAccounts" Padding="-6,0,-6,0"
                           dd:DragDrop.IsDragSource="True"
                           dd:DragDrop.IsDropTarget="True"
-                          dd:DragDrop.UseDefaultDragAdorner="True" SelectionChanged="listBoxAccounts_SelectionChanged"
+                          dd:DragDrop.UseDefaultDragAdorner="True" SelectionChanged="ListBoxAccounts_SelectionChanged"
                           KeyDown="OnKeyDownHandler">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Background="White" VerticalAlignment="Top" Height="50" Margin="0" MouseDown="steamAccount_MouseDown">
+                            <Grid Background="White" VerticalAlignment="Top" Height="50" Margin="0" MouseDown="SteamAccount_MouseDown">
                                 
                                 <Grid VerticalAlignment="Top" Height="50"  Margin="0">
                                     <Grid.ContextMenu>
@@ -123,12 +123,12 @@
                                                 </MenuItem.Icon>
                                             </MenuItem>
                                             <Separator />
-                                            <MenuItem Header="Edit" Click="listContextMenuEdit_Click">
+                                            <MenuItem Header="Edit" Click="ListContextMenuEdit_Click">
                                                 <MenuItem.Icon>
                                                     <Image Width="16" Height="16" Source="images/pencil-button.png" />
                                                 </MenuItem.Icon>
                                             </MenuItem>
-                                            <MenuItem Header="Remove" Click="listContextMenuRemove_Click">
+                                            <MenuItem Header="Remove" Click="ListContextMenuRemove_Click">
                                                 <MenuItem.Icon>
                                                     <Image Width="16" Height="16" Source="images/cross-button.png" />
                                                 </MenuItem.Icon>

@@ -5,11 +5,9 @@ namespace SteamAccountSwitcher2.Settings
     public class UserSettings
     {
         private bool _globalSettings;
-
         private string _steamInstallDir;
-        private EncryptionType _ecryptionType;
+        private EncryptionType _encryptionType;
         private bool _autostart;
-
 
         public UserSettings() : this(false)
         {
@@ -23,7 +21,7 @@ namespace SteamAccountSwitcher2.Settings
             {
                 _autostart = Properties.Settings.Default.autostart;
                 _steamInstallDir = Properties.Settings.Default.steamInstallDir;
-                _ecryptionType =
+                _encryptionType =
                     (EncryptionType) Enum.Parse(typeof(EncryptionType), Properties.Settings.Default.encryption);
             }
         }
@@ -38,12 +36,12 @@ namespace SteamAccountSwitcher2.Settings
             }
         }
 
-        public EncryptionType EcryptionType
+        public EncryptionType EncryptionType
         {
-            get => _ecryptionType;
+            get => _encryptionType;
             set
             {
-                _ecryptionType = value;
+                _encryptionType = value;
                 if (_globalSettings) 
                     Properties.Settings.Default.encryption = value.ToString();
             }
@@ -62,7 +60,7 @@ namespace SteamAccountSwitcher2.Settings
         protected bool Equals(UserSettings otherUserSettings)
         {
             return _steamInstallDir == otherUserSettings._steamInstallDir &&
-                   _ecryptionType == otherUserSettings._ecryptionType &&
+                   _encryptionType == otherUserSettings._encryptionType &&
                    _autostart == otherUserSettings._autostart;
         }
 
@@ -72,7 +70,7 @@ namespace SteamAccountSwitcher2.Settings
             {
                 Autostart = Autostart,
                 SteamInstallDir = SteamInstallDir,
-                EcryptionType = EcryptionType
+                EncryptionType = EncryptionType
             };
             return copySettings;
         }
@@ -90,7 +88,7 @@ namespace SteamAccountSwitcher2.Settings
             unchecked
             {
                 var hashCode = (_steamInstallDir != null ? _steamInstallDir.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_ecryptionType != null ? _ecryptionType.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_encryptionType != null ? _encryptionType.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ _autostart.GetHashCode();
                 return hashCode;
             }

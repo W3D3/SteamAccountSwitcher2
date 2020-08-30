@@ -37,7 +37,7 @@
             <Label x:Name="labelIsCached" Grid.Row="5" Grid.ColumnSpan="3" Foreground="#FF03A012" Visibility="Visible">Password is optional. Steam Cached Account.</Label>
 
 
-            <Button x:Name="buttonSave" Grid.Row="6" Grid.Column="1" Margin="2" Click="buttonSave_Click">Save</Button>
+            <Button x:Name="buttonSave" Grid.Row="6" Grid.Column="1" Margin="2" Click="ButtonSave_Click">Save</Button>
             <Button x:Name="buttonCancel" Grid.Row="6" Grid.Column="2" Margin="2" Click="buttonCancel_Click">Cancel</Button>
         </Grid>
     </Grid>
