@@ -2,17 +2,17 @@
 
 namespace SteamAccountSwitcher2
 {
-    class UserInteraction
+    public class UserInteraction
     {
-        public static string selectSteamDirectory(string initialDirectory)
+        public static string SelectSteamDirectory(string initialDirectory)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter =
-               "Steam |steam.exe";
-            dialog.InitialDirectory = initialDirectory;
-            dialog.Title = "Select your Steam Installation";
-            return (dialog.ShowDialog() == true)
-               ? dialog.FileName : null;
+            var dialog = new OpenFileDialog
+            {
+                Filter = "Steam |steam.exe",
+                InitialDirectory = initialDirectory,
+                Title = "Select your Steam Installation"
+            };
+            return (dialog.ShowDialog() == true) ? dialog.FileName : null;
         }
     }
 }

@@ -10,10 +10,10 @@ namespace SteamAccountSwitcher2
     /// <summary>
     /// Manages everything related to cached steam accounts
     /// </summary>
-    class CachedAccountManager
+    public class CachedAccountManager
     {
         private Steam _steamInstallation;
-        List<SteamAccount> _cachedAccounts = new List<SteamAccount>();
+        public List<SteamAccount> CachedAccounts = new List<SteamAccount>();
         private string loginUsersVDFPath;
 
         public CachedAccountManager(Steam installation)
@@ -22,16 +22,14 @@ namespace SteamAccountSwitcher2
             loginUsersVDFPath = Path.Combine(installation.InstallDir, "config/loginusers.vdf");
         }
 
-        public IEnumerable<SteamAccount> CachedAccounts => _cachedAccounts;
-
-        public void scanForAccounts()
+        public void ScanForAccounts()
         {
             dynamic loginUsersVdf = VdfConvert.Deserialize(File.ReadAllText(loginUsersVDFPath));
             // 'volvo' is a VProperty, analogous to Json.NET's JProperty
-            _cachedAccounts.Clear();
+            CachedAccounts.Clear();
             foreach (var account in loginUsersVdf.Value)
             {
-                _cachedAccounts.Add(new SteamAccount(
+                CachedAccounts.Add(new SteamAccount(
                         (string)account.Key.ToString(),
                         (string)account.Value.AccountName.Value.ToString(),
                         (string)account.Value.PersonaName.Value.ToString(),
@@ -48,7 +46,7 @@ namespace SteamAccountSwitcher2
         /// only works if the user already logged in once with this account and chose "remember password"!
         /// </summary>
         /// <param name="selectedAccount">the account to start with</param>
-        public void startCachedAccount(SteamAccount selectedAccount)
+        public void StartCachedAccount(SteamAccount selectedAccount)
         {
             _steamInstallation.KillSteam();
             dynamic loginUsersVdf = VdfConvert.Deserialize(File.ReadAllText(loginUsersVDFPath));
@@ -65,7 +63,7 @@ namespace SteamAccountSwitcher2
                             if (!string.IsNullOrEmpty(selectedAccount.Password))
                             {
                                 // If the user has a password, we use that to log in the old way
-                                resetActiveAccount();
+                                ResetActiveAccount();
                                 _steamInstallation.StartSteamAccount(selectedAccount);
                             }
                             else
@@ -87,7 +85,7 @@ namespace SteamAccountSwitcher2
 
                 File.WriteAllText(loginUsersVDFPath, loginUsersVdf.ToString());
 
-                using (RegistryKey key = Registry.CurrentUser.CreateSubKey(@"Software\Valve\Steam"))
+                using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Valve\Steam"))
                 {
                     key.SetValue("AutoLoginUser", selectedAccount.AccountName);
                     key.SetValue("RememberPassword", 1);
@@ -100,9 +98,9 @@ namespace SteamAccountSwitcher2
             }
         }
 
-        public void resetActiveAccount()
+        public void ResetActiveAccount()
         {
-            using (RegistryKey key = Registry.CurrentUser.CreateSubKey(@"Software\Valve\Steam"))
+            using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Valve\Steam"))
             {
                 key.DeleteValue("AutoLoginUser");
                 key.SetValue("RememberPassword", 1);

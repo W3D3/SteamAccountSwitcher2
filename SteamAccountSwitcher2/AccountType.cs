@@ -2,6 +2,9 @@
 {
     public enum AccountType
     {
-        Main, Smurf, Friend, Banned
+        Main, 
+        Smurf, 
+        Friend, 
+        Banned
     }
 }

@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace SteamAccountSwitcher2
 {
@@ -19,7 +7,6 @@ namespace SteamAccountSwitcher2
     /// </summary>
     public partial class PasswordWindow : Window
     {
-        private string _password;
         private readonly bool _setNewPw;
 
         /// <summary>
@@ -47,13 +34,13 @@ namespace SteamAccountSwitcher2
             }
         }
 
-        public string Password => _password;
+        public string Password { get; private set; }
 
         private void ButtonOK_Click(object sender, RoutedEventArgs e)
         {
             if (passwordBox.Password == passwordBoxRepeat.Password || !_setNewPw)
             {
-                _password = passwordBox.Password;
+                Password = passwordBox.Password;
                 Close();
             }
             else

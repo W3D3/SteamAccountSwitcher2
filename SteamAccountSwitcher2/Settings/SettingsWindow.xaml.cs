@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using SteamAccountSwitcher2.Settings;
 
 namespace SteamAccountSwitcher2
@@ -26,7 +25,7 @@ namespace SteamAccountSwitcher2
             textSteamInstallDir.Text = _windowSettings.SteamInstallDir;
             checkBoxAutostart.IsChecked = _windowSettings.Autostart;
 
-            EncryptionType enc = _windowSettings.EcryptionType;
+            EncryptionType enc = _windowSettings.EncryptionType;
             switch (enc)
             {
                 case EncryptionType.Basic:
@@ -62,7 +61,7 @@ namespace SteamAccountSwitcher2
 
         private void buttonBrowseSteamInstallDir_Click(object sender, RoutedEventArgs e)
         {
-            string installDir = UserInteraction.selectSteamDirectory(@"C:\Program Files (x86)\Steam");
+            string installDir = UserInteraction.SelectSteamDirectory(@"C:\Program Files (x86)\Steam");
             if (installDir != null)
             {
                 _windowSettings.SteamInstallDir = installDir;
@@ -107,28 +106,26 @@ namespace SteamAccountSwitcher2
             Close();
         }
 
-
         private bool TryClosing()
         {
-            if (!SasManager.Instance.GlobalSettings.Equals(_windowSettings))
-            {
-                var result = MessageBox.Show("Are you sure you want to discard changed settings?", "Unsaved changes",
-                    MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
-                return result == MessageBoxResult.Yes;
-            }
+            if (SasManager.Instance.GlobalSettings.Equals(_windowSettings)) 
+                return true;
 
-            return true;
+            var result = MessageBox.Show("Are you sure you want to discard changed settings?", "Unsaved changes",
+                MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+            return result == MessageBoxResult.Yes;
+
         }
 
         private void radioButtonBasicEnc_Checked(object sender, RoutedEventArgs e)
         {
-            _windowSettings.EcryptionType = EncryptionType.Basic;
+            _windowSettings.EncryptionType = EncryptionType.Basic;
             MadeChange();
         }
 
         private void radioButtonPasswordEnc_Checked(object sender, RoutedEventArgs e)
         {
-            _windowSettings.EcryptionType = EncryptionType.Password;
+            _windowSettings.EncryptionType = EncryptionType.Password;
             MadeChange();
         }
 
